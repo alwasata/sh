@@ -75,7 +75,7 @@ const dateTimeFormats = {
       minute: 'numeric',
     },
   },
-  fr: {
+  ar: {
     short: {
       year: 'numeric',
       month: 'short',

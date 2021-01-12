@@ -1,3 +1,5 @@
+import { IEmployee } from '@/shared/model/employee.model';
+
 export interface IAttatchment {
   id?: number;
   name?: string;
@@ -6,6 +8,7 @@ export interface IAttatchment {
   fileUrl?: string;
   employeeName?: string;
   employeeId?: number;
+  employee?: IEmployee;
 }
 
 export class Attatchment implements IAttatchment {
@@ -16,6 +19,7 @@ export class Attatchment implements IAttatchment {
     public file?: any,
     public fileUrl?: string,
     public employeeName?: string,
-    public employeeId?: number
+    public employeeId?: number,
+    public employee?: IEmployee
   ) {}
 }

@@ -1,25 +1,26 @@
 <template>
-    <b-navbar toggleable="md" type="dark" class="jh-navbar">
-        <b-navbar-brand class="logo" b-link to="/">
-            <span class="logo-img"></span>
-            <span v-text="$t('global.title')" class="navbar-title">sahati</span> <span class="navbar-version">{{version}}</span>
-        </b-navbar-brand>      
-        <b-navbar-toggle 
-        right 
-        class="jh-navbar-toggler d-lg-none" 
-        href="javascript:void(0);"  
-        data-toggle="collapse" 
-        target="header-tabs" 
-        aria-expanded="false" 
-        aria-label="Toggle navigation">
-            <font-awesome-icon icon="bars" />
+    <b-navbar toggleable='md' type='dark' class='jh-navbar'>
+        <b-navbar-brand class='logo' b-link to='/'>
+            <span class='logo-img'></span>
+            <span class='navbar-title' v-text="$t('global.title')">Sahati</span> <span
+            class='navbar-version'>{{ version }}</span>
+        </b-navbar-brand>
+        <b-navbar-toggle
+            aria-expanded='false'
+            class='jh-navbar-toggler d-lg-none'
+            data-toggle='collapse'
+            href='javascript:void(0);'
+            right
+            target='header-tabs'
+            aria-label='Toggle navigation'>
+            <font-awesome-icon icon='bars' />
         </b-navbar-toggle>
-           
-        <b-collapse is-nav id="header-tabs">
-            <b-navbar-nav class="ml-auto">
-                <b-nav-item to="/" exact>
+
+        <b-collapse is-nav id='header-tabs'>
+            <b-navbar-nav class='ml-auto'>
+                <b-nav-item to='/' exact>
                     <span>
-                        <font-awesome-icon icon="home" />
+                        <font-awesome-icon icon='home' />
                         <span v-text="$t('global.menu.home')">Home</span>
                     </span>
                 </b-nav-item>

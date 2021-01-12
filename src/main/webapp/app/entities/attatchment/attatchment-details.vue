@@ -29,8 +29,10 @@
                         <span v-text="$t('sahatiApp.attatchment.employee')">Employee</span>
                     </dt>
                     <dd>
-                        <div v-if="attatchment.employeeId">
-                            <router-link :to="{name: 'EmployeeView', params: {employeeId: attatchment.employeeId}}">{{attatchment.employeeName}}</router-link>
+                        <div v-if='attatchment.employee'>
+                            <router-link :to="{name: 'EmployeeView', params: {employeeId: attatchment.employee.id}}">
+                                {{ attatchment.employee.name }}
+                            </router-link>
                         </div>
                     </dd>
                 </dl>

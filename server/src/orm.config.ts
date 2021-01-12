@@ -11,15 +11,16 @@ const commonConf = {
 };
 
 let ormconfig: TypeOrmModuleOptions = {
-    name: 'default',
-    type: 'sqlite',
-    database: '../target/db/sqlite-dev-db.sql',
-    logging: true,
-    synchronize: true,
-    entities: commonConf.ENTITIES,
-    migrations: commonConf.MIGRATIONS,
-    cli: commonConf.CLI,
-    migrationsRun: commonConf.MIGRATIONS_RUN,
+  name: 'default',
+  type: 'mysql',
+  database: 'sahati',
+  url: 'mysql://root:4444@localhost:3306/sahati',
+  logging: false,
+  synchronize: true,
+  entities: commonConf.ENTITIES,
+  migrations: commonConf.MIGRATIONS,
+  cli: commonConf.CLI,
+  migrationsRun: commonConf.MIGRATIONS_RUN
 };
 
 if (process.env.NODE_ENV === 'prod') {

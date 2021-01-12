@@ -39,11 +39,15 @@
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" v-text="$t('sahatiApp.attatchment.employee')" for="attatchment-employee">Employee</label>
-                        <select class="form-control" id="attatchment-employee" name="employee" v-model="attatchment.employeeId">
-                            <option v-bind:value="null"></option>
-                            <option v-bind:value="employeeOption.id" v-for="employeeOption in employees" :key="employeeOption.id">{{employeeOption.name}}</option>
+                        <select id='attatchment-employee' v-model='attatchment.employee' class='form-control'
+                                name='employee'>
+                            <option v-bind:value='null'></option>
+                            <option v-for='employeeOption in employees' :key='employeeOption.id'
+                                    v-bind:value='employeeOption'>{{ employeeOption.name }}
+                            </option>
                         </select>
                     </div>
+
                 </div>
                 <div>
                     <button type="button" id="cancel-save" class="btn btn-secondary" v-on:click="previousState()">

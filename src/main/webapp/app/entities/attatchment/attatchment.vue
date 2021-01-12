@@ -45,8 +45,10 @@
                     </td>
                     <td>{{attatchment.fileUrl}}</td>
                     <td>
-                        <div v-if="attatchment.employeeId">
-                            <router-link :to="{name: 'EmployeeView', params: {employeeId: attatchment.employeeId}}">{{attatchment.employeeName}}</router-link>
+                        <div v-if='attatchment.employee'>
+                            <router-link :to="{name: 'EmployeeView', params: {employeeId: attatchment.employee.id}}">
+                                {{ attatchment.employee.name }}
+                            </router-link>
                         </div>
                     </td>
                     <td class="text-right">

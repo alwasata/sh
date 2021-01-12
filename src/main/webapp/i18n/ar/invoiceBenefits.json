@@ -1,0 +1,27 @@
+{
+  "sahatiApp": {
+    "invoiceBenefits": {
+      "home": {
+        "title": "Invoice Benefits",
+        "createLabel": "Create a new Invoice Benefits",
+        "createOrEditLabel": "Create or edit a Invoice Benefits",
+        "notFound": "No Invoice Benefits found"
+      },
+      "created": "A new Invoice Benefits is created with identifier {{ param }}",
+      "updated": "A Invoice Benefits is updated with identifier {{ param }}",
+      "deleted": "A Invoice Benefits is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Invoice Benefits {{ id }}?"
+      },
+      "detail": {
+        "title": "Invoice Benefits"
+      },
+      "pointsCost": "Points Cost",
+      "cost": "Cost",
+      "quantity": "Quantity",
+      "total": "Total",
+      "benefit": "Benefit",
+      "invoice": "Invoice"
+    }
+  }
+}

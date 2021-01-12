@@ -1,0 +1,25 @@
+{
+  "sahatiApp": {
+    "attatchment": {
+      "home": {
+        "title": "Attatchments",
+        "createLabel": "Create a new Attatchment",
+        "createOrEditLabel": "Create or edit a Attatchment",
+        "notFound": "No Attatchments found"
+      },
+      "created": "A new Attatchment is created with identifier {{ param }}",
+      "updated": "A Attatchment is updated with identifier {{ param }}",
+      "deleted": "A Attatchment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Attatchment {{ id }}?"
+      },
+      "detail": {
+        "title": "Attatchment"
+      },
+      "name": "Name",
+      "file": "File",
+      "fileUrl": "File Url",
+      "employee": "Employee"
+    }
+  }
+}
