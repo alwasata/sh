@@ -1,0 +1,9 @@
+{
+  "sahatiApp": {
+    "InvoiceStatus": {
+      "null": "",
+      "APPROVED": "APPROVED",
+      "CANCELLED": "CANCELLED"
+    }
+  }
+}

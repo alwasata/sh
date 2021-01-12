@@ -1,0 +1,50 @@
+{
+    "name": "InvoiceBenefits",
+    "fields": [
+        {
+            "fieldName": "pointsCost",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "cost",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "total",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "benefit",
+            "otherEntityRelationshipName": "invoiceBenefits",
+            "relationshipName": "benefit",
+            "otherEntityField": "nameAr"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "invoice",
+            "otherEntityRelationshipName": "invoiceBenefits",
+            "relationshipName": "invoice",
+            "otherEntityField": "invoiceNo"
+        }
+    ],
+    "changelogDate": "20210112133000",
+    "entityTableName": "invoice_benefits",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": [
+        "sahati"
+    ]
+}

@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="attatchment">
+            <h2><span jhiTranslate="sahatiApp.attatchment.detail.title">Attatchment</span> {{ attatchment.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sahatiApp.attatchment.name">Name</span></dt>
+                <dd>
+                    <span>{{ attatchment.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="sahatiApp.attatchment.file">File</span></dt>
+                <dd>
+                    <div *ngIf="attatchment.file">
+                        <a (click)="openFile(attatchment?.fileContentType!, attatchment?.file)" jhiTranslate="entity.action.open">open</a>
+                        {{ attatchment.fileContentType }}, {{ byteSize(attatchment.file) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sahatiApp.attatchment.fileUrl">File Url</span></dt>
+                <dd>
+                    <span>{{ attatchment.fileUrl }}</span>
+                </dd>
+                <dt><span jhiTranslate="sahatiApp.attatchment.employee">Employee</span></dt>
+                <dd>
+                    <div *ngIf="attatchment.employeeId">
+                        <a [routerLink]="['/employee', attatchment.employeeId, 'view']">{{ attatchment.employeeName }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/attatchment', attatchment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

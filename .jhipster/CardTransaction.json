@@ -1,0 +1,55 @@
+{
+    "name": "CardTransaction",
+    "fields": [
+        {
+            "fieldName": "transactionNo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "pointsAmount",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "action",
+            "fieldType": "TransactionAction",
+            "fieldValues": "PLUS,MINUS"
+        },
+        {
+            "fieldName": "notes",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "card",
+            "otherEntityRelationshipName": "cardTransaction",
+            "relationshipName": "card",
+            "otherEntityField": "cardNo"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "invoice",
+            "otherEntityRelationshipName": "cardTransaction",
+            "relationshipName": "invoice",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20210112132800",
+    "entityTableName": "card_transaction",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": [
+        "sahati"
+    ]
+}

@@ -1,0 +1,28 @@
+{
+  "sahatiApp": {
+    "cardTransaction": {
+      "home": {
+        "title": "Card Transactions",
+        "createLabel": "Create a new Card Transaction",
+        "createOrEditLabel": "Create or edit a Card Transaction",
+        "notFound": "No Card Transactions found"
+      },
+      "created": "A new Card Transaction is created with identifier {{ param }}",
+      "updated": "A Card Transaction is updated with identifier {{ param }}",
+      "deleted": "A Card Transaction is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Card Transaction {{ id }}?"
+      },
+      "detail": {
+        "title": "Card Transaction"
+      },
+      "transactionNo": "Transaction No",
+      "amount": "Amount",
+      "pointsAmount": "Points Amount",
+      "action": "Action",
+      "notes": "Notes",
+      "card": "Card",
+      "invoice": "Invoice"
+    }
+  }
+}

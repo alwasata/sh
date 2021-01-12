@@ -5,7 +5,7 @@
     "baseName": "sahati",
     "packageName": "com.jhipster.node",
     "packageFolder": "com/jhipster/node",
-    "serverPort": "8081",
+    "serverPort": "8080",
     "authenticationType": "jwt",
     "cacheProvider": "no",
     "enableHibernateCache": false,
@@ -24,7 +24,7 @@
     "clientFramework": "angularX",
     "clientTheme": "none",
     "clientThemeVariant": "",
-    "creationTimestamp": 1610456917405,
+    "creationTimestamp": 1610457540660,
     "testFrameworks": ["protractor"],
     "jhiPrefix": "jhi",
     "entitySuffix": "",
@@ -35,12 +35,31 @@
         "version": "1.4.0"
       }
     ],
-    "enableTranslation": false,
+    "enableTranslation": true,
     "blueprints": [
       {
         "name": "generator-jhipster-nodejs",
         "version": "1.4.0"
       }
-    ]
-  }
+    ],
+    "skipUserManagement": false,
+    "languages": ["en", "fr"],
+    "nativeLanguage": "en",
+    "skipClient": false,
+    "skipServer": false,
+    "jwtSecretKey": "ZTdkMjYzOTFjZjIxZjI3MzQwMDQ2OGExMTU0NmU4NGVkZTgyNWZhMGJiNzMxNDgzZWVmODc1ZjRlMTdhYzgyZDU5NzM2YmMwZTM3NDc5MmZiNjEyOTA0ODJhOWJmNWM3MDYxYzkyY2RhNDBmMTBlMjk5NzA2ZDFiMWMzZWFiZjA="
+  },
+  "entities": [
+    "Attatchment",
+    "Employee",
+    "Card",
+    "Company",
+    "Hospital",
+    "Category",
+    "Benefit",
+    "BenefitRequest",
+    "CardTransaction",
+    "Invoice",
+    "InvoiceBenefits"
+  ]
 }

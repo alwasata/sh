@@ -1,0 +1,27 @@
+{
+  "sahatiApp": {
+    "benefit": {
+      "home": {
+        "title": "Benefits",
+        "createLabel": "Créer un nouveau Benefit",
+        "createOrEditLabel": "Créer ou éditer un Benefit",
+        "notFound": "Aucun Benefit trouvé"
+      },
+      "created": "Un nouveau Benefit a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Benefit avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Benefit avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Benefit {{ id }} ?"
+      },
+      "detail": {
+        "title": "Benefit"
+      },
+      "nameAr": "Name Ar",
+      "nameEn": "Name En",
+      "pointsCost": "Points Cost",
+      "cost": "Cost",
+      "category": "Category",
+      "hospital": "Hospital"
+    }
+  }
+}

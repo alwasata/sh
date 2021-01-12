@@ -1,0 +1,53 @@
+{
+    "name": "Invoice",
+    "fields": [
+        {
+            "fieldName": "invoiceNo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "invoiceDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "payDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "total",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "invoiceStatus",
+            "fieldType": "InvoiceStatus",
+            "fieldValues": "APPROVED,CANCELLED"
+        },
+        {
+            "fieldName": "notes",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "cardTransaction",
+            "otherEntityRelationshipName": "invoice",
+            "relationshipName": "cardTransaction",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20210112132900",
+    "entityTableName": "invoice",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": [
+        "sahati"
+    ]
+}

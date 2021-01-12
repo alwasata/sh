@@ -45,21 +45,33 @@ describe('User', () => {
     });
 
     it('/POST create user', async () => {
-        const createdUser: UserDTO = (await request(app.getHttpServer()).post('/api/users').send(testUserRequestObject).expect(201)).body;
+        const createdUser: UserDTO = (
+            await request(app.getHttpServer())
+                .post('/api/users')
+                .send(testUserRequestObject)
+                .expect(201)
+        ).body;
 
         expect(createdUser.login).toEqual(testUserRequestObject.login);
         await service.delete(createdUser);
     });
 
     it('/GET all users', () => {
-        request(app.getHttpServer()).get('/api/users').expect(200);
+        request(app.getHttpServer())
+            .get('/api/users')
+            .expect(200);
     });
 
     it('/PUT update user', async () => {
         const savedUser: UserDTO = await service.save(testUserDTO);
         savedUser.firstName = 'Updated Name';
 
-        const updatedUser: UserDTO = (await request(app.getHttpServer()).put('/api/users').send(savedUser).expect(200)).body;
+        const updatedUser: UserDTO = (
+            await request(app.getHttpServer())
+                .put('/api/users')
+                .send(savedUser)
+                .expect(200)
+        ).body;
 
         expect(updatedUser).toEqual(savedUser);
 

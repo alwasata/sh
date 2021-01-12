@@ -6,6 +6,8 @@ import { setupSwagger } from './swagger';
 import { config } from './config';
 import { Logger, ValidationPipe, BadRequestException } from '@nestjs/common';
 import * as fs from 'fs';
+import * as bodyParser from 'body-parser';
+
 const logger: Logger = new Logger('Main');
 const port = process.env.NODE_SERVER_PORT || config.get('server.port');
 const useJHipsterRegistry = config.get('eureka.client.enabled');
@@ -22,7 +24,12 @@ async function bootstrap(): Promise<void> {
         })
     );
 
-    const staticClientPath = config.getClientPath();
+    app.use(bodyParser.json({limit: '50mb'}));
+    app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+    app.enableCors();
+
+
+  const staticClientPath = config.getClientPath();
     if (fs.existsSync(staticClientPath)) {
         logger.log(`Serving static client resources on ${staticClientPath}`);
     } else {

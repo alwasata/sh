@@ -26,10 +26,17 @@ describe('App', () => {
         await app.init();
     });
 
-    it('/GET up running info OK', () => request(app.getHttpServer()).get('/management/info').expect(200).expect(infoService));
+    it('/GET up running info OK', () =>
+        request(app.getHttpServer())
+            .get('/management/info')
+            .expect(200)
+            .expect(infoService));
 
     it('/POST authenticate get jwt authenticate OK', () =>
-        request(app.getHttpServer()).post('/api/authenticate').send(testUserLogin).expect(201));
+        request(app.getHttpServer())
+            .post('/api/authenticate')
+            .send(testUserLogin)
+            .expect(201));
 
     afterEach(async () => {
         await app.close();

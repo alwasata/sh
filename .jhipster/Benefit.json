@@ -1,0 +1,53 @@
+{
+    "name": "Benefit",
+    "fields": [
+        {
+            "fieldName": "nameAr",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "nameEn",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "pointsCost",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "cost",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "category",
+            "otherEntityRelationshipName": "benefit",
+            "relationshipName": "category",
+            "otherEntityField": "nameAr"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "hospital",
+            "otherEntityRelationshipName": "benefit",
+            "relationshipName": "hospital",
+            "otherEntityField": "nameAr"
+        }
+    ],
+    "changelogDate": "20210112132600",
+    "entityTableName": "benefit",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": [
+        "sahati"
+    ]
+}

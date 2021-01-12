@@ -172,7 +172,7 @@ export class PasswordPage {
   }
 
   async getTitle(): Promise<string> {
-    return this.title.getText();
+    return this.title.getAttribute('jhiTranslate');
   }
 
   async save(): Promise<void> {
@@ -224,7 +224,7 @@ export class SettingsPage {
   }
 
   async getTitle(): Promise<string> {
-    return this.title.getText();
+    return this.title.getAttribute('jhiTranslate');
   }
 
   async save(): Promise<void> {
