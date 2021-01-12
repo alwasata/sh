@@ -1,115 +1,110 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { mixins } from 'vue-class-component';
 
-import { IAttatchment } from 'app/shared/model/attatchment.model';
+import { Component, Vue, Inject } from 'vue-property-decorator';
+import Vue2Filters from 'vue2-filters';
+import { IAttatchment } from '@/shared/model/attatchment.model';
+import AlertMixin from '@/shared/alert/alert.mixin';
 
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { AttatchmentService } from './attatchment.service';
-import { AttatchmentDeleteDialogComponent } from './attatchment-delete-dialog.component';
+import JhiDataUtils from '@/shared/data/data-utils.service';
+
+import AttatchmentService from './attatchment.service';
 
 @Component({
-  selector: 'jhi-attatchment',
-  templateUrl: './attatchment.component.html'
+  mixins: [Vue2Filters.mixin],
 })
-export class AttatchmentComponent implements OnInit, OnDestroy {
-  attatchments?: IAttatchment[];
-  eventSubscriber?: Subscription;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
+export default class Attatchment extends mixins(JhiDataUtils, AlertMixin) {
+  @Inject('attatchmentService') private attatchmentService: () => AttatchmentService;
+  private removeId: number = null;
+  public itemsPerPage = 20;
+  public queryCount: number = null;
+  public page = 1;
+  public previousPage = 1;
+  public propOrder = 'id';
+  public reverse = false;
+  public totalItems = 0;
 
-  constructor(
-    protected attatchmentService: AttatchmentService,
-    protected activatedRoute: ActivatedRoute,
-    protected dataUtils: JhiDataUtils,
-    protected router: Router,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
-  ) {}
+  public attatchments: IAttatchment[] = [];
 
-  loadPage(page?: number): void {
-    const pageToLoad: number = page || this.page;
+  public isFetching = false;
 
-    this.attatchmentService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe(
-        (res: HttpResponse<IAttatchment[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+  public mounted(): void {
+    this.retrieveAllAttatchments();
+  }
+
+  public clear(): void {
+    this.page = 1;
+    this.retrieveAllAttatchments();
+  }
+
+  public retrieveAllAttatchments(): void {
+    this.isFetching = true;
+
+    const paginationQuery = {
+      page: this.page - 1,
+      size: this.itemsPerPage,
+      sort: this.sort(),
+    };
+    this.attatchmentService()
+      .retrieve(paginationQuery)
+      .then(
+        res => {
+          this.attatchments = res.data;
+          this.totalItems = Number(res.headers['x-total-count']);
+          this.queryCount = this.totalItems;
+          this.isFetching = false;
+        },
+        err => {
+          this.isFetching = false;
+        }
       );
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(data => {
-      this.page = data.pagingParams.page;
-      this.ascending = data.pagingParams.ascending;
-      this.predicate = data.pagingParams.predicate;
-      this.ngbPaginationPage = data.pagingParams.page;
-      this.loadPage();
-    });
-    this.registerChangeInAttatchments();
-  }
-
-  ngOnDestroy(): void {
-    if (this.eventSubscriber) {
-      this.eventManager.destroy(this.eventSubscriber);
+  public prepareRemove(instance: IAttatchment): void {
+    this.removeId = instance.id;
+    if (<any>this.$refs.removeEntity) {
+      (<any>this.$refs.removeEntity).show();
     }
   }
 
-  trackId(index: number, item: IAttatchment): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
+  public removeAttatchment(): void {
+    this.attatchmentService()
+      .delete(this.removeId)
+      .then(() => {
+        const message = this.$t('sahatiApp.attatchment.deleted', { param: this.removeId });
+        this.alertService().showAlert(message, 'danger');
+        this.getAlertFromStore();
+        this.removeId = null;
+        this.retrieveAllAttatchments();
+        this.closeDialog();
+      });
   }
 
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    return this.dataUtils.openFile(contentType, base64String);
-  }
-
-  registerChangeInAttatchments(): void {
-    this.eventSubscriber = this.eventManager.subscribe('attatchmentListModification', () => this.loadPage());
-  }
-
-  delete(attatchment: IAttatchment): void {
-    const modalRef = this.modalService.open(AttatchmentDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.attatchment = attatchment;
-  }
-
-  sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
+  public sort(): Array<any> {
+    const result = [this.propOrder + ',' + (this.reverse ? 'asc' : 'desc')];
+    if (this.propOrder !== 'id') {
       result.push('id');
     }
     return result;
   }
 
-  protected onSuccess(data: IAttatchment[] | null, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    this.router.navigate(['/attatchment'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
-    this.attatchments = data || [];
+  public loadPage(page: number): void {
+    if (page !== this.previousPage) {
+      this.previousPage = page;
+      this.transition();
+    }
   }
 
-  protected onError(): void {
-    this.ngbPaginationPage = this.page;
+  public transition(): void {
+    this.retrieveAllAttatchments();
+  }
+
+  public changeOrder(propOrder): void {
+    this.propOrder = propOrder;
+    this.reverse = !this.reverse;
+    this.transition();
+  }
+
+  public closeDialog(): void {
+    (<any>this.$refs.removeEntity).hide();
   }
 }

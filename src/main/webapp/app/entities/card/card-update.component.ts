@@ -1,99 +1,95 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { ICard, Card } from 'app/shared/model/card.model';
-import { CardService } from './card.service';
-import { IEmployee } from 'app/shared/model/employee.model';
-import { EmployeeService } from 'app/entities/employee/employee.service';
+import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+
+import EmployeeService from '../employee/employee.service';
+import { IEmployee } from '@/shared/model/employee.model';
+
+import AlertService from '@/shared/alert/alert.service';
+import { ICard, Card } from '@/shared/model/card.model';
+import CardService from './card.service';
+
+const validations: any = {
+  card: {
+    cardNo: {},
+    expiryDate: {},
+    isActive: {},
+  },
+};
 
 @Component({
-  selector: 'jhi-card-update',
-  templateUrl: './card-update.component.html'
+  validations,
 })
-export class CardUpdateComponent implements OnInit {
-  isSaving = false;
-  employees: IEmployee[] = [];
-  expiryDateDp: any;
+export default class CardUpdate extends Vue {
+  @Inject('alertService') private alertService: () => AlertService;
+  @Inject('cardService') private cardService: () => CardService;
+  public card: ICard = new Card();
 
-  editForm = this.fb.group({
-    id: [],
-    cardNo: [],
-    expiryDate: [],
-    isActive: [],
-    employeeId: []
-  });
+  @Inject('employeeService') private employeeService: () => EmployeeService;
 
-  constructor(
-    protected cardService: CardService,
-    protected employeeService: EmployeeService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  public employees: IEmployee[] = [];
+  public isSaving = false;
+  public currentLanguage = '';
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ card }) => {
-      this.updateForm(card);
-
-      this.employeeService.query().subscribe((res: HttpResponse<IEmployee[]>) => (this.employees = res.body || []));
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.cardId) {
+        vm.retrieveCard(to.params.cardId);
+      }
+      vm.initRelationships();
     });
   }
 
-  updateForm(card: ICard): void {
-    this.editForm.patchValue({
-      id: card.id,
-      cardNo: card.cardNo,
-      expiryDate: card.expiryDate,
-      isActive: card.isActive,
-      employeeId: card.employeeId
-    });
-  }
-
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
-    this.isSaving = true;
-    const card = this.createFromForm();
-    if (card.id !== undefined) {
-      this.subscribeToSaveResponse(this.cardService.update(card));
-    } else {
-      this.subscribeToSaveResponse(this.cardService.create(card));
-    }
-  }
-
-  private createFromForm(): ICard {
-    return {
-      ...new Card(),
-      id: this.editForm.get(['id'])!.value,
-      cardNo: this.editForm.get(['cardNo'])!.value,
-      expiryDate: this.editForm.get(['expiryDate'])!.value,
-      isActive: this.editForm.get(['isActive'])!.value,
-      employeeId: this.editForm.get(['employeeId'])!.value
-    };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ICard>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
+  created(): void {
+    this.currentLanguage = this.$store.getters.currentLanguage;
+    this.$store.watch(
+      () => this.$store.getters.currentLanguage,
+      () => {
+        this.currentLanguage = this.$store.getters.currentLanguage;
+      }
     );
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
+  public save(): void {
+    this.isSaving = true;
+    if (this.card.id) {
+      this.cardService()
+        .update(this.card)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.card.updated', { param: param.id });
+          this.alertService().showAlert(message, 'info');
+        });
+    } else {
+      this.cardService()
+        .create(this.card)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.card.created', { param: param.id });
+          this.alertService().showAlert(message, 'success');
+        });
+    }
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
+  public retrieveCard(cardId): void {
+    this.cardService()
+      .find(cardId)
+      .then(res => {
+        this.card = res;
+      });
   }
 
-  trackById(index: number, item: IEmployee): any {
-    return item.id;
+  public previousState(): void {
+    this.$router.go(-1);
+  }
+
+  public initRelationships(): void {
+    this.employeeService()
+      .retrieve()
+      .then(res => {
+        this.employees = res.data;
+      });
   }
 }

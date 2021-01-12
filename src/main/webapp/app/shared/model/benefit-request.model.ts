@@ -1,4 +1,9 @@
-import { BenefitStatus } from 'app/shared/model/enumerations/benefit-status.model';
+export const enum BenefitStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REFUSED = 'REFUSED',
+  CANCELLED = 'CANCELLED',
+}
 
 export interface IBenefitRequest {
   id?: number;

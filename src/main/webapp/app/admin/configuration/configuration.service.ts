@@ -1,68 +1,60 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import axios from 'axios';
 
-import { SERVER_API_URL } from 'app/app.constants';
+export default class ConfigurationService {
+  public loadConfiguration(): Promise<any> {
+    return new Promise(resolve => {
+      axios.get('management/configprops').then(res => {
+        const properties = [];
+        const propertiesObject = this.getConfigPropertiesObjects(res.data);
+        for (const key in propertiesObject) {
+          if (propertiesObject.hasOwnProperty(key)) {
+            properties.push(propertiesObject[key]);
+          }
+        }
 
-export interface ConfigProps {
-  contexts: Contexts;
-}
-
-export interface Contexts {
-  [key: string]: Context;
-}
-
-export interface Context {
-  beans: Beans;
-  parentId?: any;
-}
-
-export interface Beans {
-  [key: string]: Bean;
-}
-
-export interface Bean {
-  prefix: string;
-  properties: any;
-}
-
-export interface Env {
-  activeProfiles?: string[];
-  propertySources: PropertySource[];
-}
-
-export interface PropertySource {
-  name: string;
-  properties: Properties;
-}
-
-export interface Properties {
-  [key: string]: Property;
-}
-
-export interface Property {
-  value: string;
-  origin?: string;
-}
-
-@Injectable({ providedIn: 'root' })
-export class ConfigurationService {
-  constructor(private http: HttpClient) {}
-
-  getBeans(): Observable<Bean[]> {
-    return this.http.get<ConfigProps>(SERVER_API_URL + 'management/configprops').pipe(
-      map(configProps =>
-        Object.values(
-          Object.values(configProps.contexts)
-            .map(context => context.beans)
-            .reduce((allBeans: Beans, contextBeans: Beans) => ({ ...allBeans, ...contextBeans }))
-        )
-      )
-    );
+        properties.sort((propertyA, propertyB) => {
+          return propertyA.prefix === propertyB.prefix ? 0 : propertyA.prefix < propertyB.prefix ? -1 : 1;
+        });
+        resolve(properties);
+      });
+    });
   }
 
-  getPropertySources(): Observable<PropertySource[]> {
-    return this.http.get<Env>(SERVER_API_URL + 'management/env').pipe(map(env => env.propertySources));
+  public loadEnvConfiguration(): Promise<any> {
+    return new Promise(resolve => {
+      axios.get('management/env').then(res => {
+        const properties = {};
+        const propertySources = res.data['propertySources'];
+
+        for (const propertyObject of propertySources) {
+          const name = propertyObject['name'];
+          const detailProperties = propertyObject['properties'];
+          const vals = [];
+          for (const keyDetail in detailProperties) {
+            if (detailProperties.hasOwnProperty(keyDetail)) {
+              vals.push({ key: keyDetail, val: detailProperties[keyDetail]['value'] });
+            }
+          }
+          properties[name] = vals;
+        }
+        resolve(properties);
+      });
+    });
+  }
+
+  private getConfigPropertiesObjects(res): any {
+    // This code is for Spring Boot 2
+    if (res['contexts'] !== undefined) {
+      for (const key in res['contexts']) {
+        // If the key is not bootstrap, it will be the ApplicationContext Id
+        // For default app, it is baseName
+        // For microservice, it is baseName-1
+        if (!key.startsWith('bootstrap')) {
+          return res['contexts'][key]['beans'];
+        }
+      }
+    }
+    // by default, use the default ApplicationContext Id
+    return res['contexts']['sahati']['beans'];
   }
 }

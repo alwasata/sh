@@ -1,53 +1,56 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "6.8.0",
+    "promptValues": {
+      "packageName": "ly.com.sahati"
+    },
+    "jhipsterVersion": "6.10.3",
     "applicationType": "monolith",
     "baseName": "sahati",
-    "packageName": "com.jhipster.node",
-    "packageFolder": "com/jhipster/node",
+    "packageName": "ly.alwasata.sahati",
+    "packageFolder": "ly/alwasata/sahati",
     "serverPort": "8080",
     "authenticationType": "jwt",
-    "cacheProvider": "no",
-    "enableHibernateCache": false,
+    "cacheProvider": "ehcache",
     "websocket": false,
     "databaseType": "sql",
-    "devDatabaseType": "sqlite",
+    "devDatabaseType": "mysql",
     "prodDatabaseType": "mysql",
     "searchEngine": false,
     "messageBroker": false,
     "serviceDiscoveryType": false,
     "buildTool": "maven",
     "enableSwaggerCodegen": false,
+    "jwtSecretKey": "OTdhYzA3NWQxNmZhYmIxNzIzYmIzMWQyNjM5MmI1NDZlN2JhOTgxNTBlY2YxNzA2OTg1MjI2YzZiNmMwMTQ2NjFhMjRiMTQ4MzYzNjU5NTM4NDVlMjY5OGJkMTE1NzQxZjkxYjY2MWEwMDYxOGU2NjVjNjQ0YmY4MDU0YjFiNmM=",
     "embeddableLaunchScript": false,
     "useSass": true,
     "clientPackageManager": "npm",
     "clientFramework": "angularX",
     "clientTheme": "none",
     "clientThemeVariant": "",
-    "creationTimestamp": 1610457540660,
-    "testFrameworks": ["protractor"],
+    "creationTimestamp": 1610458727530,
+    "testFrameworks": [],
     "jhiPrefix": "jhi",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [
       {
-        "name": "generator-jhipster-nodejs",
-        "version": "1.4.0"
+        "name": "generator-jhipster-vuejs",
+        "version": "1.9.2"
       }
     ],
     "enableTranslation": true,
     "blueprints": [
       {
-        "name": "generator-jhipster-nodejs",
-        "version": "1.4.0"
+        "name": "generator-jhipster-vuejs",
+        "version": "1.9.2"
       }
     ],
     "skipUserManagement": false,
+    "enableHibernateCache": true,
     "languages": ["en", "fr"],
     "nativeLanguage": "en",
     "skipClient": false,
-    "skipServer": false,
-    "jwtSecretKey": "ZTdkMjYzOTFjZjIxZjI3MzQwMDQ2OGExMTU0NmU4NGVkZTgyNWZhMGJiNzMxNDgzZWVmODc1ZjRlMTdhYzgyZDU5NzM2YmMwZTM3NDc5MmZiNjEyOTA0ODJhOWJmNWM3MDYxYzkyY2RhNDBmMTBlMjk5NzA2ZDFiMWMzZWFiZjA="
+    "skipServer": false
   },
   "entities": [
     "Attatchment",

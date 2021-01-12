@@ -1,38 +1,74 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import axios from 'axios';
 
-import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption } from 'app/shared/util/request-util';
-import { IBenefit } from 'app/shared/model/benefit.model';
+import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
-type EntityResponseType = HttpResponse<IBenefit>;
-type EntityArrayResponseType = HttpResponse<IBenefit[]>;
+import { IBenefit } from '@/shared/model/benefit.model';
 
-@Injectable({ providedIn: 'root' })
-export class BenefitService {
-  public resourceUrl = SERVER_API_URL + 'api/benefits';
+const baseApiUrl = 'api/benefits';
 
-  constructor(protected http: HttpClient) {}
-
-  create(benefit: IBenefit): Observable<EntityResponseType> {
-    return this.http.post<IBenefit>(this.resourceUrl, benefit, { observe: 'response' });
+export default class BenefitService {
+  public find(id: number): Promise<IBenefit> {
+    return new Promise<IBenefit>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  update(benefit: IBenefit): Observable<EntityResponseType> {
-    return this.http.put<IBenefit>(this.resourceUrl, benefit, { observe: 'response' });
+  public retrieve(paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IBenefit>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  public delete(id: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .delete(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IBenefit[]>(this.resourceUrl, { params: options, observe: 'response' });
+  public create(entity: IBenefit): Promise<IBenefit> {
+    return new Promise<IBenefit>((resolve, reject) => {
+      axios
+        .post(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  public update(entity: IBenefit): Promise<IBenefit> {
+    return new Promise<IBenefit>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 }

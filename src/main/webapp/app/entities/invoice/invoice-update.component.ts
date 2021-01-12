@@ -1,130 +1,98 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { IInvoice, Invoice } from 'app/shared/model/invoice.model';
-import { InvoiceService } from './invoice.service';
-import { ICardTransaction } from 'app/shared/model/card-transaction.model';
-import { CardTransactionService } from 'app/entities/card-transaction/card-transaction.service';
+import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+
+import CardTransactionService from '../card-transaction/card-transaction.service';
+import { ICardTransaction } from '@/shared/model/card-transaction.model';
+
+import AlertService from '@/shared/alert/alert.service';
+import { IInvoice, Invoice } from '@/shared/model/invoice.model';
+import InvoiceService from './invoice.service';
+
+const validations: any = {
+  invoice: {
+    invoiceNo: {},
+    invoiceDate: {},
+    payDate: {},
+    total: {},
+    invoiceStatus: {},
+    notes: {},
+  },
+};
 
 @Component({
-  selector: 'jhi-invoice-update',
-  templateUrl: './invoice-update.component.html'
+  validations,
 })
-export class InvoiceUpdateComponent implements OnInit {
-  isSaving = false;
-  cardtransactions: ICardTransaction[] = [];
-  invoiceDateDp: any;
-  payDateDp: any;
+export default class InvoiceUpdate extends Vue {
+  @Inject('alertService') private alertService: () => AlertService;
+  @Inject('invoiceService') private invoiceService: () => InvoiceService;
+  public invoice: IInvoice = new Invoice();
 
-  editForm = this.fb.group({
-    id: [],
-    invoiceNo: [],
-    invoiceDate: [],
-    payDate: [],
-    total: [],
-    invoiceStatus: [],
-    notes: [],
-    cardTransactionId: []
-  });
+  @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
 
-  constructor(
-    protected invoiceService: InvoiceService,
-    protected cardTransactionService: CardTransactionService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  public cardTransactions: ICardTransaction[] = [];
+  public isSaving = false;
+  public currentLanguage = '';
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ invoice }) => {
-      this.updateForm(invoice);
-
-      this.cardTransactionService
-        .query({ 'invoiceId.specified': 'false' })
-        .pipe(
-          map((res: HttpResponse<ICardTransaction[]>) => {
-            return res.body || [];
-          })
-        )
-        .subscribe((resBody: ICardTransaction[]) => {
-          if (!invoice.cardTransactionId) {
-            this.cardtransactions = resBody;
-          } else {
-            this.cardTransactionService
-              .find(invoice.cardTransactionId)
-              .pipe(
-                map((subRes: HttpResponse<ICardTransaction>) => {
-                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
-                })
-              )
-              .subscribe((concatRes: ICardTransaction[]) => (this.cardtransactions = concatRes));
-          }
-        });
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.invoiceId) {
+        vm.retrieveInvoice(to.params.invoiceId);
+      }
+      vm.initRelationships();
     });
   }
 
-  updateForm(invoice: IInvoice): void {
-    this.editForm.patchValue({
-      id: invoice.id,
-      invoiceNo: invoice.invoiceNo,
-      invoiceDate: invoice.invoiceDate,
-      payDate: invoice.payDate,
-      total: invoice.total,
-      invoiceStatus: invoice.invoiceStatus,
-      notes: invoice.notes,
-      cardTransactionId: invoice.cardTransactionId
-    });
-  }
-
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
-    this.isSaving = true;
-    const invoice = this.createFromForm();
-    if (invoice.id !== undefined) {
-      this.subscribeToSaveResponse(this.invoiceService.update(invoice));
-    } else {
-      this.subscribeToSaveResponse(this.invoiceService.create(invoice));
-    }
-  }
-
-  private createFromForm(): IInvoice {
-    return {
-      ...new Invoice(),
-      id: this.editForm.get(['id'])!.value,
-      invoiceNo: this.editForm.get(['invoiceNo'])!.value,
-      invoiceDate: this.editForm.get(['invoiceDate'])!.value,
-      payDate: this.editForm.get(['payDate'])!.value,
-      total: this.editForm.get(['total'])!.value,
-      invoiceStatus: this.editForm.get(['invoiceStatus'])!.value,
-      notes: this.editForm.get(['notes'])!.value,
-      cardTransactionId: this.editForm.get(['cardTransactionId'])!.value
-    };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInvoice>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
+  created(): void {
+    this.currentLanguage = this.$store.getters.currentLanguage;
+    this.$store.watch(
+      () => this.$store.getters.currentLanguage,
+      () => {
+        this.currentLanguage = this.$store.getters.currentLanguage;
+      }
     );
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
+  public save(): void {
+    this.isSaving = true;
+    if (this.invoice.id) {
+      this.invoiceService()
+        .update(this.invoice)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.invoice.updated', { param: param.id });
+          this.alertService().showAlert(message, 'info');
+        });
+    } else {
+      this.invoiceService()
+        .create(this.invoice)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.invoice.created', { param: param.id });
+          this.alertService().showAlert(message, 'success');
+        });
+    }
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
+  public retrieveInvoice(invoiceId): void {
+    this.invoiceService()
+      .find(invoiceId)
+      .then(res => {
+        this.invoice = res;
+      });
   }
 
-  trackById(index: number, item: ICardTransaction): any {
-    return item.id;
+  public previousState(): void {
+    this.$router.go(-1);
+  }
+
+  public initRelationships(): void {
+    this.cardTransactionService()
+      .retrieve()
+      .then(res => {
+        this.cardTransactions = res.data;
+      });
   }
 }

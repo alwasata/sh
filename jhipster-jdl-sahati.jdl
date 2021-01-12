@@ -1,0 +1,141 @@
+application {
+  config {
+    baseName sahati,
+    applicationType monolith,
+    packageName ly.alwasata.sahati,
+    authenticationType jwt,
+    prodDatabaseType mysql,
+    devDatabaseType mysql,
+    clientFramework angular
+  }
+  entities *
+}
+enum EmployeeStatus {
+	PENDING, APPROVED, REFUSED, CANCELLED
+}
+enum BenefitStatus {
+	PENDING, APPROVED, REFUSED, CANCELLED
+}
+enum TransactionAction {
+	PLUS, MINUS
+}
+enum InvoiceStatus {
+	APPROVED, CANCELLED
+}
+entity Attatchment {
+	name String
+    file Blob
+    fileUrl String
+}
+
+entity Employee {
+	name String
+    phone String
+    identityNo String
+    employeeStatus EmployeeStatus
+    notes String
+}
+
+entity Card {
+	cardNo String
+    expiryDate LocalDate
+    isActive Boolean
+}
+
+entity Company {
+	nameAr String required
+  	nameEn String 
+    email String
+    phone String
+    address String
+}
+
+entity Hospital {
+	nameAr String required
+  	nameEn String 
+    email String
+    phone String
+    address String
+}
+
+entity Category {
+	nameAr String required
+  	nameEn String 
+}
+
+entity Benefit {
+	nameAr String required
+  	nameEn String 
+    pointsCost Float
+    cost Float
+}
+
+entity BenefitRequest {
+	nameAr String required
+  	nameEn String 
+    pointsCost Float
+    cost Float
+    benefitStatus BenefitStatus
+    notes String
+}
+
+entity CardTransaction {
+	transactionNo String
+	amount Float
+    pointsAmount Float
+    action TransactionAction
+    notes String
+}
+
+
+entity Invoice{
+	invoiceNo String
+    invoiceDate LocalDate
+    payDate LocalDate
+    total Float
+    invoiceStatus InvoiceStatus
+    notes String
+}
+
+entity InvoiceBenefits{
+	//Benefit
+    //Invoice
+    pointsCost Float
+    cost Float
+    quantity Integer
+    total Float
+}
+
+relationship ManyToOne{
+	Attatchment{employee(name)} to Employee
+    Card{employee(name)} to Employee
+
+	Employee{company(nameAr)} to Company
+    
+	Benefit{category(nameAr)} to Category
+	Benefit{hospital(nameAr)} to Hospital
+    
+    BenefitRequest{category(nameAr)} to Category
+	BenefitRequest{hospital(nameAr)} to Hospital
+    BenefitRequest{benefit(nameAr)} to Benefit
+
+	CardTransaction{card(cardNo)} to Card
+    
+	InvoiceBenefits{benefit(nameAr)} to Benefit
+    InvoiceBenefits{invoice(invoiceNo)} to Invoice
+
+}
+
+relationship OneToOne{
+	Invoice to CardTransaction
+}
+
+relationship ManyToMany {
+    Company to User
+    Hospital to User
+}
+
+paginate * with pagination
+filter *
+service * with serviceClass
+dto * with mapstruct

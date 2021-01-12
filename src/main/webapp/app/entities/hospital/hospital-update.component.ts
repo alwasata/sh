@@ -1,108 +1,103 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { IHospital, Hospital } from 'app/shared/model/hospital.model';
-import { HospitalService } from './hospital.service';
-import { IUser } from 'app/core/user/user.model';
-import { UserService } from 'app/core/user/user.service';
+import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+
+import UserService from '@/admin/user-management/user-management.service';
+
+import AlertService from '@/shared/alert/alert.service';
+import { IHospital, Hospital } from '@/shared/model/hospital.model';
+import HospitalService from './hospital.service';
+
+const validations: any = {
+  hospital: {
+    nameAr: {
+      required,
+    },
+    nameEn: {},
+    email: {},
+    phone: {},
+    address: {},
+  },
+};
 
 @Component({
-  selector: 'jhi-hospital-update',
-  templateUrl: './hospital-update.component.html'
+  validations,
 })
-export class HospitalUpdateComponent implements OnInit {
-  isSaving = false;
-  users: IUser[] = [];
+export default class HospitalUpdate extends Vue {
+  @Inject('alertService') private alertService: () => AlertService;
+  @Inject('hospitalService') private hospitalService: () => HospitalService;
+  public hospital: IHospital = new Hospital();
 
-  editForm = this.fb.group({
-    id: [],
-    nameAr: [null, [Validators.required]],
-    nameEn: [],
-    email: [],
-    phone: [],
-    address: [],
-    users: []
-  });
+  @Inject('userService') private userService: () => UserService;
 
-  constructor(
-    protected hospitalService: HospitalService,
-    protected userService: UserService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  public users: Array<any> = [];
+  public isSaving = false;
+  public currentLanguage = '';
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ hospital }) => {
-      this.updateForm(hospital);
-
-      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.hospitalId) {
+        vm.retrieveHospital(to.params.hospitalId);
+      }
+      vm.initRelationships();
     });
   }
 
-  updateForm(hospital: IHospital): void {
-    this.editForm.patchValue({
-      id: hospital.id,
-      nameAr: hospital.nameAr,
-      nameEn: hospital.nameEn,
-      email: hospital.email,
-      phone: hospital.phone,
-      address: hospital.address,
-      users: hospital.users
-    });
+  created(): void {
+    this.currentLanguage = this.$store.getters.currentLanguage;
+    this.$store.watch(
+      () => this.$store.getters.currentLanguage,
+      () => {
+        this.currentLanguage = this.$store.getters.currentLanguage;
+      }
+    );
+    this.hospital.users = [];
   }
 
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
+  public save(): void {
     this.isSaving = true;
-    const hospital = this.createFromForm();
-    if (hospital.id !== undefined) {
-      this.subscribeToSaveResponse(this.hospitalService.update(hospital));
+    if (this.hospital.id) {
+      this.hospitalService()
+        .update(this.hospital)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.hospital.updated', { param: param.id });
+          this.alertService().showAlert(message, 'info');
+        });
     } else {
-      this.subscribeToSaveResponse(this.hospitalService.create(hospital));
+      this.hospitalService()
+        .create(this.hospital)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.hospital.created', { param: param.id });
+          this.alertService().showAlert(message, 'success');
+        });
     }
   }
 
-  private createFromForm(): IHospital {
-    return {
-      ...new Hospital(),
-      id: this.editForm.get(['id'])!.value,
-      nameAr: this.editForm.get(['nameAr'])!.value,
-      nameEn: this.editForm.get(['nameEn'])!.value,
-      email: this.editForm.get(['email'])!.value,
-      phone: this.editForm.get(['phone'])!.value,
-      address: this.editForm.get(['address'])!.value,
-      users: this.editForm.get(['users'])!.value
-    };
+  public retrieveHospital(hospitalId): void {
+    this.hospitalService()
+      .find(hospitalId)
+      .then(res => {
+        this.hospital = res;
+      });
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IHospital>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+  public previousState(): void {
+    this.$router.go(-1);
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
+  public initRelationships(): void {
+    this.userService()
+      .retrieve()
+      .then(res => {
+        this.users = res.data;
+      });
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
-  }
-
-  trackById(index: number, item: IUser): any {
-    return item.id;
-  }
-
-  getSelected(selectedVals: IUser[], option: IUser): IUser {
+  public getSelected(selectedVals, option): any {
     if (selectedVals) {
       for (let i = 0; i < selectedVals.length; i++) {
         if (option.id === selectedVals[i].id) {

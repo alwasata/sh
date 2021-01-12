@@ -1,4 +1,4 @@
-import { IUser } from 'app/core/user/user.model';
+import { IUser } from '@/shared/model/user.model';
 
 export interface IHospital {
   id?: number;

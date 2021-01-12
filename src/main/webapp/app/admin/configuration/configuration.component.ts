@@ -1,32 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-
-import { ConfigurationService, Bean, PropertySource } from './configuration.service';
+import { Component, Vue, Inject } from 'vue-property-decorator';
+import Vue2Filters from 'vue2-filters';
+import ConfigurationService from './configuration.service';
 
 @Component({
-  selector: 'jhi-configuration',
-  templateUrl: './configuration.component.html'
+  mixins: [Vue2Filters.mixin],
 })
-export class ConfigurationComponent implements OnInit {
-  allBeans!: Bean[];
-  beans: Bean[] = [];
-  beansFilter = '';
-  beansAscending = true;
-  propertySources: PropertySource[] = [];
+export default class JhiConfiguration extends Vue {
+  public orderProp = 'prefix';
+  public reverse = false;
+  public allConfiguration: any = false;
+  public configuration: any = false;
+  public configKeys: any[] = [];
+  public filtered = '';
+  @Inject('configurationService') private configurationService: () => ConfigurationService;
 
-  constructor(private configurationService: ConfigurationService) {}
-
-  ngOnInit(): void {
-    this.configurationService.getBeans().subscribe(beans => {
-      this.allBeans = beans;
-      this.filterAndSortBeans();
-    });
-
-    this.configurationService.getPropertySources().subscribe(propertySources => (this.propertySources = propertySources));
+  public mounted(): void {
+    this.init();
   }
 
-  filterAndSortBeans(): void {
-    this.beans = this.allBeans
-      .filter(bean => !this.beansFilter || bean.prefix.toLowerCase().includes(this.beansFilter.toLowerCase()))
-      .sort((a, b) => (a.prefix < b.prefix ? (this.beansAscending ? -1 : 1) : this.beansAscending ? 1 : -1));
+  public init(): void {
+    this.configurationService()
+      .loadConfiguration()
+      .then(res => {
+        this.configuration = res;
+
+        for (const config of this.configuration) {
+          if (config.properties !== undefined) {
+            this.configKeys.push(Object.keys(config.properties));
+          }
+        }
+      });
+
+    this.configurationService()
+      .loadEnvConfiguration()
+      .then(res => {
+        this.allConfiguration = res;
+      });
+  }
+
+  public changeOrder(prop): void {
+    this.orderProp = prop;
+    this.reverse = !this.reverse;
+  }
+
+  public keys(dict: any): string[] {
+    return dict === undefined ? [] : Object.keys(dict);
   }
 }

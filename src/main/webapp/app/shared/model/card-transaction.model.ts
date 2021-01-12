@@ -1,4 +1,7 @@
-import { TransactionAction } from 'app/shared/model/enumerations/transaction-action.model';
+export const enum TransactionAction {
+  PLUS = 'PLUS',
+  MINUS = 'MINUS',
+}
 
 export interface ICardTransaction {
   id?: number;

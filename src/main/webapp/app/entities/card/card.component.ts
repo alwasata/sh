@@ -1,106 +1,108 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { mixins } from 'vue-class-component';
 
-import { ICard } from 'app/shared/model/card.model';
+import { Component, Vue, Inject } from 'vue-property-decorator';
+import Vue2Filters from 'vue2-filters';
+import { ICard } from '@/shared/model/card.model';
+import AlertMixin from '@/shared/alert/alert.mixin';
 
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { CardService } from './card.service';
-import { CardDeleteDialogComponent } from './card-delete-dialog.component';
+import CardService from './card.service';
 
 @Component({
-  selector: 'jhi-card',
-  templateUrl: './card.component.html'
+  mixins: [Vue2Filters.mixin],
 })
-export class CardComponent implements OnInit, OnDestroy {
-  cards?: ICard[];
-  eventSubscriber?: Subscription;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
+export default class Card extends mixins(AlertMixin) {
+  @Inject('cardService') private cardService: () => CardService;
+  private removeId: number = null;
+  public itemsPerPage = 20;
+  public queryCount: number = null;
+  public page = 1;
+  public previousPage = 1;
+  public propOrder = 'id';
+  public reverse = false;
+  public totalItems = 0;
 
-  constructor(
-    protected cardService: CardService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
-  ) {}
+  public cards: ICard[] = [];
 
-  loadPage(page?: number): void {
-    const pageToLoad: number = page || this.page;
+  public isFetching = false;
 
-    this.cardService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe(
-        (res: HttpResponse<ICard[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+  public mounted(): void {
+    this.retrieveAllCards();
+  }
+
+  public clear(): void {
+    this.page = 1;
+    this.retrieveAllCards();
+  }
+
+  public retrieveAllCards(): void {
+    this.isFetching = true;
+
+    const paginationQuery = {
+      page: this.page - 1,
+      size: this.itemsPerPage,
+      sort: this.sort(),
+    };
+    this.cardService()
+      .retrieve(paginationQuery)
+      .then(
+        res => {
+          this.cards = res.data;
+          this.totalItems = Number(res.headers['x-total-count']);
+          this.queryCount = this.totalItems;
+          this.isFetching = false;
+        },
+        err => {
+          this.isFetching = false;
+        }
       );
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(data => {
-      this.page = data.pagingParams.page;
-      this.ascending = data.pagingParams.ascending;
-      this.predicate = data.pagingParams.predicate;
-      this.ngbPaginationPage = data.pagingParams.page;
-      this.loadPage();
-    });
-    this.registerChangeInCards();
-  }
-
-  ngOnDestroy(): void {
-    if (this.eventSubscriber) {
-      this.eventManager.destroy(this.eventSubscriber);
+  public prepareRemove(instance: ICard): void {
+    this.removeId = instance.id;
+    if (<any>this.$refs.removeEntity) {
+      (<any>this.$refs.removeEntity).show();
     }
   }
 
-  trackId(index: number, item: ICard): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
+  public removeCard(): void {
+    this.cardService()
+      .delete(this.removeId)
+      .then(() => {
+        const message = this.$t('sahatiApp.card.deleted', { param: this.removeId });
+        this.alertService().showAlert(message, 'danger');
+        this.getAlertFromStore();
+        this.removeId = null;
+        this.retrieveAllCards();
+        this.closeDialog();
+      });
   }
 
-  registerChangeInCards(): void {
-    this.eventSubscriber = this.eventManager.subscribe('cardListModification', () => this.loadPage());
-  }
-
-  delete(card: ICard): void {
-    const modalRef = this.modalService.open(CardDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.card = card;
-  }
-
-  sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
+  public sort(): Array<any> {
+    const result = [this.propOrder + ',' + (this.reverse ? 'asc' : 'desc')];
+    if (this.propOrder !== 'id') {
       result.push('id');
     }
     return result;
   }
 
-  protected onSuccess(data: ICard[] | null, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    this.router.navigate(['/card'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
-    this.cards = data || [];
+  public loadPage(page: number): void {
+    if (page !== this.previousPage) {
+      this.previousPage = page;
+      this.transition();
+    }
   }
 
-  protected onError(): void {
-    this.ngbPaginationPage = this.page;
+  public transition(): void {
+    this.retrieveAllCards();
+  }
+
+  public changeOrder(propOrder): void {
+    this.propOrder = propOrder;
+    this.reverse = !this.reverse;
+    this.transition();
+  }
+
+  public closeDialog(): void {
+    (<any>this.$refs.removeEntity).hide();
   }
 }

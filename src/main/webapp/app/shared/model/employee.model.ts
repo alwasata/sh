@@ -1,4 +1,9 @@
-import { EmployeeStatus } from 'app/shared/model/enumerations/employee-status.model';
+export const enum EmployeeStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REFUSED = 'REFUSED',
+  CANCELLED = 'CANCELLED',
+}
 
 export interface IEmployee {
   id?: number;

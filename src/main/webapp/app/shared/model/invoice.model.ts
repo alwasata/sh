@@ -1,11 +1,13 @@
-import { Moment } from 'moment';
-import { InvoiceStatus } from 'app/shared/model/enumerations/invoice-status.model';
+export const enum InvoiceStatus {
+  APPROVED = 'APPROVED',
+  CANCELLED = 'CANCELLED',
+}
 
 export interface IInvoice {
   id?: number;
   invoiceNo?: string;
-  invoiceDate?: Moment;
-  payDate?: Moment;
+  invoiceDate?: Date;
+  payDate?: Date;
   total?: number;
   invoiceStatus?: InvoiceStatus;
   notes?: string;
@@ -16,8 +18,8 @@ export class Invoice implements IInvoice {
   constructor(
     public id?: number,
     public invoiceNo?: string,
-    public invoiceDate?: Moment,
-    public payDate?: Moment,
+    public invoiceDate?: Date,
+    public payDate?: Date,
     public total?: number,
     public invoiceStatus?: InvoiceStatus,
     public notes?: string,

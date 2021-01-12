@@ -1,77 +1,74 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import * as moment from 'moment';
+import axios from 'axios';
 
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
-import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption } from 'app/shared/util/request-util';
-import { IInvoice } from 'app/shared/model/invoice.model';
+import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
-type EntityResponseType = HttpResponse<IInvoice>;
-type EntityArrayResponseType = HttpResponse<IInvoice[]>;
+import { IInvoice } from '@/shared/model/invoice.model';
 
-@Injectable({ providedIn: 'root' })
-export class InvoiceService {
-  public resourceUrl = SERVER_API_URL + 'api/invoices';
+const baseApiUrl = 'api/invoices';
 
-  constructor(protected http: HttpClient) {}
-
-  create(invoice: IInvoice): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(invoice);
-    return this.http
-      .post<IInvoice>(this.resourceUrl, copy, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  update(invoice: IInvoice): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(invoice);
-    return this.http
-      .put<IInvoice>(this.resourceUrl, copy, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  find(id: number): Observable<EntityResponseType> {
-    return this.http
-      .get<IInvoice>(`${this.resourceUrl}/${id}`, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http
-      .get<IInvoice[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
-  }
-
-  protected convertDateFromClient(invoice: IInvoice): IInvoice {
-    const copy: IInvoice = Object.assign({}, invoice, {
-      invoiceDate: invoice.invoiceDate && invoice.invoiceDate.isValid() ? invoice.invoiceDate.format(DATE_FORMAT) : undefined,
-      payDate: invoice.payDate && invoice.payDate.isValid() ? invoice.payDate.format(DATE_FORMAT) : undefined
+export default class InvoiceService {
+  public find(id: number): Promise<IInvoice> {
+    return new Promise<IInvoice>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
     });
-    return copy;
   }
 
-  protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
-    if (res.body) {
-      res.body.invoiceDate = res.body.invoiceDate ? moment(res.body.invoiceDate) : undefined;
-      res.body.payDate = res.body.payDate ? moment(res.body.payDate) : undefined;
-    }
-    return res;
+  public retrieve(paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
-    if (res.body) {
-      res.body.forEach((invoice: IInvoice) => {
-        invoice.invoiceDate = invoice.invoiceDate ? moment(invoice.invoiceDate) : undefined;
-        invoice.payDate = invoice.payDate ? moment(invoice.payDate) : undefined;
-      });
-    }
-    return res;
+  public delete(id: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .delete(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public create(entity: IInvoice): Promise<IInvoice> {
+    return new Promise<IInvoice>((resolve, reject) => {
+      axios
+        .post(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public update(entity: IInvoice): Promise<IInvoice> {
+    return new Promise<IInvoice>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 }

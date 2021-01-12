@@ -1,108 +1,103 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { ICompany, Company } from 'app/shared/model/company.model';
-import { CompanyService } from './company.service';
-import { IUser } from 'app/core/user/user.model';
-import { UserService } from 'app/core/user/user.service';
+import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+
+import UserService from '@/admin/user-management/user-management.service';
+
+import AlertService from '@/shared/alert/alert.service';
+import { ICompany, Company } from '@/shared/model/company.model';
+import CompanyService from './company.service';
+
+const validations: any = {
+  company: {
+    nameAr: {
+      required,
+    },
+    nameEn: {},
+    email: {},
+    phone: {},
+    address: {},
+  },
+};
 
 @Component({
-  selector: 'jhi-company-update',
-  templateUrl: './company-update.component.html'
+  validations,
 })
-export class CompanyUpdateComponent implements OnInit {
-  isSaving = false;
-  users: IUser[] = [];
+export default class CompanyUpdate extends Vue {
+  @Inject('alertService') private alertService: () => AlertService;
+  @Inject('companyService') private companyService: () => CompanyService;
+  public company: ICompany = new Company();
 
-  editForm = this.fb.group({
-    id: [],
-    nameAr: [null, [Validators.required]],
-    nameEn: [],
-    email: [],
-    phone: [],
-    address: [],
-    users: []
-  });
+  @Inject('userService') private userService: () => UserService;
 
-  constructor(
-    protected companyService: CompanyService,
-    protected userService: UserService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  public users: Array<any> = [];
+  public isSaving = false;
+  public currentLanguage = '';
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ company }) => {
-      this.updateForm(company);
-
-      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.companyId) {
+        vm.retrieveCompany(to.params.companyId);
+      }
+      vm.initRelationships();
     });
   }
 
-  updateForm(company: ICompany): void {
-    this.editForm.patchValue({
-      id: company.id,
-      nameAr: company.nameAr,
-      nameEn: company.nameEn,
-      email: company.email,
-      phone: company.phone,
-      address: company.address,
-      users: company.users
-    });
+  created(): void {
+    this.currentLanguage = this.$store.getters.currentLanguage;
+    this.$store.watch(
+      () => this.$store.getters.currentLanguage,
+      () => {
+        this.currentLanguage = this.$store.getters.currentLanguage;
+      }
+    );
+    this.company.users = [];
   }
 
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
+  public save(): void {
     this.isSaving = true;
-    const company = this.createFromForm();
-    if (company.id !== undefined) {
-      this.subscribeToSaveResponse(this.companyService.update(company));
+    if (this.company.id) {
+      this.companyService()
+        .update(this.company)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.company.updated', { param: param.id });
+          this.alertService().showAlert(message, 'info');
+        });
     } else {
-      this.subscribeToSaveResponse(this.companyService.create(company));
+      this.companyService()
+        .create(this.company)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.company.created', { param: param.id });
+          this.alertService().showAlert(message, 'success');
+        });
     }
   }
 
-  private createFromForm(): ICompany {
-    return {
-      ...new Company(),
-      id: this.editForm.get(['id'])!.value,
-      nameAr: this.editForm.get(['nameAr'])!.value,
-      nameEn: this.editForm.get(['nameEn'])!.value,
-      email: this.editForm.get(['email'])!.value,
-      phone: this.editForm.get(['phone'])!.value,
-      address: this.editForm.get(['address'])!.value,
-      users: this.editForm.get(['users'])!.value
-    };
+  public retrieveCompany(companyId): void {
+    this.companyService()
+      .find(companyId)
+      .then(res => {
+        this.company = res;
+      });
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ICompany>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+  public previousState(): void {
+    this.$router.go(-1);
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
+  public initRelationships(): void {
+    this.userService()
+      .retrieve()
+      .then(res => {
+        this.users = res.data;
+      });
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
-  }
-
-  trackById(index: number, item: IUser): any {
-    return item.id;
-  }
-
-  getSelected(selectedVals: IUser[], option: IUser): IUser {
+  public getSelected(selectedVals, option): any {
     if (selectedVals) {
       for (let i = 0; i < selectedVals.length; i++) {
         if (option.id === selectedVals[i].id) {

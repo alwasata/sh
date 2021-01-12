@@ -1,38 +1,74 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import axios from 'axios';
 
-import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption } from 'app/shared/util/request-util';
-import { IHospital } from 'app/shared/model/hospital.model';
+import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
-type EntityResponseType = HttpResponse<IHospital>;
-type EntityArrayResponseType = HttpResponse<IHospital[]>;
+import { IHospital } from '@/shared/model/hospital.model';
 
-@Injectable({ providedIn: 'root' })
-export class HospitalService {
-  public resourceUrl = SERVER_API_URL + 'api/hospitals';
+const baseApiUrl = 'api/hospitals';
 
-  constructor(protected http: HttpClient) {}
-
-  create(hospital: IHospital): Observable<EntityResponseType> {
-    return this.http.post<IHospital>(this.resourceUrl, hospital, { observe: 'response' });
+export default class HospitalService {
+  public find(id: number): Promise<IHospital> {
+    return new Promise<IHospital>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  update(hospital: IHospital): Observable<EntityResponseType> {
-    return this.http.put<IHospital>(this.resourceUrl, hospital, { observe: 'response' });
+  public retrieve(paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IHospital>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  public delete(id: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .delete(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IHospital[]>(this.resourceUrl, { params: options, observe: 'response' });
+  public create(entity: IHospital): Promise<IHospital> {
+    return new Promise<IHospital>((resolve, reject) => {
+      axios
+        .post(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  public update(entity: IHospital): Promise<IHospital> {
+    return new Promise<IHospital>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 }

@@ -1,104 +1,109 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { ICardTransaction, CardTransaction } from 'app/shared/model/card-transaction.model';
-import { CardTransactionService } from './card-transaction.service';
-import { ICard } from 'app/shared/model/card.model';
-import { CardService } from 'app/entities/card/card.service';
+import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+
+import CardService from '../card/card.service';
+import { ICard } from '@/shared/model/card.model';
+
+import InvoiceService from '../invoice/invoice.service';
+import { IInvoice } from '@/shared/model/invoice.model';
+
+import AlertService from '@/shared/alert/alert.service';
+import { ICardTransaction, CardTransaction } from '@/shared/model/card-transaction.model';
+import CardTransactionService from './card-transaction.service';
+
+const validations: any = {
+  cardTransaction: {
+    transactionNo: {},
+    amount: {},
+    pointsAmount: {},
+    action: {},
+    notes: {},
+  },
+};
 
 @Component({
-  selector: 'jhi-card-transaction-update',
-  templateUrl: './card-transaction-update.component.html'
+  validations,
 })
-export class CardTransactionUpdateComponent implements OnInit {
-  isSaving = false;
-  cards: ICard[] = [];
+export default class CardTransactionUpdate extends Vue {
+  @Inject('alertService') private alertService: () => AlertService;
+  @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
+  public cardTransaction: ICardTransaction = new CardTransaction();
 
-  editForm = this.fb.group({
-    id: [],
-    transactionNo: [],
-    amount: [],
-    pointsAmount: [],
-    action: [],
-    notes: [],
-    cardId: []
-  });
+  @Inject('cardService') private cardService: () => CardService;
 
-  constructor(
-    protected cardTransactionService: CardTransactionService,
-    protected cardService: CardService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  public cards: ICard[] = [];
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ cardTransaction }) => {
-      this.updateForm(cardTransaction);
+  @Inject('invoiceService') private invoiceService: () => InvoiceService;
 
-      this.cardService.query().subscribe((res: HttpResponse<ICard[]>) => (this.cards = res.body || []));
+  public invoices: IInvoice[] = [];
+  public isSaving = false;
+  public currentLanguage = '';
+
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.cardTransactionId) {
+        vm.retrieveCardTransaction(to.params.cardTransactionId);
+      }
+      vm.initRelationships();
     });
   }
 
-  updateForm(cardTransaction: ICardTransaction): void {
-    this.editForm.patchValue({
-      id: cardTransaction.id,
-      transactionNo: cardTransaction.transactionNo,
-      amount: cardTransaction.amount,
-      pointsAmount: cardTransaction.pointsAmount,
-      action: cardTransaction.action,
-      notes: cardTransaction.notes,
-      cardId: cardTransaction.cardId
-    });
-  }
-
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
-    this.isSaving = true;
-    const cardTransaction = this.createFromForm();
-    if (cardTransaction.id !== undefined) {
-      this.subscribeToSaveResponse(this.cardTransactionService.update(cardTransaction));
-    } else {
-      this.subscribeToSaveResponse(this.cardTransactionService.create(cardTransaction));
-    }
-  }
-
-  private createFromForm(): ICardTransaction {
-    return {
-      ...new CardTransaction(),
-      id: this.editForm.get(['id'])!.value,
-      transactionNo: this.editForm.get(['transactionNo'])!.value,
-      amount: this.editForm.get(['amount'])!.value,
-      pointsAmount: this.editForm.get(['pointsAmount'])!.value,
-      action: this.editForm.get(['action'])!.value,
-      notes: this.editForm.get(['notes'])!.value,
-      cardId: this.editForm.get(['cardId'])!.value
-    };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ICardTransaction>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
+  created(): void {
+    this.currentLanguage = this.$store.getters.currentLanguage;
+    this.$store.watch(
+      () => this.$store.getters.currentLanguage,
+      () => {
+        this.currentLanguage = this.$store.getters.currentLanguage;
+      }
     );
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
+  public save(): void {
+    this.isSaving = true;
+    if (this.cardTransaction.id) {
+      this.cardTransactionService()
+        .update(this.cardTransaction)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.cardTransaction.updated', { param: param.id });
+          this.alertService().showAlert(message, 'info');
+        });
+    } else {
+      this.cardTransactionService()
+        .create(this.cardTransaction)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.cardTransaction.created', { param: param.id });
+          this.alertService().showAlert(message, 'success');
+        });
+    }
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
+  public retrieveCardTransaction(cardTransactionId): void {
+    this.cardTransactionService()
+      .find(cardTransactionId)
+      .then(res => {
+        this.cardTransaction = res;
+      });
   }
 
-  trackById(index: number, item: ICard): any {
-    return item.id;
+  public previousState(): void {
+    this.$router.go(-1);
+  }
+
+  public initRelationships(): void {
+    this.cardService()
+      .retrieve()
+      .then(res => {
+        this.cards = res.data;
+      });
+    this.invoiceService()
+      .retrieve()
+      .then(res => {
+        this.invoices = res.data;
+      });
   }
 }

@@ -1,127 +1,124 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { IBenefitRequest, BenefitRequest } from 'app/shared/model/benefit-request.model';
-import { BenefitRequestService } from './benefit-request.service';
-import { ICategory } from 'app/shared/model/category.model';
-import { CategoryService } from 'app/entities/category/category.service';
-import { IHospital } from 'app/shared/model/hospital.model';
-import { HospitalService } from 'app/entities/hospital/hospital.service';
-import { IBenefit } from 'app/shared/model/benefit.model';
-import { BenefitService } from 'app/entities/benefit/benefit.service';
+import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
 
-type SelectableEntity = ICategory | IHospital | IBenefit;
+import CategoryService from '../category/category.service';
+import { ICategory } from '@/shared/model/category.model';
+
+import HospitalService from '../hospital/hospital.service';
+import { IHospital } from '@/shared/model/hospital.model';
+
+import BenefitService from '../benefit/benefit.service';
+import { IBenefit } from '@/shared/model/benefit.model';
+
+import AlertService from '@/shared/alert/alert.service';
+import { IBenefitRequest, BenefitRequest } from '@/shared/model/benefit-request.model';
+import BenefitRequestService from './benefit-request.service';
+
+const validations: any = {
+  benefitRequest: {
+    nameAr: {
+      required,
+    },
+    nameEn: {},
+    pointsCost: {},
+    cost: {},
+    benefitStatus: {},
+    notes: {},
+  },
+};
 
 @Component({
-  selector: 'jhi-benefit-request-update',
-  templateUrl: './benefit-request-update.component.html'
+  validations,
 })
-export class BenefitRequestUpdateComponent implements OnInit {
-  isSaving = false;
-  categories: ICategory[] = [];
-  hospitals: IHospital[] = [];
-  benefits: IBenefit[] = [];
+export default class BenefitRequestUpdate extends Vue {
+  @Inject('alertService') private alertService: () => AlertService;
+  @Inject('benefitRequestService') private benefitRequestService: () => BenefitRequestService;
+  public benefitRequest: IBenefitRequest = new BenefitRequest();
 
-  editForm = this.fb.group({
-    id: [],
-    nameAr: [null, [Validators.required]],
-    nameEn: [],
-    pointsCost: [],
-    cost: [],
-    benefitStatus: [],
-    notes: [],
-    categoryId: [],
-    hospitalId: [],
-    benefitId: []
-  });
+  @Inject('categoryService') private categoryService: () => CategoryService;
 
-  constructor(
-    protected benefitRequestService: BenefitRequestService,
-    protected categoryService: CategoryService,
-    protected hospitalService: HospitalService,
-    protected benefitService: BenefitService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  public categories: ICategory[] = [];
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ benefitRequest }) => {
-      this.updateForm(benefitRequest);
+  @Inject('hospitalService') private hospitalService: () => HospitalService;
 
-      this.categoryService.query().subscribe((res: HttpResponse<ICategory[]>) => (this.categories = res.body || []));
+  public hospitals: IHospital[] = [];
 
-      this.hospitalService.query().subscribe((res: HttpResponse<IHospital[]>) => (this.hospitals = res.body || []));
+  @Inject('benefitService') private benefitService: () => BenefitService;
 
-      this.benefitService.query().subscribe((res: HttpResponse<IBenefit[]>) => (this.benefits = res.body || []));
+  public benefits: IBenefit[] = [];
+  public isSaving = false;
+  public currentLanguage = '';
+
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.benefitRequestId) {
+        vm.retrieveBenefitRequest(to.params.benefitRequestId);
+      }
+      vm.initRelationships();
     });
   }
 
-  updateForm(benefitRequest: IBenefitRequest): void {
-    this.editForm.patchValue({
-      id: benefitRequest.id,
-      nameAr: benefitRequest.nameAr,
-      nameEn: benefitRequest.nameEn,
-      pointsCost: benefitRequest.pointsCost,
-      cost: benefitRequest.cost,
-      benefitStatus: benefitRequest.benefitStatus,
-      notes: benefitRequest.notes,
-      categoryId: benefitRequest.categoryId,
-      hospitalId: benefitRequest.hospitalId,
-      benefitId: benefitRequest.benefitId
-    });
-  }
-
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
-    this.isSaving = true;
-    const benefitRequest = this.createFromForm();
-    if (benefitRequest.id !== undefined) {
-      this.subscribeToSaveResponse(this.benefitRequestService.update(benefitRequest));
-    } else {
-      this.subscribeToSaveResponse(this.benefitRequestService.create(benefitRequest));
-    }
-  }
-
-  private createFromForm(): IBenefitRequest {
-    return {
-      ...new BenefitRequest(),
-      id: this.editForm.get(['id'])!.value,
-      nameAr: this.editForm.get(['nameAr'])!.value,
-      nameEn: this.editForm.get(['nameEn'])!.value,
-      pointsCost: this.editForm.get(['pointsCost'])!.value,
-      cost: this.editForm.get(['cost'])!.value,
-      benefitStatus: this.editForm.get(['benefitStatus'])!.value,
-      notes: this.editForm.get(['notes'])!.value,
-      categoryId: this.editForm.get(['categoryId'])!.value,
-      hospitalId: this.editForm.get(['hospitalId'])!.value,
-      benefitId: this.editForm.get(['benefitId'])!.value
-    };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IBenefitRequest>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
+  created(): void {
+    this.currentLanguage = this.$store.getters.currentLanguage;
+    this.$store.watch(
+      () => this.$store.getters.currentLanguage,
+      () => {
+        this.currentLanguage = this.$store.getters.currentLanguage;
+      }
     );
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
+  public save(): void {
+    this.isSaving = true;
+    if (this.benefitRequest.id) {
+      this.benefitRequestService()
+        .update(this.benefitRequest)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.benefitRequest.updated', { param: param.id });
+          this.alertService().showAlert(message, 'info');
+        });
+    } else {
+      this.benefitRequestService()
+        .create(this.benefitRequest)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.benefitRequest.created', { param: param.id });
+          this.alertService().showAlert(message, 'success');
+        });
+    }
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
+  public retrieveBenefitRequest(benefitRequestId): void {
+    this.benefitRequestService()
+      .find(benefitRequestId)
+      .then(res => {
+        this.benefitRequest = res;
+      });
   }
 
-  trackById(index: number, item: SelectableEntity): any {
-    return item.id;
+  public previousState(): void {
+    this.$router.go(-1);
+  }
+
+  public initRelationships(): void {
+    this.categoryService()
+      .retrieve()
+      .then(res => {
+        this.categories = res.data;
+      });
+    this.hospitalService()
+      .retrieve()
+      .then(res => {
+        this.hospitals = res.data;
+      });
+    this.benefitService()
+      .retrieve()
+      .then(res => {
+        this.benefits = res.data;
+      });
   }
 }

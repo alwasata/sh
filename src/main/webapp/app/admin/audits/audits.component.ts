@@ -1,110 +1,105 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpHeaders } from '@angular/common/http';
-import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { Audit } from './audit.model';
-import { AuditsService } from './audits.service';
+import format from 'date-fns/format';
+import AuditsService from './audits.service';
+import { Component, Vue, Inject } from 'vue-property-decorator';
+import Vue2Filters from 'vue2-filters';
 
 @Component({
-  selector: 'jhi-audit',
-  templateUrl: './audits.component.html'
+  mixins: [Vue2Filters.mixin],
 })
-export class AuditsComponent implements OnInit {
-  audits?: Audit[];
-  fromDate = '';
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
-  predicate!: string;
-  previousPage!: number;
-  ascending!: boolean;
-  toDate = '';
-  totalItems = 0;
+export default class JhiAudits extends Vue {
+  public audits: any = [];
+  public fromDate: any = null;
+  public itemsPerPage = 20;
+  public queryCount: any = null;
+  public page = 1;
+  public previousPage = 1;
+  public propOrder = 'auditEventDate';
+  public predicate = 'timestamp';
+  public reverse = false;
+  public toDate: any = null;
+  public totalItems = 0;
+  public isFetching = false;
+  @Inject('auditsService') private auditsService: () => AuditsService;
 
-  private dateFormat = 'yyyy-MM-dd';
-
-  constructor(
-    private auditsService: AuditsService,
-    private activatedRoute: ActivatedRoute,
-    private datePipe: DatePipe,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.toDate = this.today();
-    this.fromDate = this.previousMonth();
-    this.activatedRoute.data.subscribe(data => {
-      this.page = data['pagingParams'].page;
-      this.previousPage = data['pagingParams'].page;
-      this.ascending = data['pagingParams'].ascending;
-      this.predicate = data['pagingParams'].predicate;
-      this.loadData();
-    });
+  public mounted(): void {
+    this.init();
   }
 
-  loadPage(page: number): void {
+  public init(): void {
+    this.today();
+    this.previousMonth();
+    this.loadAll();
+  }
+
+  public previousMonth(): void {
+    const dateFormat = 'yyyy-MM-dd';
+    let fromDate = new Date();
+
+    if (fromDate.getMonth() === 0) {
+      fromDate = new Date(fromDate.getFullYear() - 1, 11, fromDate.getDate());
+    } else {
+      fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth() - 1, fromDate.getDate());
+    }
+
+    this.fromDate = format(fromDate, dateFormat);
+  }
+
+  public today(): void {
+    const dateFormat = 'yyyy-MM-dd';
+    // Today + 1 day - needed if the current day must be included
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    this.toDate = format(date, dateFormat);
+  }
+
+  public loadAll(): void {
+    this.isFetching = true;
+    if (this.fromDate && this.toDate) {
+      this.auditsService()
+        .query({
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+          fromDate: this.fromDate,
+          toDate: this.toDate,
+        })
+        .then(
+          res => {
+            this.audits = res.data;
+            this.totalItems = Number(res.headers['x-total-count']);
+            this.queryCount = this.totalItems;
+            this.isFetching = false;
+          },
+          err => {
+            this.isFetching = false;
+          }
+        );
+    }
+  }
+
+  public sort(): any {
+    const result = [this.propOrder + ',' + (this.reverse ? 'asc' : 'desc')];
+    result.push('id');
+    return result;
+  }
+
+  public loadPage(page): void {
     if (page !== this.previousPage) {
       this.previousPage = page;
       this.transition();
     }
   }
 
-  canLoad(): boolean {
-    return this.fromDate !== '' && this.toDate !== '';
+  public transition(): void {
+    this.loadAll();
   }
 
-  transition(): void {
-    if (this.canLoad()) {
-      this.router.navigate(['/admin/audits'], {
-        queryParams: {
-          page: this.page,
-          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-        }
-      });
-      this.loadData();
-    }
-  }
-
-  private previousMonth(): string {
-    let date = new Date();
-    if (date.getMonth() === 0) {
-      date = new Date(date.getFullYear() - 1, 11, date.getDate());
-    } else {
-      date = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
-    }
-    return this.datePipe.transform(date, this.dateFormat)!;
-  }
-
-  private today(): string {
-    // Today + 1 day - needed if the current day must be included
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
-    return this.datePipe.transform(date, this.dateFormat)!;
-  }
-
-  private loadData(): void {
-    this.auditsService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-        fromDate: this.fromDate,
-        toDate: this.toDate
-      })
-      .subscribe((res: HttpResponse<Audit[]>) => this.onSuccess(res.body, res.headers));
-  }
-
-  private sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
-    return result;
-  }
-
-  private onSuccess(audits: Audit[] | null, headers: HttpHeaders): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.audits = audits || [];
+  public changeOrder(propOrder: string, predicate: string): void {
+    this.propOrder = propOrder;
+    this.predicate = predicate;
+    this.reverse = !this.reverse;
+    this.transition();
   }
 }

@@ -1,106 +1,108 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { mixins } from 'vue-class-component';
 
-import { ICategory } from 'app/shared/model/category.model';
+import { Component, Vue, Inject } from 'vue-property-decorator';
+import Vue2Filters from 'vue2-filters';
+import { ICategory } from '@/shared/model/category.model';
+import AlertMixin from '@/shared/alert/alert.mixin';
 
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { CategoryService } from './category.service';
-import { CategoryDeleteDialogComponent } from './category-delete-dialog.component';
+import CategoryService from './category.service';
 
 @Component({
-  selector: 'jhi-category',
-  templateUrl: './category.component.html'
+  mixins: [Vue2Filters.mixin],
 })
-export class CategoryComponent implements OnInit, OnDestroy {
-  categories?: ICategory[];
-  eventSubscriber?: Subscription;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
+export default class Category extends mixins(AlertMixin) {
+  @Inject('categoryService') private categoryService: () => CategoryService;
+  private removeId: number = null;
+  public itemsPerPage = 20;
+  public queryCount: number = null;
+  public page = 1;
+  public previousPage = 1;
+  public propOrder = 'id';
+  public reverse = false;
+  public totalItems = 0;
 
-  constructor(
-    protected categoryService: CategoryService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
-  ) {}
+  public categories: ICategory[] = [];
 
-  loadPage(page?: number): void {
-    const pageToLoad: number = page || this.page;
+  public isFetching = false;
 
-    this.categoryService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe(
-        (res: HttpResponse<ICategory[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+  public mounted(): void {
+    this.retrieveAllCategorys();
+  }
+
+  public clear(): void {
+    this.page = 1;
+    this.retrieveAllCategorys();
+  }
+
+  public retrieveAllCategorys(): void {
+    this.isFetching = true;
+
+    const paginationQuery = {
+      page: this.page - 1,
+      size: this.itemsPerPage,
+      sort: this.sort(),
+    };
+    this.categoryService()
+      .retrieve(paginationQuery)
+      .then(
+        res => {
+          this.categories = res.data;
+          this.totalItems = Number(res.headers['x-total-count']);
+          this.queryCount = this.totalItems;
+          this.isFetching = false;
+        },
+        err => {
+          this.isFetching = false;
+        }
       );
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(data => {
-      this.page = data.pagingParams.page;
-      this.ascending = data.pagingParams.ascending;
-      this.predicate = data.pagingParams.predicate;
-      this.ngbPaginationPage = data.pagingParams.page;
-      this.loadPage();
-    });
-    this.registerChangeInCategories();
-  }
-
-  ngOnDestroy(): void {
-    if (this.eventSubscriber) {
-      this.eventManager.destroy(this.eventSubscriber);
+  public prepareRemove(instance: ICategory): void {
+    this.removeId = instance.id;
+    if (<any>this.$refs.removeEntity) {
+      (<any>this.$refs.removeEntity).show();
     }
   }
 
-  trackId(index: number, item: ICategory): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
+  public removeCategory(): void {
+    this.categoryService()
+      .delete(this.removeId)
+      .then(() => {
+        const message = this.$t('sahatiApp.category.deleted', { param: this.removeId });
+        this.alertService().showAlert(message, 'danger');
+        this.getAlertFromStore();
+        this.removeId = null;
+        this.retrieveAllCategorys();
+        this.closeDialog();
+      });
   }
 
-  registerChangeInCategories(): void {
-    this.eventSubscriber = this.eventManager.subscribe('categoryListModification', () => this.loadPage());
-  }
-
-  delete(category: ICategory): void {
-    const modalRef = this.modalService.open(CategoryDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.category = category;
-  }
-
-  sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
+  public sort(): Array<any> {
+    const result = [this.propOrder + ',' + (this.reverse ? 'asc' : 'desc')];
+    if (this.propOrder !== 'id') {
       result.push('id');
     }
     return result;
   }
 
-  protected onSuccess(data: ICategory[] | null, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    this.router.navigate(['/category'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
-    this.categories = data || [];
+  public loadPage(page: number): void {
+    if (page !== this.previousPage) {
+      this.previousPage = page;
+      this.transition();
+    }
   }
 
-  protected onError(): void {
-    this.ngbPaginationPage = this.page;
+  public transition(): void {
+    this.retrieveAllCategorys();
+  }
+
+  public changeOrder(propOrder): void {
+    this.propOrder = propOrder;
+    this.reverse = !this.reverse;
+    this.transition();
+  }
+
+  public closeDialog(): void {
+    (<any>this.$refs.removeEntity).hide();
   }
 }

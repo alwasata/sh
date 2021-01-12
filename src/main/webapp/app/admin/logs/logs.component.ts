@@ -1,34 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-
-import { Log, LoggersResponse, Logger, Level } from './log.model';
-import { LogsService } from './logs.service';
+import { Component, Vue, Inject } from 'vue-property-decorator';
+import Vue2Filters from 'vue2-filters';
+import LogsService from './logs.service';
 
 @Component({
-  selector: 'jhi-logs',
-  templateUrl: './logs.component.html'
+  mixins: [Vue2Filters.mixin],
 })
-export class LogsComponent implements OnInit {
-  loggers?: Log[];
-  filter = '';
-  orderProp = 'name';
-  reverse = false;
+export default class JhiLogs extends Vue {
+  @Inject('logsService') private logsService: () => LogsService;
+  private loggers: any[] = [];
+  public filtered = '';
+  public orderProp = 'name';
+  public reverse = false;
 
-  constructor(private logsService: LogsService) {}
-
-  ngOnInit(): void {
-    this.findAndExtractLoggers();
+  public mounted(): void {
+    this.init();
   }
 
-  changeLevel(name: string, level: Level): void {
-    this.logsService.changeLevel(name, level).subscribe(() => this.findAndExtractLoggers());
-  }
-
-  private findAndExtractLoggers(): void {
-    this.logsService
+  public init(): void {
+    this.logsService()
       .findAll()
-      .subscribe(
-        (response: LoggersResponse) =>
-          (this.loggers = Object.entries(response.loggers).map((logger: [string, Logger]) => new Log(logger[0], logger[1].effectiveLevel)))
-      );
+      .then(response => {
+        this.extractLoggers(response);
+      });
+  }
+
+  public updateLevel(name, level): void {
+    this.logsService()
+      .changeLevel(name, level)
+      .then(() => {
+        this.init();
+      });
+  }
+
+  public changeOrder(orderProp): void {
+    this.orderProp = orderProp;
+    this.reverse = !this.reverse;
+  }
+
+  private extractLoggers(response) {
+    this.loggers = [];
+    if (response.data) {
+      for (const key of Object.keys(response.data.loggers)) {
+        const logger = response.data.loggers[key];
+        this.loggers.push({ name: key, level: logger.effectiveLevel });
+      }
+    }
   }
 }

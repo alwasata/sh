@@ -1,28 +1,24 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import axios, { AxiosInstance } from 'axios';
 
-import { createRequestOption, Pagination } from 'app/shared/util/request-util';
-import { SERVER_API_URL } from 'app/app.constants';
-import { Audit } from './audit.model';
+export default class AuditsService {
+  private axios: AxiosInstance;
 
-export interface AuditsQuery extends Pagination {
-  fromDate: string;
-  toDate: string;
-}
+  constructor() {
+    this.axios = axios;
+  }
 
-@Injectable({ providedIn: 'root' })
-export class AuditsService {
-  constructor(private http: HttpClient) {}
-
-  query(req: AuditsQuery): Observable<HttpResponse<Audit[]>> {
-    const params: HttpParams = createRequestOption(req);
-
-    const requestURL = SERVER_API_URL + 'management/audits';
-
-    return this.http.get<Audit[]>(requestURL, {
-      params,
-      observe: 'response'
+  public query(req: any): Promise<any> {
+    let sorts = '';
+    for (const idx of Object.keys(req.sort)) {
+      if (sorts.length > 0) {
+        sorts += '&';
+      }
+      sorts += 'sort=' + req.sort[idx];
+    }
+    return new Promise(resolve => {
+      axios
+        .get(`management/audits?fromDate=${req.fromDate}&toDate=${req.toDate}&${sorts}&page=${req.page}&size=${req.size}`)
+        .then(res => resolve(res));
     });
   }
 }

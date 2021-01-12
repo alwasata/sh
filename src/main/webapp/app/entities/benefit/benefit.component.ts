@@ -1,106 +1,108 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { mixins } from 'vue-class-component';
 
-import { IBenefit } from 'app/shared/model/benefit.model';
+import { Component, Vue, Inject } from 'vue-property-decorator';
+import Vue2Filters from 'vue2-filters';
+import { IBenefit } from '@/shared/model/benefit.model';
+import AlertMixin from '@/shared/alert/alert.mixin';
 
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { BenefitService } from './benefit.service';
-import { BenefitDeleteDialogComponent } from './benefit-delete-dialog.component';
+import BenefitService from './benefit.service';
 
 @Component({
-  selector: 'jhi-benefit',
-  templateUrl: './benefit.component.html'
+  mixins: [Vue2Filters.mixin],
 })
-export class BenefitComponent implements OnInit, OnDestroy {
-  benefits?: IBenefit[];
-  eventSubscriber?: Subscription;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
+export default class Benefit extends mixins(AlertMixin) {
+  @Inject('benefitService') private benefitService: () => BenefitService;
+  private removeId: number = null;
+  public itemsPerPage = 20;
+  public queryCount: number = null;
+  public page = 1;
+  public previousPage = 1;
+  public propOrder = 'id';
+  public reverse = false;
+  public totalItems = 0;
 
-  constructor(
-    protected benefitService: BenefitService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
-  ) {}
+  public benefits: IBenefit[] = [];
 
-  loadPage(page?: number): void {
-    const pageToLoad: number = page || this.page;
+  public isFetching = false;
 
-    this.benefitService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe(
-        (res: HttpResponse<IBenefit[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+  public mounted(): void {
+    this.retrieveAllBenefits();
+  }
+
+  public clear(): void {
+    this.page = 1;
+    this.retrieveAllBenefits();
+  }
+
+  public retrieveAllBenefits(): void {
+    this.isFetching = true;
+
+    const paginationQuery = {
+      page: this.page - 1,
+      size: this.itemsPerPage,
+      sort: this.sort(),
+    };
+    this.benefitService()
+      .retrieve(paginationQuery)
+      .then(
+        res => {
+          this.benefits = res.data;
+          this.totalItems = Number(res.headers['x-total-count']);
+          this.queryCount = this.totalItems;
+          this.isFetching = false;
+        },
+        err => {
+          this.isFetching = false;
+        }
       );
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(data => {
-      this.page = data.pagingParams.page;
-      this.ascending = data.pagingParams.ascending;
-      this.predicate = data.pagingParams.predicate;
-      this.ngbPaginationPage = data.pagingParams.page;
-      this.loadPage();
-    });
-    this.registerChangeInBenefits();
-  }
-
-  ngOnDestroy(): void {
-    if (this.eventSubscriber) {
-      this.eventManager.destroy(this.eventSubscriber);
+  public prepareRemove(instance: IBenefit): void {
+    this.removeId = instance.id;
+    if (<any>this.$refs.removeEntity) {
+      (<any>this.$refs.removeEntity).show();
     }
   }
 
-  trackId(index: number, item: IBenefit): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
+  public removeBenefit(): void {
+    this.benefitService()
+      .delete(this.removeId)
+      .then(() => {
+        const message = this.$t('sahatiApp.benefit.deleted', { param: this.removeId });
+        this.alertService().showAlert(message, 'danger');
+        this.getAlertFromStore();
+        this.removeId = null;
+        this.retrieveAllBenefits();
+        this.closeDialog();
+      });
   }
 
-  registerChangeInBenefits(): void {
-    this.eventSubscriber = this.eventManager.subscribe('benefitListModification', () => this.loadPage());
-  }
-
-  delete(benefit: IBenefit): void {
-    const modalRef = this.modalService.open(BenefitDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.benefit = benefit;
-  }
-
-  sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
+  public sort(): Array<any> {
+    const result = [this.propOrder + ',' + (this.reverse ? 'asc' : 'desc')];
+    if (this.propOrder !== 'id') {
       result.push('id');
     }
     return result;
   }
 
-  protected onSuccess(data: IBenefit[] | null, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    this.router.navigate(['/benefit'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
-    this.benefits = data || [];
+  public loadPage(page: number): void {
+    if (page !== this.previousPage) {
+      this.previousPage = page;
+      this.transition();
+    }
   }
 
-  protected onError(): void {
-    this.ngbPaginationPage = this.page;
+  public transition(): void {
+    this.retrieveAllBenefits();
+  }
+
+  public changeOrder(propOrder): void {
+    this.propOrder = propOrder;
+    this.reverse = !this.reverse;
+    this.transition();
+  }
+
+  public closeDialog(): void {
+    (<any>this.$refs.removeEntity).hide();
   }
 }

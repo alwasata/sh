@@ -1,112 +1,108 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { IInvoiceBenefits, InvoiceBenefits } from 'app/shared/model/invoice-benefits.model';
-import { InvoiceBenefitsService } from './invoice-benefits.service';
-import { IBenefit } from 'app/shared/model/benefit.model';
-import { BenefitService } from 'app/entities/benefit/benefit.service';
-import { IInvoice } from 'app/shared/model/invoice.model';
-import { InvoiceService } from 'app/entities/invoice/invoice.service';
+import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
 
-type SelectableEntity = IBenefit | IInvoice;
+import BenefitService from '../benefit/benefit.service';
+import { IBenefit } from '@/shared/model/benefit.model';
+
+import InvoiceService from '../invoice/invoice.service';
+import { IInvoice } from '@/shared/model/invoice.model';
+
+import AlertService from '@/shared/alert/alert.service';
+import { IInvoiceBenefits, InvoiceBenefits } from '@/shared/model/invoice-benefits.model';
+import InvoiceBenefitsService from './invoice-benefits.service';
+
+const validations: any = {
+  invoiceBenefits: {
+    pointsCost: {},
+    cost: {},
+    quantity: {},
+    total: {},
+  },
+};
 
 @Component({
-  selector: 'jhi-invoice-benefits-update',
-  templateUrl: './invoice-benefits-update.component.html'
+  validations,
 })
-export class InvoiceBenefitsUpdateComponent implements OnInit {
-  isSaving = false;
-  benefits: IBenefit[] = [];
-  invoices: IInvoice[] = [];
+export default class InvoiceBenefitsUpdate extends Vue {
+  @Inject('alertService') private alertService: () => AlertService;
+  @Inject('invoiceBenefitsService') private invoiceBenefitsService: () => InvoiceBenefitsService;
+  public invoiceBenefits: IInvoiceBenefits = new InvoiceBenefits();
 
-  editForm = this.fb.group({
-    id: [],
-    pointsCost: [],
-    cost: [],
-    quantity: [],
-    total: [],
-    benefitId: [],
-    invoiceId: []
-  });
+  @Inject('benefitService') private benefitService: () => BenefitService;
 
-  constructor(
-    protected invoiceBenefitsService: InvoiceBenefitsService,
-    protected benefitService: BenefitService,
-    protected invoiceService: InvoiceService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  public benefits: IBenefit[] = [];
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ invoiceBenefits }) => {
-      this.updateForm(invoiceBenefits);
+  @Inject('invoiceService') private invoiceService: () => InvoiceService;
 
-      this.benefitService.query().subscribe((res: HttpResponse<IBenefit[]>) => (this.benefits = res.body || []));
+  public invoices: IInvoice[] = [];
+  public isSaving = false;
+  public currentLanguage = '';
 
-      this.invoiceService.query().subscribe((res: HttpResponse<IInvoice[]>) => (this.invoices = res.body || []));
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.invoiceBenefitsId) {
+        vm.retrieveInvoiceBenefits(to.params.invoiceBenefitsId);
+      }
+      vm.initRelationships();
     });
   }
 
-  updateForm(invoiceBenefits: IInvoiceBenefits): void {
-    this.editForm.patchValue({
-      id: invoiceBenefits.id,
-      pointsCost: invoiceBenefits.pointsCost,
-      cost: invoiceBenefits.cost,
-      quantity: invoiceBenefits.quantity,
-      total: invoiceBenefits.total,
-      benefitId: invoiceBenefits.benefitId,
-      invoiceId: invoiceBenefits.invoiceId
-    });
-  }
-
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
-    this.isSaving = true;
-    const invoiceBenefits = this.createFromForm();
-    if (invoiceBenefits.id !== undefined) {
-      this.subscribeToSaveResponse(this.invoiceBenefitsService.update(invoiceBenefits));
-    } else {
-      this.subscribeToSaveResponse(this.invoiceBenefitsService.create(invoiceBenefits));
-    }
-  }
-
-  private createFromForm(): IInvoiceBenefits {
-    return {
-      ...new InvoiceBenefits(),
-      id: this.editForm.get(['id'])!.value,
-      pointsCost: this.editForm.get(['pointsCost'])!.value,
-      cost: this.editForm.get(['cost'])!.value,
-      quantity: this.editForm.get(['quantity'])!.value,
-      total: this.editForm.get(['total'])!.value,
-      benefitId: this.editForm.get(['benefitId'])!.value,
-      invoiceId: this.editForm.get(['invoiceId'])!.value
-    };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInvoiceBenefits>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
+  created(): void {
+    this.currentLanguage = this.$store.getters.currentLanguage;
+    this.$store.watch(
+      () => this.$store.getters.currentLanguage,
+      () => {
+        this.currentLanguage = this.$store.getters.currentLanguage;
+      }
     );
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
+  public save(): void {
+    this.isSaving = true;
+    if (this.invoiceBenefits.id) {
+      this.invoiceBenefitsService()
+        .update(this.invoiceBenefits)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.invoiceBenefits.updated', { param: param.id });
+          this.alertService().showAlert(message, 'info');
+        });
+    } else {
+      this.invoiceBenefitsService()
+        .create(this.invoiceBenefits)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.invoiceBenefits.created', { param: param.id });
+          this.alertService().showAlert(message, 'success');
+        });
+    }
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
+  public retrieveInvoiceBenefits(invoiceBenefitsId): void {
+    this.invoiceBenefitsService()
+      .find(invoiceBenefitsId)
+      .then(res => {
+        this.invoiceBenefits = res;
+      });
   }
 
-  trackById(index: number, item: SelectableEntity): any {
-    return item.id;
+  public previousState(): void {
+    this.$router.go(-1);
+  }
+
+  public initRelationships(): void {
+    this.benefitService()
+      .retrieve()
+      .then(res => {
+        this.benefits = res.data;
+      });
+    this.invoiceService()
+      .retrieve()
+      .then(res => {
+        this.invoices = res.data;
+      });
   }
 }

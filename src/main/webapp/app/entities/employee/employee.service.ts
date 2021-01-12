@@ -1,38 +1,74 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import axios from 'axios';
 
-import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption } from 'app/shared/util/request-util';
-import { IEmployee } from 'app/shared/model/employee.model';
+import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
-type EntityResponseType = HttpResponse<IEmployee>;
-type EntityArrayResponseType = HttpResponse<IEmployee[]>;
+import { IEmployee } from '@/shared/model/employee.model';
 
-@Injectable({ providedIn: 'root' })
-export class EmployeeService {
-  public resourceUrl = SERVER_API_URL + 'api/employees';
+const baseApiUrl = 'api/employees';
 
-  constructor(protected http: HttpClient) {}
-
-  create(employee: IEmployee): Observable<EntityResponseType> {
-    return this.http.post<IEmployee>(this.resourceUrl, employee, { observe: 'response' });
+export default class EmployeeService {
+  public find(id: number): Promise<IEmployee> {
+    return new Promise<IEmployee>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  update(employee: IEmployee): Observable<EntityResponseType> {
-    return this.http.put<IEmployee>(this.resourceUrl, employee, { observe: 'response' });
+  public retrieve(paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IEmployee>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  public delete(id: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .delete(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IEmployee[]>(this.resourceUrl, { params: options, observe: 'response' });
+  public create(entity: IEmployee): Promise<IEmployee> {
+    return new Promise<IEmployee>((resolve, reject) => {
+      axios
+        .post(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  public update(entity: IEmployee): Promise<IEmployee> {
+    return new Promise<IEmployee>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 }

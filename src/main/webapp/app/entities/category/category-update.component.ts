@@ -1,78 +1,82 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { ICategory, Category } from 'app/shared/model/category.model';
-import { CategoryService } from './category.service';
+import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+
+import AlertService from '@/shared/alert/alert.service';
+import { ICategory, Category } from '@/shared/model/category.model';
+import CategoryService from './category.service';
+
+const validations: any = {
+  category: {
+    nameAr: {
+      required,
+    },
+    nameEn: {},
+  },
+};
 
 @Component({
-  selector: 'jhi-category-update',
-  templateUrl: './category-update.component.html'
+  validations,
 })
-export class CategoryUpdateComponent implements OnInit {
-  isSaving = false;
+export default class CategoryUpdate extends Vue {
+  @Inject('alertService') private alertService: () => AlertService;
+  @Inject('categoryService') private categoryService: () => CategoryService;
+  public category: ICategory = new Category();
+  public isSaving = false;
+  public currentLanguage = '';
 
-  editForm = this.fb.group({
-    id: [],
-    nameAr: [null, [Validators.required]],
-    nameEn: []
-  });
-
-  constructor(protected categoryService: CategoryService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ category }) => {
-      this.updateForm(category);
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.categoryId) {
+        vm.retrieveCategory(to.params.categoryId);
+      }
     });
   }
 
-  updateForm(category: ICategory): void {
-    this.editForm.patchValue({
-      id: category.id,
-      nameAr: category.nameAr,
-      nameEn: category.nameEn
-    });
-  }
-
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
-    this.isSaving = true;
-    const category = this.createFromForm();
-    if (category.id !== undefined) {
-      this.subscribeToSaveResponse(this.categoryService.update(category));
-    } else {
-      this.subscribeToSaveResponse(this.categoryService.create(category));
-    }
-  }
-
-  private createFromForm(): ICategory {
-    return {
-      ...new Category(),
-      id: this.editForm.get(['id'])!.value,
-      nameAr: this.editForm.get(['nameAr'])!.value,
-      nameEn: this.editForm.get(['nameEn'])!.value
-    };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ICategory>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
+  created(): void {
+    this.currentLanguage = this.$store.getters.currentLanguage;
+    this.$store.watch(
+      () => this.$store.getters.currentLanguage,
+      () => {
+        this.currentLanguage = this.$store.getters.currentLanguage;
+      }
     );
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
+  public save(): void {
+    this.isSaving = true;
+    if (this.category.id) {
+      this.categoryService()
+        .update(this.category)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.category.updated', { param: param.id });
+          this.alertService().showAlert(message, 'info');
+        });
+    } else {
+      this.categoryService()
+        .create(this.category)
+        .then(param => {
+          this.isSaving = false;
+          this.$router.go(-1);
+          const message = this.$t('sahatiApp.category.created', { param: param.id });
+          this.alertService().showAlert(message, 'success');
+        });
+    }
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
+  public retrieveCategory(categoryId): void {
+    this.categoryService()
+      .find(categoryId)
+      .then(res => {
+        this.category = res;
+      });
   }
+
+  public previousState(): void {
+    this.$router.go(-1);
+  }
+
+  public initRelationships(): void {}
 }

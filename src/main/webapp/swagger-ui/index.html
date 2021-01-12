@@ -17,18 +17,13 @@
 
 
 <script type="text/javascript">
+
+
     window.onload = function () {
-
-
         var urls = [];
         axios.get("/swagger-resources").then(function (response) {
             response.data.forEach(function (resource) {
                 urls.push({"name": resource.name, "url": resource.location});
-            });
-
-            urls.sort(function (a, b) {
-                var x = a.name.toLowerCase(), y = b.name.toLowerCase();
-                return x < y ? -1 : x > y ? 1 : 0;
             });
 
             // Build a system
@@ -46,9 +41,9 @@
                 plugins: [
                     SwaggerUIBundle.plugins.DownloadUrl
                 ],
-                requestInterceptor: function (req) {
-                    var authToken = JSON.parse(localStorage.getItem("jhi-authenticationtoken")
-                        || sessionStorage.getItem("jhi-authenticationtoken"));
+                requestInterceptor: function(req) {
+                    var authToken = localStorage.getItem("jhi-authenticationToken")
+                        || sessionStorage.getItem("jhi-authenticationToken");
                     if (authToken) {
                         req.headers['Authorization'] = "Bearer " + authToken;
                     }
