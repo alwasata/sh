@@ -1,0 +1,8 @@
+version: '2'
+services:
+  sahati-app:
+    build: ../../..
+    container_name: sahati-app
+    environment:
+    ports:
+      - 8081:8081
