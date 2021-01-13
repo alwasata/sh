@@ -1,6 +1,7 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { IsString, IsEmail } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 import { BaseDTO } from './base.dto';
+
 /**
  * An User DTO object.
  */
@@ -26,10 +27,10 @@ export class UserDTO extends BaseDTO {
     langKey?: string;
 
     @ApiModelProperty({
-        isArray: true,
-        enum: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS'],
-        description: 'Array of permissions',
-        required: false,
+      isArray: true,
+      enum: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_HOSPITAL_ADMIN', 'ROLE_COMPANY_ADMIN', 'ROLE_ANONYMOUS'],
+      description: 'Array of permissions',
+      required: false
     })
     authorities?: any[];
 
