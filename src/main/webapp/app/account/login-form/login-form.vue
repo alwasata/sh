@@ -13,8 +13,8 @@
                                       placeholder='Your username' type='text'>
                         </b-form-input>
                     </b-form-group>
-                    <b-form-group label='Password' label-for='password'>
-                        <b-form-input id='password' v-model='password' v-model.trim='name' name='password'
+                    <b-form-group label='Password' label-for='pass'>
+                        <b-form-input id='pass' v-model='password' name='pass'
                                       placeholder='Your password' type='password'>
                         </b-form-input>
                     </b-form-group>
