@@ -1,10 +1,11 @@
+import { IEmployee } from '@/shared/model/employee.model';
+
 export interface ICard {
   id?: number;
   cardNo?: string;
   expiryDate?: Date;
   isActive?: boolean;
-  employeeName?: string;
-  employeeId?: number;
+  employee?: IEmployee;
 }
 
 export class Card implements ICard {
@@ -13,8 +14,7 @@ export class Card implements ICard {
     public cardNo?: string,
     public expiryDate?: Date,
     public isActive?: boolean,
-    public employeeName?: string,
-    public employeeId?: number
+    public employee?: IEmployee
   ) {
     this.isActive = this.isActive || false;
   }

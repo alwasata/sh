@@ -1,6 +1,6 @@
 import { mixins } from 'vue-class-component';
 
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import { IAttatchment } from '@/shared/model/attatchment.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
@@ -70,7 +70,7 @@ export default class Attatchment extends mixins(JhiDataUtils, AlertMixin) {
     this.attatchmentService()
       .delete(this.removeId)
       .then(() => {
-        const message = this.$t('sahatiApp.attatchment.deleted', { param: this.removeId });
+        const message = 'A Attatchment is deleted with identifier ' + this.removeId;
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;

@@ -1,6 +1,4 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
-
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import CardService from '../card/card.service';
 import { ICard } from '@/shared/model/card.model';
@@ -9,7 +7,7 @@ import InvoiceService from '../invoice/invoice.service';
 import { IInvoice } from '@/shared/model/invoice.model';
 
 import AlertService from '@/shared/alert/alert.service';
-import { ICardTransaction, CardTransaction } from '@/shared/model/card-transaction.model';
+import { CardTransaction, ICardTransaction } from '@/shared/model/card-transaction.model';
 import CardTransactionService from './card-transaction.service';
 
 const validations: any = {
@@ -67,7 +65,7 @@ export default class CardTransactionUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.cardTransaction.updated', { param: param.id });
+          const message = 'A CardTransaction is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -76,7 +74,7 @@ export default class CardTransactionUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.cardTransaction.created', { param: param.id });
+          const message = 'A CardTransaction is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

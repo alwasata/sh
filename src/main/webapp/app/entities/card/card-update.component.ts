@@ -1,12 +1,10 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
-
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import EmployeeService from '../employee/employee.service';
 import { IEmployee } from '@/shared/model/employee.model';
 
 import AlertService from '@/shared/alert/alert.service';
-import { ICard, Card } from '@/shared/model/card.model';
+import { Card, ICard } from '@/shared/model/card.model';
 import CardService from './card.service';
 
 const validations: any = {
@@ -58,7 +56,7 @@ export default class CardUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.card.updated', { param: param.id });
+          const message = 'A Card is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -67,7 +65,7 @@ export default class CardUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.card.created', { param: param.id });
+          const message = 'A Card is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

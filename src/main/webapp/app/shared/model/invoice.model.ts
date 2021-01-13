@@ -1,3 +1,5 @@
+import { ICardTransaction } from '@/shared/model/card-transaction.model';
+
 export const enum InvoiceStatus {
   APPROVED = 'APPROVED',
   CANCELLED = 'CANCELLED',
@@ -11,7 +13,7 @@ export interface IInvoice {
   total?: number;
   invoiceStatus?: InvoiceStatus;
   notes?: string;
-  cardTransactionId?: number;
+  cardTransaction?: ICardTransaction;
 }
 
 export class Invoice implements IInvoice {
@@ -23,6 +25,6 @@ export class Invoice implements IInvoice {
     public total?: number,
     public invoiceStatus?: InvoiceStatus,
     public notes?: string,
-    public cardTransactionId?: number
+    public cardTransaction?: ICardTransaction
   ) {}
 }

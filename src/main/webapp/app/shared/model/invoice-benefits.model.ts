@@ -1,13 +1,14 @@
+import { IBenefit } from '@/shared/model/benefit.model';
+import { IInvoice } from '@/shared/model/invoice.model';
+
 export interface IInvoiceBenefits {
   id?: number;
   pointsCost?: number;
   cost?: number;
   quantity?: number;
   total?: number;
-  benefitNameAr?: string;
-  benefitId?: number;
-  invoiceInvoiceNo?: string;
-  invoiceId?: number;
+  benefit?: IBenefit;
+  invoice?: IInvoice;
 }
 
 export class InvoiceBenefits implements IInvoiceBenefits {
@@ -17,9 +18,7 @@ export class InvoiceBenefits implements IInvoiceBenefits {
     public cost?: number,
     public quantity?: number,
     public total?: number,
-    public benefitNameAr?: string,
-    public benefitId?: number,
-    public invoiceInvoiceNo?: string,
-    public invoiceId?: number
+    public benefit?: IBenefit,
+    public invoice?: IInvoice
   ) {}
 }

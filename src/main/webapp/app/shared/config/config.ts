@@ -1,6 +1,4 @@
 import Vuex from 'vuex';
-import VueI18n from 'vue-i18n';
-import JhiFormatter from './formatter';
 import { setupAxiosInterceptors } from '@/shared/config/axios-interceptor';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -47,61 +45,6 @@ import Vue2Filters from 'vue2-filters';
 import * as filters from '@/shared/date/filters';
 import { accountStore } from '@/shared/config/store/account-store';
 import { alertStore } from '@/shared/config/store/alert-store';
-import { translationStore } from '@/shared/config/store/translation-store';
-
-const dateTimeFormats = {
-  en: {
-    short: {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-    medium: {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      weekday: 'short',
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-    long: {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-  },
-  ar: {
-    short: {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-    medium: {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      weekday: 'short',
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-    long: {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-  },
-  // jhipster-needle-i18n-language-date-time-format - JHipster will add/remove format options in this object
-};
 
 export function initVueApp(vue) {
   vue.use(VueCookie);
@@ -151,22 +94,12 @@ export function initFortAwesome(vue) {
   );
 }
 
-export function initI18N(vue) {
-  vue.use(VueI18n);
-  return new VueI18n({
-    dateTimeFormats,
-    silentTranslationWarn: true,
-    formatter: new JhiFormatter(),
-  });
-}
-
 export function initVueXStore(vue) {
   vue.use(Vuex);
   return new Vuex.Store({
     modules: {
       accountStore,
       alertStore,
-      translationStore,
     },
   });
 }

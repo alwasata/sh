@@ -24,20 +24,18 @@ import AccountService from './account/account.service';
 
 import '../content/scss/vendor.scss';
 import AlertService from '@/shared/alert/alert.service';
-import TranslationService from '@/locale/translation.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
 
 /* tslint:disable */
-
 import AttatchmentService from '@/entities/attatchment/attatchment.service';
-import EmployeeService from '@/entities/employee/employee.service';
-import CardService from '@/entities/card/card.service';
-import CompanyService from '@/entities/company/company.service';
-import HospitalService from '@/entities/hospital/hospital.service';
-import CategoryService from '@/entities/category/category.service';
 import BenefitService from '@/entities/benefit/benefit.service';
 import BenefitRequestService from '@/entities/benefit-request/benefit-request.service';
+import CardService from '@/entities/card/card.service';
 import CardTransactionService from '@/entities/card-transaction/card-transaction.service';
+import CategoryService from '@/entities/category/category.service';
+import CompanyService from '@/entities/company/company.service';
+import EmployeeService from '@/entities/employee/employee.service';
+import HospitalService from '@/entities/hospital/hospital.service';
 import InvoiceService from '@/entities/invoice/invoice.service';
 import InvoiceBenefitsService from '@/entities/invoice-benefits/invoice-benefits.service';
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
@@ -53,13 +51,11 @@ Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
 Vue.component('infinite-loading', InfiniteLoading);
 
-const i18n = config.initI18N(Vue);
 const store = config.initVueXStore(Vue);
 
 const alertService = new AlertService(store);
-const translationService = new TranslationService(store, i18n);
 const loginService = new LoginService();
-const accountService = new AccountService(store, translationService, router);
+const accountService = new AccountService(store, router);
 
 router.beforeEach((to, from, next) => {
   if (!to.matched.length) {
@@ -101,21 +97,19 @@ new Vue({
     logsService: () => new LogsService(),
     metricsService: () => new MetricsService(),
     alertService: () => alertService,
-    translationService: () => translationService,
     attatchmentService: () => new AttatchmentService(),
-    employeeService: () => new EmployeeService(),
-    cardService: () => new CardService(),
-    companyService: () => new CompanyService(),
-    hospitalService: () => new HospitalService(),
-    categoryService: () => new CategoryService(),
     benefitService: () => new BenefitService(),
     benefitRequestService: () => new BenefitRequestService(),
+    cardService: () => new CardService(),
     cardTransactionService: () => new CardTransactionService(),
+    categoryService: () => new CategoryService(),
+    companyService: () => new CompanyService(),
+    employeeService: () => new EmployeeService(),
+    hospitalService: () => new HospitalService(),
     invoiceService: () => new InvoiceService(),
     invoiceBenefitsService: () => new InvoiceBenefitsService(),
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
     accountService: () => accountService,
   },
-  i18n,
   store,
 });

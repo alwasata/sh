@@ -1,18 +1,18 @@
 <template>
     <div v-if="audits">
-        <h2 id="audits-page-heading" v-text="$t('audits.title')">Audits</h2>
+        <h2 id='audits-page-heading'>Audits</h2>
 
         <div class="row">
             <div class="col-md-5">
-                <h4 v-text="$t('audits.filter.title')">Filter by date</h4>
+                <h4>Filter by date</h4>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" v-text="$t('audits.filter.from')">from</span>
+                        <span class='input-group-text'>from</span>
                     </div>
                     <input type="date" class="form-control" name="start" v-model="fromDate" v-on:change="transition()" required/>
 
                     <div class="input-group-append">
-                        <span class="input-group-text" v-text="$t('audits.filter.to')">To</span>
+                        <span class='input-group-text'>To</span>
                     </div>
                     <input type="date" class="form-control" name="end" v-model="toDate" v-on:change="transition()" required/>
                 </div>
@@ -20,26 +20,36 @@
         </div>
 
         <div class="alert alert-warning" v-if="!isFetching && audits && audits.length === 0">
-            <span v-text="$t('audits.notFound')">No audit found</span>
+            <span>No audit found</span>
         </div>
         <div class="table-responsive" v-if="audits && audits.length > 0">
             <table class="table table-sm table-striped">
                 <thead>
                 <tr>
-                  <th v-on:click="changeOrder('auditEventDate', 'timestamp')"><span v-text="$t('audits.table.header.date')">Date</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'auditEventDate'"></jhi-sort-indicator></th>
-                  <th v-on:click="changeOrder('principal', 'principal')"><span v-text="$t('audits.table.header.principal')">User</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'principal'"></jhi-sort-indicator></th>
-                  <th v-on:click="changeOrder('auditEventType', 'type')"><span v-text="$t('audits.table.header.status')">State</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'auditEventType'"></jhi-sort-indicator></th>
-                  <th><span v-text="$t('audits.table.header.data')">Extra data</span></th>
+                    <th v-on:click="changeOrder('auditEventDate', 'timestamp')"><span>Date</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'auditEventDate'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('principal', 'principal')"><span>User</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'principal'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('auditEventType', 'type')"><span>State</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'auditEventType'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th><span>Extra data</span></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="audit in audits" :key="audit.timestamp">
-                    <td><span>{{$d(Date.parse(audit.timestamp), 'short') }}</span></td>
+                    <td><span>{{ audit.timestamp | formatDate }}</span></td>
                     <td><small>{{audit.principal}}</small></td>
                     <td>{{audit.type}}</td>
                     <td>
                         <span v-if="audit.data && audit.data.message">{{audit.data.message}}</span>
-                        <span v-if="audit.data && audit.data.remoteAddress"><span v-text="$t('audits.table.data.remoteAddress')">Remote Address</span> {{audit.data.remoteAddress}}</span>
+                        <span
+                            v-if='audit.data && audit.data.remoteAddress'><span>Remote Address</span> {{ audit.data.remoteAddress }}</span>
                     </td>
                 </tr>
                 </tbody>

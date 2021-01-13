@@ -1,6 +1,6 @@
 import { mixins } from 'vue-class-component';
 
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import { ICompany } from '@/shared/model/company.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
@@ -68,7 +68,7 @@ export default class Company extends mixins(AlertMixin) {
     this.companyService()
       .delete(this.removeId)
       .then(() => {
-        const message = this.$t('sahatiApp.company.deleted', { param: this.removeId });
+        const message = 'A Company is deleted with identifier ' + this.removeId;
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;

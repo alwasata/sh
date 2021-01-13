@@ -9,36 +9,6 @@ const AttatchmentUpdate = () => import('@/entities/attatchment/attatchment-updat
 // prettier-ignore
 const AttatchmentDetails = () => import('@/entities/attatchment/attatchment-details.vue');
 // prettier-ignore
-const Employee = () => import('@/entities/employee/employee.vue');
-// prettier-ignore
-const EmployeeUpdate = () => import('@/entities/employee/employee-update.vue');
-// prettier-ignore
-const EmployeeDetails = () => import('@/entities/employee/employee-details.vue');
-// prettier-ignore
-const Card = () => import('@/entities/card/card.vue');
-// prettier-ignore
-const CardUpdate = () => import('@/entities/card/card-update.vue');
-// prettier-ignore
-const CardDetails = () => import('@/entities/card/card-details.vue');
-// prettier-ignore
-const Company = () => import('@/entities/company/company.vue');
-// prettier-ignore
-const CompanyUpdate = () => import('@/entities/company/company-update.vue');
-// prettier-ignore
-const CompanyDetails = () => import('@/entities/company/company-details.vue');
-// prettier-ignore
-const Hospital = () => import('@/entities/hospital/hospital.vue');
-// prettier-ignore
-const HospitalUpdate = () => import('@/entities/hospital/hospital-update.vue');
-// prettier-ignore
-const HospitalDetails = () => import('@/entities/hospital/hospital-details.vue');
-// prettier-ignore
-const Category = () => import('@/entities/category/category.vue');
-// prettier-ignore
-const CategoryUpdate = () => import('@/entities/category/category-update.vue');
-// prettier-ignore
-const CategoryDetails = () => import('@/entities/category/category-details.vue');
-// prettier-ignore
 const Benefit = () => import('@/entities/benefit/benefit.vue');
 // prettier-ignore
 const BenefitUpdate = () => import('@/entities/benefit/benefit-update.vue');
@@ -51,11 +21,41 @@ const BenefitRequestUpdate = () => import('@/entities/benefit-request/benefit-re
 // prettier-ignore
 const BenefitRequestDetails = () => import('@/entities/benefit-request/benefit-request-details.vue');
 // prettier-ignore
+const Card = () => import('@/entities/card/card.vue');
+// prettier-ignore
+const CardUpdate = () => import('@/entities/card/card-update.vue');
+// prettier-ignore
+const CardDetails = () => import('@/entities/card/card-details.vue');
+// prettier-ignore
 const CardTransaction = () => import('@/entities/card-transaction/card-transaction.vue');
 // prettier-ignore
 const CardTransactionUpdate = () => import('@/entities/card-transaction/card-transaction-update.vue');
 // prettier-ignore
 const CardTransactionDetails = () => import('@/entities/card-transaction/card-transaction-details.vue');
+// prettier-ignore
+const Category = () => import('@/entities/category/category.vue');
+// prettier-ignore
+const CategoryUpdate = () => import('@/entities/category/category-update.vue');
+// prettier-ignore
+const CategoryDetails = () => import('@/entities/category/category-details.vue');
+// prettier-ignore
+const Company = () => import('@/entities/company/company.vue');
+// prettier-ignore
+const CompanyUpdate = () => import('@/entities/company/company-update.vue');
+// prettier-ignore
+const CompanyDetails = () => import('@/entities/company/company-details.vue');
+// prettier-ignore
+const Employee = () => import('@/entities/employee/employee.vue');
+// prettier-ignore
+const EmployeeUpdate = () => import('@/entities/employee/employee-update.vue');
+// prettier-ignore
+const EmployeeDetails = () => import('@/entities/employee/employee-details.vue');
+// prettier-ignore
+const Hospital = () => import('@/entities/hospital/hospital.vue');
+// prettier-ignore
+const HospitalUpdate = () => import('@/entities/hospital/hospital-update.vue');
+// prettier-ignore
+const HospitalDetails = () => import('@/entities/hospital/hospital-details.vue');
 // prettier-ignore
 const Invoice = () => import('@/entities/invoice/invoice.vue');
 // prettier-ignore
@@ -95,126 +95,7 @@ export default [
     component: AttatchmentDetails,
     meta: { authorities: [Authority.USER] },
   },
-  {
-    path: '/employee',
-    name: 'Employee',
-    component: Employee,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/employee/new',
-    name: 'EmployeeCreate',
-    component: EmployeeUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/employee/:employeeId/edit',
-    name: 'EmployeeEdit',
-    component: EmployeeUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/employee/:employeeId/view',
-    name: 'EmployeeView',
-    component: EmployeeDetails,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/card',
-    name: 'Card',
-    component: Card,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/card/new',
-    name: 'CardCreate',
-    component: CardUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/card/:cardId/edit',
-    name: 'CardEdit',
-    component: CardUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/card/:cardId/view',
-    name: 'CardView',
-    component: CardDetails,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/company',
-    name: 'Company',
-    component: Company,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/company/new',
-    name: 'CompanyCreate',
-    component: CompanyUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/company/:companyId/edit',
-    name: 'CompanyEdit',
-    component: CompanyUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/company/:companyId/view',
-    name: 'CompanyView',
-    component: CompanyDetails,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/hospital',
-    name: 'Hospital',
-    component: Hospital,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/hospital/new',
-    name: 'HospitalCreate',
-    component: HospitalUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/hospital/:hospitalId/edit',
-    name: 'HospitalEdit',
-    component: HospitalUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/hospital/:hospitalId/view',
-    name: 'HospitalView',
-    component: HospitalDetails,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/category',
-    name: 'Category',
-    component: Category,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/category/new',
-    name: 'CategoryCreate',
-    component: CategoryUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/category/:categoryId/edit',
-    name: 'CategoryEdit',
-    component: CategoryUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/category/:categoryId/view',
-    name: 'CategoryView',
-    component: CategoryDetails,
-    meta: { authorities: [Authority.USER] },
-  },
+
   {
     path: '/benefit',
     name: 'Benefit',
@@ -239,6 +120,7 @@ export default [
     component: BenefitDetails,
     meta: { authorities: [Authority.USER] },
   },
+
   {
     path: '/benefit-request',
     name: 'BenefitRequest',
@@ -263,6 +145,32 @@ export default [
     component: BenefitRequestDetails,
     meta: { authorities: [Authority.USER] },
   },
+
+  {
+    path: '/card',
+    name: 'Card',
+    component: Card,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/card/new',
+    name: 'CardCreate',
+    component: CardUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/card/:cardId/edit',
+    name: 'CardEdit',
+    component: CardUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/card/:cardId/view',
+    name: 'CardView',
+    component: CardDetails,
+    meta: { authorities: [Authority.USER] },
+  },
+
   {
     path: '/card-transaction',
     name: 'CardTransaction',
@@ -287,6 +195,107 @@ export default [
     component: CardTransactionDetails,
     meta: { authorities: [Authority.USER] },
   },
+
+  {
+    path: '/category',
+    name: 'Category',
+    component: Category,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/category/new',
+    name: 'CategoryCreate',
+    component: CategoryUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/category/:categoryId/edit',
+    name: 'CategoryEdit',
+    component: CategoryUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/category/:categoryId/view',
+    name: 'CategoryView',
+    component: CategoryDetails,
+    meta: { authorities: [Authority.USER] },
+  },
+
+  {
+    path: '/company',
+    name: 'Company',
+    component: Company,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/company/new',
+    name: 'CompanyCreate',
+    component: CompanyUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/company/:companyId/edit',
+    name: 'CompanyEdit',
+    component: CompanyUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/company/:companyId/view',
+    name: 'CompanyView',
+    component: CompanyDetails,
+    meta: { authorities: [Authority.USER] },
+  },
+
+  {
+    path: '/employee',
+    name: 'Employee',
+    component: Employee,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/employee/new',
+    name: 'EmployeeCreate',
+    component: EmployeeUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/employee/:employeeId/edit',
+    name: 'EmployeeEdit',
+    component: EmployeeUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/employee/:employeeId/view',
+    name: 'EmployeeView',
+    component: EmployeeDetails,
+    meta: { authorities: [Authority.USER] },
+  },
+
+  {
+    path: '/hospital',
+    name: 'Hospital',
+    component: Hospital,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/hospital/new',
+    name: 'HospitalCreate',
+    component: HospitalUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/hospital/:hospitalId/edit',
+    name: 'HospitalEdit',
+    component: HospitalUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/hospital/:hospitalId/view',
+    name: 'HospitalView',
+    component: HospitalDetails,
+    meta: { authorities: [Authority.USER] },
+  },
+
   {
     path: '/invoice',
     name: 'Invoice',
@@ -311,6 +320,7 @@ export default [
     component: InvoiceDetails,
     meta: { authorities: [Authority.USER] },
   },
+
   {
     path: '/invoice-benefits',
     name: 'InvoiceBenefits',

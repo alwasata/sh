@@ -3,13 +3,11 @@ import { Component, Inject } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import JhiDataUtils from '@/shared/data/data-utils.service';
 
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
-
 import EmployeeService from '../employee/employee.service';
 import { IEmployee } from '@/shared/model/employee.model';
 
 import AlertService from '@/shared/alert/alert.service';
-import { IAttatchment, Attatchment } from '@/shared/model/attatchment.model';
+import { Attatchment, IAttatchment } from '@/shared/model/attatchment.model';
 import AttatchmentService from './attatchment.service';
 
 const validations: any = {
@@ -61,7 +59,7 @@ export default class AttatchmentUpdate extends mixins(JhiDataUtils) {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.attatchment.updated', { param: param.id });
+          const message = 'A Attatchment is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -70,7 +68,7 @@ export default class AttatchmentUpdate extends mixins(JhiDataUtils) {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.attatchment.created', { param: param.id });
+          const message = 'A Attatchment is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

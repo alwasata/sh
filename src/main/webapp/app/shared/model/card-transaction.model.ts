@@ -1,3 +1,6 @@
+import { ICard } from '@/shared/model/card.model';
+import { IInvoice } from '@/shared/model/invoice.model';
+
 export const enum TransactionAction {
   PLUS = 'PLUS',
   MINUS = 'MINUS',
@@ -10,9 +13,8 @@ export interface ICardTransaction {
   pointsAmount?: number;
   action?: TransactionAction;
   notes?: string;
-  cardCardNo?: string;
-  cardId?: number;
-  invoiceId?: number;
+  card?: ICard;
+  invoice?: IInvoice;
 }
 
 export class CardTransaction implements ICardTransaction {
@@ -23,8 +25,7 @@ export class CardTransaction implements ICardTransaction {
     public pointsAmount?: number,
     public action?: TransactionAction,
     public notes?: string,
-    public cardCardNo?: string,
-    public cardId?: number,
-    public invoiceId?: number
+    public card?: ICard,
+    public invoice?: IInvoice
   ) {}
 }

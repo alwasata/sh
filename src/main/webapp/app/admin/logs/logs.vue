@@ -1,21 +1,22 @@
 <template>
     <div class="table-responsive">
-        <h2 id="logs-page-heading" v-text="$t('logs.title')">Logs</h2>
+        <h2 id='logs-page-heading'>Logs</h2>
 
-        <div v-if="loggers">
-            <p v-text="$t('logs.nbloggers', { 'total': loggers.length})">There are {{ loggers.length }} loggers.</p>
+        <div v-if='loggers'>
+            <p>There are {{ loggers.length }} loggers.</p>
 
-            <span v-text="$t('logs.filter')">Filter</span> <input type="text" v-model="filtered" class="form-control">
+            <span>Filter</span> <input v-model='filtered' class='form-control' type='text'>
 
-            <table class="table table-sm table-striped table-bordered">
+            <table class='table table-sm table-striped table-bordered'>
                 <thead>
-                <tr title="click to order">
-                    <th v-on:click="changeOrder('name')"><span v-text="$t('logs.table.name')">Name</span></th>
-                    <th v-on:click="changeOrder('level')"><span v-text="$t('logs.table.level')">Level</span></th>
+                <tr title='click to order'>
+                    <th v-on:click="changeOrder('name')"><span>Name</span></th>
+                    <th v-on:click="changeOrder('level')"><span>Level</span></th>
                 </tr>
                 </thead>
 
-                <tr v-for="logger in orderBy(filterBy(loggers, filtered), orderProp, reverse === true ? 1 : -1)" :key="logger.name">
+                <tr v-for='logger in orderBy(filterBy(loggers, filtered), orderProp, reverse === true ? 1 : -1)'
+                    :key='logger.name'>
                     <td><small>{{logger.name}}</small></td>
                     <td>
                         <button v-on:click="updateLevel(logger.name, 'TRACE')" :class="(logger.level==='TRACE') ? 'btn-primary' : 'btn-light'" class="btn btn-sm">TRACE</button>

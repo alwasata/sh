@@ -1,3 +1,5 @@
+import { ICompany } from '@/shared/model/company.model';
+
 export const enum EmployeeStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
@@ -12,8 +14,7 @@ export interface IEmployee {
   identityNo?: string;
   employeeStatus?: EmployeeStatus;
   notes?: string;
-  companyNameAr?: string;
-  companyId?: number;
+  company?: ICompany;
 }
 
 export class Employee implements IEmployee {
@@ -24,7 +25,6 @@ export class Employee implements IEmployee {
     public identityNo?: string,
     public employeeStatus?: EmployeeStatus,
     public notes?: string,
-    public companyNameAr?: string,
-    public companyId?: number
+    public company?: ICompany
   ) {}
 }

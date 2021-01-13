@@ -3,7 +3,6 @@ const path = require('path');
 const vueLoaderConfig = require('./loader.conf');
 const { VueLoaderPlugin } = require('vue-loader');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 function resolve(dir) {
@@ -114,15 +113,6 @@ module.exports = {
       chunks: ['vendors', 'main', 'global'],
       chunksSortMode: 'manual',
       inject: true,
-    }),
-    new MergeJsonWebpackPlugin({
-      output: {
-        groupBy: [
-          { pattern: './src/main/webapp/i18n/en/*.json', fileName: './i18n/en.json' },
-          { pattern: './src/main/webapp/i18n/ar/*.json', fileName: './i18n/ar.json' },
-          // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
-        ],
-      },
     }),
   ],
 };

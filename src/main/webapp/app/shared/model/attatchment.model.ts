@@ -6,8 +6,6 @@ export interface IAttatchment {
   fileContentType?: string;
   file?: any;
   fileUrl?: string;
-  employeeName?: string;
-  employeeId?: number;
   employee?: IEmployee;
 }
 
@@ -18,8 +16,6 @@ export class Attatchment implements IAttatchment {
     public fileContentType?: string,
     public file?: any,
     public fileUrl?: string,
-    public employeeName?: string,
-    public employeeId?: number,
     public employee?: IEmployee
   ) {}
 }

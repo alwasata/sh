@@ -1,11 +1,11 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 
 import UserService from '@/admin/user-management/user-management.service';
 
 import AlertService from '@/shared/alert/alert.service';
-import { ICompany, Company } from '@/shared/model/company.model';
+import { Company, ICompany } from '@/shared/model/company.model';
 import CompanyService from './company.service';
 
 const validations: any = {
@@ -62,7 +62,7 @@ export default class CompanyUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.company.updated', { param: param.id });
+          const message = 'A Company is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -71,7 +71,7 @@ export default class CompanyUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.company.created', { param: param.id });
+          const message = 'A Company is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

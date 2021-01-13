@@ -1,6 +1,6 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 
 import CategoryService from '../category/category.service';
 import { ICategory } from '@/shared/model/category.model';
@@ -9,7 +9,7 @@ import HospitalService from '../hospital/hospital.service';
 import { IHospital } from '@/shared/model/hospital.model';
 
 import AlertService from '@/shared/alert/alert.service';
-import { IBenefit, Benefit } from '@/shared/model/benefit.model';
+import { Benefit, IBenefit } from '@/shared/model/benefit.model';
 import BenefitService from './benefit.service';
 
 const validations: any = {
@@ -68,7 +68,7 @@ export default class BenefitUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.benefit.updated', { param: param.id });
+          const message = 'A Benefit is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -77,7 +77,7 @@ export default class BenefitUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.benefit.created', { param: param.id });
+          const message = 'A Benefit is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

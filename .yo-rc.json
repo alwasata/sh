@@ -10,7 +10,6 @@
     "packageFolder": "ly/alwasata/sahati",
     "serverPort": "8080",
     "authenticationType": "jwt",
-    "cacheProvider": "ehcache",
     "websocket": false,
     "databaseType": "sql",
     "devDatabaseType": "mysql",
@@ -38,7 +37,7 @@
         "version": "1.9.2"
       }
     ],
-    "enableTranslation": true,
+    "enableTranslation": false,
     "blueprints": [
       {
         "name": "generator-jhipster-vuejs",
@@ -46,11 +45,10 @@
       }
     ],
     "skipUserManagement": false,
-    "enableHibernateCache": true,
-    "languages": ["en", "fr"],
-    "nativeLanguage": "en",
+    "enableHibernateCache": false,
     "skipClient": false,
-    "skipServer": false
+    "skipServer": false,
+    "cacheProvider": "no"
   },
   "entities": [
     "Attatchment",

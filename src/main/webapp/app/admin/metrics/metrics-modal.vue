@@ -11,9 +11,9 @@
         <div class="pad" v-for="(entry, key) of filterBy(threadDump, threadDumpFilter)" :key="key">
             <h6>
                 <span class="badge" :class="getBadgeClass(entry.threadState)">{{entry.threadState}}</span>&nbsp;{{entry.threadName}} (ID {{entry.threadId}})
-                <a v-on:click="entry.show = !entry.show" href="javascript:void(0);">
-                    <span :hidden="entry.show" v-text="$t('metrics.jvm.threads.dump.show')">Show StackTrace</span>
-                    <span :hidden="!entry.show" v-text="$t('metrics.jvm.threads.dump.hide')">Hide StackTrace</span>
+                <a v-on:click='entry.show = !entry.show' href='javascript:void(0);'>
+                    <span :hidden='entry.show'>Show StackTrace</span>
+                    <span :hidden='!entry.show'>Hide StackTrace</span>
                 </a>
             </h6>
             <div class="card" :hidden="!entry.show">
@@ -27,11 +27,11 @@
             <table class="table table-sm table-responsive">
                 <thead>
                 <tr>
-                    <th v-text="$t('metrics.jvm.threads.dump.blockedtime')">Blocked Time</th>
-                    <th v-text="$t('metrics.jvm.threads.dump.blockedcount')">Blocked Count</th>
-                    <th v-text="$t('metrics.jvm.threads.dump.waitedtime')">Waited Time</th>
-                    <th v-text="$t('metrics.jvm.threads.dump.waitedcount')">Waited Count</th>
-                    <th v-text="$t('metrics.jvm.threads.dump.lockname')">Lock Name</th>
+                    <th>Blocked Time</th>
+                    <th>Blocked Count</th>
+                    <th>Waited Time</th>
+                    <th>Waited Count</th>
+                    <th>Lock Name</th>
                 </tr>
                 </thead>
                 <tbody>

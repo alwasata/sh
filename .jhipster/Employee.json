@@ -1,48 +1,48 @@
 {
-    "name": "Employee",
-    "fields": [
-        {
-            "fieldName": "name",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "phone",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "identityNo",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "employeeStatus",
-            "fieldType": "EmployeeStatus",
-            "fieldValues": "PENDING,APPROVED,REFUSED,CANCELLED"
-        },
-        {
-            "fieldName": "notes",
-            "fieldType": "String"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "company",
-            "otherEntityRelationshipName": "employee",
-            "relationshipName": "company",
-            "otherEntityField": "nameAr"
-        }
-    ],
-    "changelogDate": "20210112132100",
-    "entityTableName": "employee",
-    "dto": "mapstruct",
-    "pagination": "pagination",
-    "service": "serviceClass",
-    "jpaMetamodelFiltering": true,
-    "fluentMethods": true,
-    "readOnly": false,
-    "embedded": false,
-    "clientRootFolder": "",
-    "applications": [
-        "sahati"
-    ]
+  "name": "Employee",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "identityNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "employeeStatus",
+      "fieldType": "EmployeeStatus",
+      "fieldValues": "PENDING,APPROVED,REFUSED,CANCELLED"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "company",
+      "otherEntityRelationshipName": "employee",
+      "relationshipName": "company",
+      "otherEntityField": "nameAr"
+    }
+  ],
+  "changelogDate": "20210113112949",
+  "entityTableName": "employee",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": [
+    "sahati"
+  ]
 }

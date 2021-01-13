@@ -1,3 +1,7 @@
+import { ICategory } from '@/shared/model/category.model';
+import { IHospital } from '@/shared/model/hospital.model';
+import { IBenefit } from '@/shared/model/benefit.model';
+
 export const enum BenefitStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
@@ -13,12 +17,9 @@ export interface IBenefitRequest {
   cost?: number;
   benefitStatus?: BenefitStatus;
   notes?: string;
-  categoryNameAr?: string;
-  categoryId?: number;
-  hospitalNameAr?: string;
-  hospitalId?: number;
-  benefitNameAr?: string;
-  benefitId?: number;
+  category?: ICategory;
+  hospital?: IHospital;
+  benefit?: IBenefit;
 }
 
 export class BenefitRequest implements IBenefitRequest {
@@ -30,11 +31,8 @@ export class BenefitRequest implements IBenefitRequest {
     public cost?: number,
     public benefitStatus?: BenefitStatus,
     public notes?: string,
-    public categoryNameAr?: string,
-    public categoryId?: number,
-    public hospitalNameAr?: string,
-    public hospitalId?: number,
-    public benefitNameAr?: string,
-    public benefitId?: number
+    public category?: ICategory,
+    public hospital?: IHospital,
+    public benefit?: IBenefit
   ) {}
 }

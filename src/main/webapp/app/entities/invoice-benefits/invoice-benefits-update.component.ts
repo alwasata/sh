@@ -1,6 +1,4 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
-
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import BenefitService from '../benefit/benefit.service';
 import { IBenefit } from '@/shared/model/benefit.model';
@@ -66,7 +64,7 @@ export default class InvoiceBenefitsUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.invoiceBenefits.updated', { param: param.id });
+          const message = 'A InvoiceBenefits is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -75,7 +73,7 @@ export default class InvoiceBenefitsUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.invoiceBenefits.created', { param: param.id });
+          const message = 'A InvoiceBenefits is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

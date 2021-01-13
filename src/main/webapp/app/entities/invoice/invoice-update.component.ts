@@ -1,6 +1,4 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
-
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import CardTransactionService from '../card-transaction/card-transaction.service';
 import { ICardTransaction } from '@/shared/model/card-transaction.model';
@@ -61,7 +59,7 @@ export default class InvoiceUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.invoice.updated', { param: param.id });
+          const message = 'A Invoice is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -70,7 +68,7 @@ export default class InvoiceUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.invoice.created', { param: param.id });
+          const message = 'A Invoice is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

@@ -1,6 +1,6 @@
 import { mixins } from 'vue-class-component';
 
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import { ICardTransaction } from '@/shared/model/card-transaction.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
@@ -68,7 +68,7 @@ export default class CardTransaction extends mixins(AlertMixin) {
     this.cardTransactionService()
       .delete(this.removeId)
       .then(() => {
-        const message = this.$t('sahatiApp.cardTransaction.deleted', { param: this.removeId });
+        const message = 'A CardTransaction is deleted with identifier ' + this.removeId;
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;

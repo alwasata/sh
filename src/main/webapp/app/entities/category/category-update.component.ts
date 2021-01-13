@@ -1,9 +1,9 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
-import { ICategory, Category } from '@/shared/model/category.model';
+import { Category, ICategory } from '@/shared/model/category.model';
 import CategoryService from './category.service';
 
 const validations: any = {
@@ -51,7 +51,7 @@ export default class CategoryUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.category.updated', { param: param.id });
+          const message = 'A Category is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -60,7 +60,7 @@ export default class CategoryUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.category.created', { param: param.id });
+          const message = 'A Category is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

@@ -2,35 +2,36 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
-                <h2 id="sahatiApp.category.home.createOrEditLabel" v-text="$t('sahatiApp.category.home.createOrEditLabel')">Create or edit a Category</h2>
+                <h2 id='sahatiApp.category.home.createOrEditLabel'>Create or edit a Category</h2>
                 <div>
                     <div class="form-group" v-if="category.id">
-                        <label for="id" v-text="$t('global.field.id')">ID</label>
+                        <label for='id'>ID</label>
                         <input type="text" class="form-control" id="id" name="id"
                                v-model="category.id" readonly />
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label" v-text="$t('sahatiApp.category.nameAr')" for="category-nameAr">Name Ar</label>
+                        <label class='form-control-label' for='category-nameAr'>Name Ar</label>
                         <input type="text" class="form-control" name="nameAr" id="category-nameAr"
                             :class="{'valid': !$v.category.nameAr.$invalid, 'invalid': $v.category.nameAr.$invalid }" v-model="$v.category.nameAr.$model"  required/>
                         <div v-if="$v.category.nameAr.$anyDirty && $v.category.nameAr.$invalid">
-                            <small class="form-text text-danger" v-if="!$v.category.nameAr.required" v-text="$t('entity.validation.required')">
+                            <small v-if='!$v.category.nameAr.required' class='form-text text-danger'>
                                 This field is required.
                             </small>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label" v-text="$t('sahatiApp.category.nameEn')" for="category-nameEn">Name En</label>
+                        <label class='form-control-label' for='category-nameEn'>Name En</label>
                         <input type="text" class="form-control" name="nameEn" id="category-nameEn"
                             :class="{'valid': !$v.category.nameEn.$invalid, 'invalid': $v.category.nameEn.$invalid }" v-model="$v.category.nameEn.$model" />
                     </div>
                 </div>
                 <div>
-                    <button type="button" id="cancel-save" class="btn btn-secondary" v-on:click="previousState()">
-                        <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.cancel')">Cancel</span>
+                    <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
+                        <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>Cancel</span>
                     </button>
-                    <button type="submit" id="save-entity" :disabled="$v.category.$invalid || isSaving" class="btn btn-primary">
-                        <font-awesome-icon icon="save"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.save')">Save</span>
+                    <button type='submit' id='save-entity' :disabled='$v.category.$invalid || isSaving'
+                            class='btn btn-primary'>
+                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>Save</span>
                     </button>
                 </div>
             </form>

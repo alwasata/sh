@@ -2,30 +2,34 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
-                <h2 id="sahatiApp.attatchment.home.createOrEditLabel" v-text="$t('sahatiApp.attatchment.home.createOrEditLabel')">Create or edit a Attatchment</h2>
+                <h2 id='sahatiApp.attatchment.home.createOrEditLabel'>Create or edit a Attatchment</h2>
                 <div>
                     <div class="form-group" v-if="attatchment.id">
-                        <label for="id" v-text="$t('global.field.id')">ID</label>
+                        <label for='id'>ID</label>
                         <input type="text" class="form-control" id="id" name="id"
                                v-model="attatchment.id" readonly />
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label" v-text="$t('sahatiApp.attatchment.name')" for="attatchment-name">Name</label>
+                        <label class='form-control-label' for='attatchment-name'>Name</label>
                         <input type="text" class="form-control" name="name" id="attatchment-name"
                             :class="{'valid': !$v.attatchment.name.$invalid, 'invalid': $v.attatchment.name.$invalid }" v-model="$v.attatchment.name.$model" />
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label" v-text="$t('sahatiApp.attatchment.file')" for="attatchment-file">File</label>
+                        <label class='form-control-label' for='attatchment-file'>File</label>
                         <div>
-                            <div v-if="attatchment.file" class="form-text text-danger clearfix">
-                                <a class="pull-left" v-on:click="openFile(attatchment.fileContentType, attatchment.file)" v-text="$t('entity.action.open')">open</a><br>
-                                <span class="pull-left">{{attatchment.fileContentType}}, {{byteSize(attatchment.file)}}</span>
-                                <button type="button" v-on:click="attatchment.file=null;attatchment.fileContentType=null;"
-                                        class="btn btn-secondary btn-xs pull-right">
-                                    <font-awesome-icon icon="times"></font-awesome-icon>
+                            <div v-if='attatchment.file' class='form-text text-danger clearfix'>
+                                <a class='pull-left'
+                                   v-on:click='openFile(attatchment.fileContentType, attatchment.file)'>open</a><br>
+                                <span
+                                    class='pull-left'>{{ attatchment.fileContentType }}, {{ byteSize(attatchment.file) }}</span>
+                                <button type='button'
+                                        v-on:click='attatchment.file=null;attatchment.fileContentType=null;'
+                                        class='btn btn-secondary btn-xs pull-right'>
+                                    <font-awesome-icon icon='times'></font-awesome-icon>
                                 </button>
                             </div>
-                            <input type="file" ref="file_file" id="file_file" v-on:change="setFileData($event, attatchment, 'file', false)" v-text="$t('entity.action.addblob')"/>
+                            <input id='file_file' ref='file_file' type='file'
+                                   v-on:change="setFileData($event, attatchment, 'file', false)" />
                         </div>
                         <input type="hidden" class="form-control" name="file" id="attatchment-file"
                             :class="{'valid': !$v.attatchment.file.$invalid, 'invalid': $v.attatchment.file.$invalid }" v-model="$v.attatchment.file.$model" />
@@ -33,28 +37,29 @@
                             v-model="attatchment.fileContentType" />
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label" v-text="$t('sahatiApp.attatchment.fileUrl')" for="attatchment-fileUrl">File Url</label>
+                        <label class='form-control-label' for='attatchment-fileUrl'>File Url</label>
                         <input type="text" class="form-control" name="fileUrl" id="attatchment-fileUrl"
                             :class="{'valid': !$v.attatchment.fileUrl.$invalid, 'invalid': $v.attatchment.fileUrl.$invalid }" v-model="$v.attatchment.fileUrl.$model" />
                     </div>
-                    <div class="form-group">
-                        <label class="form-control-label" v-text="$t('sahatiApp.attatchment.employee')" for="attatchment-employee">Employee</label>
+                    <div class='form-group'>
+                        <label class='form-control-label' for='attatchment-employee'>Employee</label>
                         <select id='attatchment-employee' v-model='attatchment.employee' class='form-control'
                                 name='employee'>
                             <option v-bind:value='null'></option>
                             <option v-for='employeeOption in employees' :key='employeeOption.id'
-                                    v-bind:value='employeeOption'>{{ employeeOption.name }}
+                                    v-bind:value='attatchment.employee && employeeOption.id === attatchment.employee.id ? attatchment.employee : employeeOption'>
+                                {{ employeeOption.name }}
                             </option>
                         </select>
                     </div>
-
                 </div>
                 <div>
-                    <button type="button" id="cancel-save" class="btn btn-secondary" v-on:click="previousState()">
-                        <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.cancel')">Cancel</span>
+                    <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
+                        <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>Cancel</span>
                     </button>
-                    <button type="submit" id="save-entity" :disabled="$v.attatchment.$invalid || isSaving" class="btn btn-primary">
-                        <font-awesome-icon icon="save"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.save')">Save</span>
+                    <button type='submit' id='save-entity' :disabled='$v.attatchment.$invalid || isSaving'
+                            class='btn btn-primary'>
+                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>Save</span>
                     </button>
                 </div>
             </form>

@@ -1,69 +1,69 @@
 {
-    "name": "BenefitRequest",
-    "fields": [
-        {
-            "fieldName": "nameAr",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "nameEn",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "pointsCost",
-            "fieldType": "Float"
-        },
-        {
-            "fieldName": "cost",
-            "fieldType": "Float"
-        },
-        {
-            "fieldName": "benefitStatus",
-            "fieldType": "BenefitStatus",
-            "fieldValues": "PENDING,APPROVED,REFUSED,CANCELLED"
-        },
-        {
-            "fieldName": "notes",
-            "fieldType": "String"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "category",
-            "otherEntityRelationshipName": "benefitRequest",
-            "relationshipName": "category",
-            "otherEntityField": "nameAr"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "hospital",
-            "otherEntityRelationshipName": "benefitRequest",
-            "relationshipName": "hospital",
-            "otherEntityField": "nameAr"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "benefit",
-            "otherEntityRelationshipName": "benefitRequest",
-            "relationshipName": "benefit",
-            "otherEntityField": "nameAr"
-        }
-    ],
-    "changelogDate": "20210112132700",
-    "entityTableName": "benefit_request",
-    "dto": "mapstruct",
-    "pagination": "pagination",
-    "service": "serviceClass",
-    "jpaMetamodelFiltering": true,
-    "fluentMethods": true,
-    "readOnly": false,
-    "embedded": false,
-    "clientRootFolder": "",
-    "applications": [
-        "sahati"
-    ]
+  "name": "BenefitRequest",
+  "fields": [
+    {
+      "fieldName": "nameAr",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "nameEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "pointsCost",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "cost",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "benefitStatus",
+      "fieldType": "BenefitStatus",
+      "fieldValues": "PENDING,APPROVED,REFUSED,CANCELLED"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "benefitRequest",
+      "relationshipName": "category",
+      "otherEntityField": "nameAr"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "hospital",
+      "otherEntityRelationshipName": "benefitRequest",
+      "relationshipName": "hospital",
+      "otherEntityField": "nameAr"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "benefit",
+      "otherEntityRelationshipName": "benefitRequest",
+      "relationshipName": "benefit",
+      "otherEntityField": "nameAr"
+    }
+  ],
+  "changelogDate": "20210113113549",
+  "entityTableName": "benefit_request",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": [
+    "sahati"
+  ]
 }

@@ -1,9 +1,0 @@
-{
-  "sahatiApp": {
-    "TransactionAction": {
-      "null": "",
-      "PLUS": "PLUS",
-      "MINUS": "MINUS"
-    }
-  }
-}

@@ -84,9 +84,7 @@ export default class JhiUserManagementComponent extends mixins(AlertMixin) {
     this.userManagementService()
       .remove(this.removeId)
       .then(res => {
-        const message = this.$t(res.headers['x-sahatiapp-alert'], {
-          param: decodeURIComponent(res.headers['x-sahatiapp-params'].replace(/\+/g, ' ')),
-        });
+        const message = res.headers['x-sahatiapp-alert'];
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;

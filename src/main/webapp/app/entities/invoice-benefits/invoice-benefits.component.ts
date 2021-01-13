@@ -1,6 +1,6 @@
 import { mixins } from 'vue-class-component';
 
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import { IInvoiceBenefits } from '@/shared/model/invoice-benefits.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
@@ -68,7 +68,7 @@ export default class InvoiceBenefits extends mixins(AlertMixin) {
     this.invoiceBenefitsService()
       .delete(this.removeId)
       .then(() => {
-        const message = this.$t('sahatiApp.invoiceBenefits.deleted', { param: this.removeId });
+        const message = 'A InvoiceBenefits is deleted with identifier ' + this.removeId;
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;

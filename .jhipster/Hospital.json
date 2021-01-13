@@ -1,51 +1,51 @@
 {
-    "name": "Hospital",
-    "fields": [
-        {
-            "fieldName": "nameAr",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "nameEn",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "email",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "phone",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "address",
-            "fieldType": "String"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityName": "user",
-            "otherEntityRelationshipName": "hospital",
-            "relationshipName": "user",
-            "otherEntityField": "id",
-            "ownerSide": true
-        }
-    ],
-    "changelogDate": "20210112132400",
-    "entityTableName": "hospital",
-    "dto": "mapstruct",
-    "pagination": "pagination",
-    "service": "serviceClass",
-    "jpaMetamodelFiltering": true,
-    "fluentMethods": true,
-    "readOnly": false,
-    "embedded": false,
-    "clientRootFolder": "",
-    "applications": [
-        "sahati"
-    ]
+  "name": "Hospital",
+  "fields": [
+    {
+      "fieldName": "nameAr",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "nameEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "hospital",
+      "relationshipName": "user",
+      "otherEntityField": "id",
+      "ownerSide": true
+    }
+  ],
+  "changelogDate": "20210113113249",
+  "entityTableName": "hospital",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": [
+    "sahati"
+  ]
 }

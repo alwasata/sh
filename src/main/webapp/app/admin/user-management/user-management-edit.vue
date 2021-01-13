@@ -2,83 +2,83 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" v-if="userAccount">
-                <h2 id="myUserLabel" v-text="$t('userManagement.home.createOrEditLabel')">
+                <h2 id='myUserLabel'>
                     Create or edit a User
                 </h2>
                 <div>
                     <div class="form-group" :hidden="!userAccount.id">
-                        <label v-text="$t('global.field.id')">ID</label>
+                        <label>ID</label>
                         <input type="text" class="form-control" name="id"
                                v-model="userAccount.id" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-control-label" v-text="$t('userManagement.login')">Login</label>
+                        <label class='form-control-label'>Login</label>
                         <input type="text" class="form-control" name="login"
                                :class="{'valid': !$v.userAccount.login.$invalid, 'invalid': $v.userAccount.login.$invalid }"
                                v-model="$v.userAccount.login.$model">
 
                         <div v-if="$v.userAccount.login.$anyDirty && $v.userAccount.login.$invalid">
-                            <small class="form-text text-danger"
-                                   v-if="!$v.userAccount.login.required" v-text="$t('entity.validation.required')">
+                            <small class='form-text text-danger'
+                                   v-if='!$v.userAccount.login.required'>
                                 This field is required.
                             </small>
 
-                            <small class="form-text text-danger"
-                                   v-if="!$v.userAccount.login.maxLength" v-text="$t('entity.validation.maxlength', {max: 50})">
+                            <small class='form-text text-danger'
+                                   v-if='!$v.userAccount.login.maxLength'>
                                 This field cannot be longer than 50 characters.
                             </small>
 
-                            <small class="form-text text-danger"
-                                   v-if="!$v.userAccount.login.pattern" v-text="$t('entity.validation.patternLogin')">
+                            <small class='form-text text-danger'
+                                   v-if='!$v.userAccount.login.pattern'>
                                 This field can only contain letters, digits and e-mail addresses.
                             </small>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-control-label" for="firstName" v-text="$t('userManagement.firstName')">First Name</label>
-                        <input type="text" class="form-control" id="firstName" name="firstName" v-bind:placeholder="$t('settings.form[\'firstname.placeholder\']')"
+                    <div class='form-group'>
+                        <label class='form-control-label' for='firstName'>First Name</label>
+                        <input id='firstName' class='form-control' name='firstName' type='text'
                                :class="{'valid': !$v.userAccount.firstName.$invalid, 'invalid': $v.userAccount.firstName.$invalid }"
-                               v-model="$v.userAccount.firstName.$model">
-                        <div v-if="$v.userAccount.firstName.$anyDirty && $v.userAccount.firstName.$invalid">
-                            <small class="form-text text-danger"
-                                   v-if="!$v.userAccount.firstName.maxLength" v-text="$t('entity.validation.maxlength', {max: 50})">
+                               v-model='$v.userAccount.firstName.$model'>
+                        <div v-if='$v.userAccount.firstName.$anyDirty && $v.userAccount.firstName.$invalid'>
+                            <small class='form-text text-danger'
+                                   v-if='!$v.userAccount.firstName.maxLength'>
                                 This field cannot be longer than 50 characters.
                             </small>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-control-label" for="lastName" v-text="$t('userManagement.lastName')">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" name="lastName" v-bind:placeholder="$t('settings.form[\'lastname.placeholder\']')"
+                    <div class='form-group'>
+                        <label class='form-control-label' for='lastName'>Last Name</label>
+                        <input id='lastName' class='form-control' name='lastName' type='text'
                                :class="{'valid': !$v.userAccount.lastName.$invalid, 'invalid': $v.userAccount.lastName.$invalid }"
-                               v-model="$v.userAccount.lastName.$model">
-                        <div v-if="$v.userAccount.lastName.$anyDirty && $v.userAccount.lastName.$invalid">
-                            <small class="form-text text-danger"
-                                   v-if="!$v.userAccount.lastName.maxLength" v-text="$t('entity.validation.maxlength', {max: 50})">
+                               v-model='$v.userAccount.lastName.$model'>
+                        <div v-if='$v.userAccount.lastName.$anyDirty && $v.userAccount.lastName.$invalid'>
+                            <small class='form-text text-danger'
+                                   v-if='!$v.userAccount.lastName.maxLength'>
                                 This field cannot be longer than 50 characters.
                             </small>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-control-label" for="email" v-text="$t('userManagement.email')">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" v-bind:placeholder="$t('global.form[\'email.placeholder\']')"
+                    <div class='form-group'>
+                        <label class='form-control-label' for='email'>Email</label>
+                        <input id='email' class='form-control' name='email' type='email'
                                :class="{'valid': !$v.userAccount.email.$invalid, 'invalid': $v.userAccount.email.$invalid }"
-                               v-model="$v.userAccount.email.$model" email required>
-                        <div v-if="$v.userAccount.email.$anyDirty && $v.userAccount.email.$invalid">
-                            <small class="form-text text-danger" v-if="!$v.userAccount.email.required"
-                                   v-text="$t('global.messages.validate.email.required')">
+                               v-model='$v.userAccount.email.$model' email required>
+                        <div v-if='$v.userAccount.email.$anyDirty && $v.userAccount.email.$invalid'>
+                            <small class='form-text text-danger' v-if='!$v.userAccount.email.required'
+                            >
                                 Your email is required.
                             </small>
-                            <small class="form-text text-danger" v-if="!$v.userAccount.email.email"
-                                   v-text="$t('global.messages.validate.email.invalid')">
+                            <small class='form-text text-danger' v-if='!$v.userAccount.email.email'
+                            >
                                 Your email is invalid.
                             </small>
                             <small class="form-text text-danger" v-if="!$v.userAccount.email.minLength"
-                                   v-text="$t('global.messages.validate.email.minlength')">
+                            >
                                 Your email is required to be at least 5 characters.
                             </small>
                             <small class="form-text text-danger" v-if="!$v.userAccount.email.maxLength"
-                                   v-text="$t('global.messages.validate.email.maxlength')">
+                            >
                                 Your email cannot be longer than 50 characters.
                             </small>
                         </div>
@@ -86,18 +86,12 @@
                     <div class="form-check">
                         <label class="form-check-label" for="activated">
                             <input class="form-check-input" :disabled="userAccount.id === null" type="checkbox" id="activated" name="activated" v-model="userAccount.activated">
-                            <span v-text="$t('userManagement.activated')">Activated</span>
+                            <span>Activated</span>
                         </label>
                     </div>
 
-                    <div class="form-group" v-if="languages && Object.keys(languages).length > 0">
-                        <label for="langKey" v-text="$t('userManagement.langKey')">Language</label>
-                        <select class="form-control" id="langKey" name="langKey" v-model="userAccount.langKey">
-                            <option v-for="(language, key) in languages" :value="key" :key="key">{{language.name}}</option>
-                        </select>
-                    </div>
                     <div class="form-group">
-                        <label v-text="$t('userManagement.profiles')">Profiles</label>
+                        <label>Profiles</label>
                         <select class="form-control" multiple name="authority" v-model="userAccount.authorities">
                             <option v-for="authority of authorities" :value="authority" :key="authority">{{authority}}</option>
                         </select>
@@ -106,10 +100,10 @@
                 <div>
                     <button type="button" class="btn btn-secondary" v-on:click="previousState()">
                         <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span
-                            v-text="$t('entity.action.cancel')">Cancel</span>
+                    >Cancel</span>
                     </button>
-                    <button type="submit" :disabled="$v.userAccount.$invalid || isSaving" class="btn btn-primary">
-                        <font-awesome-icon icon="save"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.save')">Save</span>
+                    <button type='submit' :disabled='$v.userAccount.$invalid || isSaving' class='btn btn-primary'>
+                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>Save</span>
                     </button>
                 </div>
             </form>

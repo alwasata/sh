@@ -1,12 +1,10 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
-
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import CompanyService from '../company/company.service';
 import { ICompany } from '@/shared/model/company.model';
 
 import AlertService from '@/shared/alert/alert.service';
-import { IEmployee, Employee } from '@/shared/model/employee.model';
+import { Employee, IEmployee } from '@/shared/model/employee.model';
 import EmployeeService from './employee.service';
 
 const validations: any = {
@@ -60,7 +58,7 @@ export default class EmployeeUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.employee.updated', { param: param.id });
+          const message = 'A Employee is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -69,7 +67,7 @@ export default class EmployeeUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.employee.created', { param: param.id });
+          const message = 'A Employee is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

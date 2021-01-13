@@ -1,11 +1,11 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
-import { numeric, required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 
 import UserService from '@/admin/user-management/user-management.service';
 
 import AlertService from '@/shared/alert/alert.service';
-import { IHospital, Hospital } from '@/shared/model/hospital.model';
+import { Hospital, IHospital } from '@/shared/model/hospital.model';
 import HospitalService from './hospital.service';
 
 const validations: any = {
@@ -62,7 +62,7 @@ export default class HospitalUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.hospital.updated', { param: param.id });
+          const message = 'A Hospital is updated with identifier ' + param.id;
           this.alertService().showAlert(message, 'info');
         });
     } else {
@@ -71,7 +71,7 @@ export default class HospitalUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('sahatiApp.hospital.created', { param: param.id });
+          const message = 'A Hospital is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
         });
     }

@@ -1,39 +1,39 @@
 {
-    "name": "Card",
-    "fields": [
-        {
-            "fieldName": "cardNo",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "expiryDate",
-            "fieldType": "LocalDate"
-        },
-        {
-            "fieldName": "isActive",
-            "fieldType": "Boolean"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "employee",
-            "otherEntityRelationshipName": "card",
-            "relationshipName": "employee",
-            "otherEntityField": "name"
-        }
-    ],
-    "changelogDate": "20210112132200",
-    "entityTableName": "card",
-    "dto": "mapstruct",
-    "pagination": "pagination",
-    "service": "serviceClass",
-    "jpaMetamodelFiltering": true,
-    "fluentMethods": true,
-    "readOnly": false,
-    "embedded": false,
-    "clientRootFolder": "",
-    "applications": [
-        "sahati"
-    ]
+  "name": "Card",
+  "fields": [
+    {
+      "fieldName": "cardNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "expiryDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "isActive",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "card",
+      "relationshipName": "employee",
+      "otherEntityField": "name"
+    }
+  ],
+  "changelogDate": "20210113113049",
+  "entityTableName": "card",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": [
+    "sahati"
+  ]
 }
