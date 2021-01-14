@@ -14,7 +14,7 @@ let ormconfig: TypeOrmModuleOptions = {
   name: 'default',
   type: 'mysql',
   database: 'sahati',
-  url: 'mysql://root:4444@localhost:3306/sahati',
+  url: 'mysql://root:toor@localhost:3306/sahati',
   logging: false,
   synchronize: true,
   entities: commonConf.ENTITIES,
