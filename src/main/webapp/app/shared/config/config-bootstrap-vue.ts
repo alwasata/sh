@@ -1,29 +1,31 @@
 import {
-  BForm,
-  BFormInput,
-  BFormCheckbox,
-  BFormGroup,
-  BProgress,
-  BProgressBar,
-  BPagination,
+  BAlert,
+  BBadge,
   BButton,
+  BCollapse,
+  BDropdown,
+  BDropdownItem,
+  BForm,
+  BFormCheckbox,
+  BFormDatepicker,
+  BFormGroup,
+  BFormInput,
+  BInputGroup,
+  BInputGroupPrepend,
+  BLink,
+  BModal,
   BNavbar,
-  BNavbarNav,
   BNavbarBrand,
+  BNavbarNav,
   BNavbarToggle,
   BNavItem,
   BNavItemDropdown,
-  BCollapse,
-  BBadge,
-  BDropdown,
-  BDropdownItem,
-  BLink,
-  BAlert,
-  BModal,
+  BPagination,
+  BProgress,
+  BProgressBar,
+  BSidebar,
   VBModal,
-  BFormDatepicker,
-  BInputGroup,
-  BInputGroupPrepend,
+  VBToggle,
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -35,6 +37,8 @@ export function initBootstrapVue(vue) {
   vue.component('b-modal', BModal);
   vue.component('b-button', BButton);
   vue.component('b-navbar', BNavbar);
+  vue.component('b-sidebar', BSidebar);
+  vue.directive('b-toggle', VBToggle);
   vue.component('b-navbar-nav', BNavbarNav);
   vue.component('b-navbar-brand', BNavbarBrand);
   vue.component('b-navbar-toggle', BNavbarToggle);
