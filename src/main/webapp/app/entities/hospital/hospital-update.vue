@@ -39,11 +39,32 @@
                         <input type="text" class="form-control" name="address" id="hospital-address"
                             :class="{'valid': !$v.hospital.address.$invalid, 'invalid': $v.hospital.address.$invalid }" v-model="$v.hospital.address.$model" />
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for='hospital-user'>User</label>
                         <select class="form-control" id="hospital-user" multiple name="user" v-model="hospital.users">
                             <option v-bind:value="getSelected(hospital.users, userOption)" v-for="userOption in users" :key="userOption.id">{{userOption.id}}</option>
                         </select>
+                    </div> -->
+                    <h2>
+                        Create User
+                    </h2>
+                    <div class="form-group">
+                        <label for="user-login">User Login</label>
+                        <input type="text" class="form-control"  name="login" id="user-login" >
+                    </div>
+                    <div class="form-group">
+                        <label for="user-login">first name</label>
+                        <input type="text" class="form-control"  name="firstName" id="firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-login">last name</label>
+                        <input type="text" class="form-control"  name="lastName" id="lastName">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-check-label" for="activated">
+                            <span>Activated</span>
+                            <input class="form-check-input"  type="checkbox" id="activated" name="activated">
+                        </label>
                     </div>
                 </div>
                 <div>
