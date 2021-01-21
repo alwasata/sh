@@ -24,6 +24,12 @@ export class Company extends BaseEntity {
     @Column({ name: 'address', nullable: true })
     address: string;
 
+    @Column({ type: 'float', name: 'discount', nullable: true, default: 0 })
+    discount: number;
+
+    @Column({ type: 'boolean', name: 'fixed_discount', nullable: true , default: true })
+    fixedDiscount: boolean;
+
     @ManyToMany(type => User)
     @JoinTable({
         name: 'company_user',

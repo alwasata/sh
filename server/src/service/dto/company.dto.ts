@@ -25,6 +25,12 @@ export class CompanyDTO extends BaseDTO {
     @ApiModelProperty({ description: 'address field', required: false })
     address: string;
 
+    @ApiModelProperty({ description: 'discount field', required: false })
+    discount: number;
+
+    @ApiModelProperty({ description: 'fixed discount field', required: false })
+    fixedDiscount: boolean;
+
     @ApiModelProperty({ type: UserDTO, isArray: true, description: 'users relationship' })
     users: UserDTO[];
 
