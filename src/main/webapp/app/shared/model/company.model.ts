@@ -7,6 +7,8 @@ export interface ICompany {
   email?: string;
   phone?: string;
   address?: string;
+  discount?: number;
+  fixedDiscount?: number;
   users?: IUser[];
 }
 
@@ -18,6 +20,8 @@ export class Company implements ICompany {
     public email?: string,
     public phone?: string,
     public address?: string,
+    public discount?: number,
+    public fixedDiscount?: number,
     public users?: IUser[]
   ) {}
 }

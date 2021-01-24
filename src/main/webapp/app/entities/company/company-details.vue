@@ -35,6 +35,18 @@
                         <span>{{company.address}}</span>
                     </dd>
                     <dt>
+                        <span>Discount</span>
+                    </dt>
+                    <dd>
+                        <span>{{company.discount}}</span>
+                    </dd>
+                    <dt>
+                        <span>Fixed Discount</span>
+                    </dt>
+                    <dd>
+                        <span>{{company.fixedDiscount}}</span>
+                    </dd>
+                    <dt>
                         <span>User</span>
                     </dt>
                     <dd>
