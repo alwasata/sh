@@ -7,7 +7,8 @@ import { PageRequest, Page } from '../../domain/base/pagination.entity';
 import { AuthGuard, Roles, RolesGuard, RoleType } from '../../security';
 import { HeaderUtil } from '../../client/header-util';
 import { LoggingInterceptor } from '../../client/interceptors/logging.interceptor';
-
+import { UserDTO } from '../../service/dto/user.dto';
+import { UserService } from '../../service/user.service';
 @Controller('api/companies')
 @UseGuards(AuthGuard, RolesGuard)
 @UseInterceptors(LoggingInterceptor)
@@ -16,7 +17,7 @@ import { LoggingInterceptor } from '../../client/interceptors/logging.intercepto
 export class CompanyController {
     logger = new Logger('CompanyController');
 
-    constructor(private readonly companyService: CompanyService) {}
+    constructor(private readonly companyService: CompanyService, private readonly userService : UserService) {}
 
     @Get('/')
     @Roles(RoleType.USER)
@@ -57,6 +58,18 @@ export class CompanyController {
     })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async post(@Req() req: Request, @Body() companyDTO: CompanyDTO): Promise<CompanyDTO> {
+
+      const userDTO =   new UserDTO();
+      userDTO.firstName   = companyDTO['nameAr'];
+      userDTO.lastName    = companyDTO['nameEn'];
+      userDTO.email       = companyDTO['nameEn']+'@hospital.com';
+      userDTO.login       = companyDTO['nameEn'];
+      userDTO.password    = companyDTO['nameEn'];
+      userDTO.authorities = ["ROLE_COMPANY_ADMIN"];
+
+      const createduser     = await this.userService.save(userDTO);
+      companyDTO["users"]  = [ createduser ];
+
         const created = await this.companyService.save(companyDTO);
         HeaderUtil.addEntityCreatedHeaders(req.res, 'Company', created.id);
         return created;
