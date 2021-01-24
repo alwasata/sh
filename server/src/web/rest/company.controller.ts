@@ -67,8 +67,8 @@ export class CompanyController {
       userDTO.password    = companyDTO['nameEn'];
       userDTO.authorities = ["ROLE_COMPANY_ADMIN"];
 
-      const createduser     = await this.userService.save(userDTO);
-      companyDTO["users"]  = [ createduser ];
+      const createdUser     = await this.userService.save(userDTO);
+      companyDTO["users"]  = [ createdUser ];
 
         const created = await this.companyService.save(companyDTO);
         HeaderUtil.addEntityCreatedHeaders(req.res, 'Company', created.id);

@@ -69,8 +69,8 @@ export class HospitalController{
     userDTO.password    = hospitalDTO['nameEn'];
     userDTO.authorities = ["ROLE_HOSPITAL_ADMIN"];
 
-    const createduser     = await this.userService.save(userDTO);
-    hospitalDTO["users"]  = [ createduser ];
+    const createdUser     = await this.userService.save(userDTO);
+    hospitalDTO["users"]  = [ createdUser ];
 
     const created = await this.hospitalService.save(hospitalDTO);
     HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', created.id);
