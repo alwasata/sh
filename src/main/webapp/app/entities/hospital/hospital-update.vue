@@ -39,12 +39,6 @@
                         <input type="text" class="form-control" name="address" id="hospital-address"
                             :class="{'valid': !$v.hospital.address.$invalid, 'invalid': $v.hospital.address.$invalid }" v-model="$v.hospital.address.$model" />
                     </div>
-                    <div class="form-group">
-                        <label for='hospital-user'>User</label>
-                        <select class="form-control" id="hospital-user" multiple name="user" v-model="hospital.users">
-                            <option v-bind:value="getSelected(hospital.users, userOption)" v-for="userOption in users" :key="userOption.id">{{userOption.id}}</option>
-                        </select>
-                    </div>
                 </div>
                 <div>
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
