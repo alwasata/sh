@@ -9,19 +9,14 @@ import { HeaderUtil } from '../../client/header-util';
 import { LoggingInterceptor } from '../../client/interceptors/logging.interceptor';
 import { UserDTO } from '../../service/dto/user.dto';
 import { UserService } from '../../service/user.service';
-import { Injectable } from '@nestjs/common';
-
 @Controller('api/hospitals')
 @UseGuards(AuthGuard, RolesGuard)
 @UseInterceptors(LoggingInterceptor)
 @ApiBearerAuth()
 @ApiUseTags('hospitals')
 
-@Injectable()
 export class HospitalController{
   logger = new Logger('HospitalController');
-
-  // private readonly userService : UserService;
 
   constructor(private readonly hospitalService: HospitalService, private readonly userService : UserService) {}
 
@@ -74,12 +69,12 @@ export class HospitalController{
     userDTO.password    = hospitalDTO['nameEn'];
     userDTO.authorities = ["ROLE_HOSPITAL_ADMIN"];
 
-    const createduser     = await this.userService.save(userDTO);
-    hospitalDTO["users"]  = [ createduser ];
+    const createdUser     = await this.userService.save(userDTO);
+    hospitalDTO["users"]  = [ createdUser ];
 
     const created = await this.hospitalService.save(hospitalDTO);
     HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', created.id);
-    
+
     return created;
   }
 
