@@ -3,13 +3,14 @@
     <!-- <ribbon></ribbon> -->
     <div id="app-header">
       <jhi-navbar></jhi-navbar>
+      <jhi-sidebar></jhi-sidebar>
     </div>
     <div class="container-fluid">
       <div class="card jh-card">
         <router-view></router-view>
       </div>
       <b-modal id="login-page" hide-footer lazy>
-        <span id='login-title' slot='modal-title'>Sign in</span>
+        <span id='login-title' slot='modal-title'>تسجيل الدخول</span>
         <login-form></login-form>
       </b-modal>
 

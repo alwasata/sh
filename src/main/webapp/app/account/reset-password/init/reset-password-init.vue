@@ -2,14 +2,14 @@
     <div>
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1>Reset your password</h1>
+                <h1>اعادة تعيين كلمة المرور</h1>
 
                 <div class="alert alert-warning" v-if="!success">
-                    <p>Enter the email address you used to register.</p>
+                    <p>ادخل البريد الالكتروني </p>
                 </div>
 
                 <div class="alert alert-success" v-if="success">
-                    <p>Check your emails for details on how to reset your password.</p>
+                    <p>تحقق من بريدك الالكتروني</p>
                 </div>
 
                 <form v-if="!success" name="form" role="form" v-on:submit.prevent="requestReset()">
@@ -21,19 +21,19 @@
                         <div v-if='$v.resetAccount.email.$anyDirty && $v.resetAccount.email.$invalid'>
                             <small class='form-text text-danger' v-if='!$v.resetAccount.email.required'
                             >
-                                Your email is required.
+                                البريد الاكتروني اجباري
                             </small>
                             <small class='form-text text-danger' v-if='!$v.resetAccount.email.email'
                             >
-                                Your email is invalid.
+                                البريد الاكتروني غير صحيح
                             </small>
                             <small class="form-text text-danger" v-if="!$v.resetAccount.email.minLength"
                             >
-                                Your email is required to be at least 5 characters.
+                                يجب ان يكون طول البريد الالكتروني اكبر من 5.
                             </small>
                             <small class="form-text text-danger" v-if="!$v.resetAccount.email.maxLength"
                             >
-                                Your email cannot be longer than 100 characters.
+                               البريد الالكتروني لا يمكن  اطول من 100.
                             </small>
                         </div>
                     </div>

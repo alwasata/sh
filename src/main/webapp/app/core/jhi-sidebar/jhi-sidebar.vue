@@ -27,5 +27,5 @@
     </div>
 </template>
 
-<script lang="ts" src="./home.component.ts">
+<script lang="ts" src="./jhi-sidebar.component.ts">
 </script>

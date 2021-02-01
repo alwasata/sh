@@ -2,23 +2,23 @@
     <div>
         <div class="row justify-content-center">
             <div class="col-md-8 toastify-container">
-                <h2 v-if='account' id='password-title'><span>Password for [<b>{{ username }}</b>]</span></h2>
+                <h2 v-if='account' id='password-title'><span>الرقم السري لحساب  [<b>{{ username }}</b>]</span></h2>
 
                 <div v-if='success' class='alert alert-success' role='alert'>
-                    <strong>Password changed!</strong>
+                    <strong>تم تغير الرقم السري!</strong>
                 </div>
                 <div v-if='error' class='alert alert-danger' role='alert'>
-                    <strong>An error has occurred!</strong> The password could not be changed.
+                    <strong>حدث خطاء!</strong> لا يمكن تغير الرقم السري.
                 </div>
 
                 <div v-if='doNotMatch' class='alert alert-danger' role='alert'>
-                    The password and its confirmation do not match!
+                    تاكيد الرقم السري يجب ان يكون مطابق للرقم السري
                 </div>
 
                 <form name="form" role="form" id="password-form" v-on:submit.prevent="changePassword()">
 
                     <div class="form-group">
-                        <label class='form-control-label' for='currentPassword'>Current password</label>
+                        <label class='form-control-label' for='currentPassword'>الرقم السري الحالي</label>
                         <input type="password" class="form-control" id="currentPassword" name="currentPassword"
                                :class="{'valid': !$v.resetPassword.currentPassword.$invalid, 'invalid': $v.resetPassword.currentPassword.$invalid }"
 
@@ -26,12 +26,12 @@
                         <div v-if="$v.resetPassword.currentPassword.$anyDirty && $v.resetPassword.currentPassword.$invalid">
                             <small class='form-text text-danger'
                                    v-if='!$v.resetPassword.currentPassword.required'>
-                                Your password is required.
+                                الرقم السري اجباري.
                             </small>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='newPassword'>New password</label>
+                        <label class='form-control-label' for='newPassword'>الرقم السري الجديد</label>
                         <input type="password" class="form-control" id="newPassword" name="newPassword"
 
                                :class="{'valid': !$v.resetPassword.newPassword.$invalid, 'invalid': $v.resetPassword.newPassword.$invalid }"
@@ -39,21 +39,21 @@
                         <div v-if="$v.resetPassword.newPassword.$anyDirty && $v.resetPassword.newPassword.$invalid">
                             <small class='form-text text-danger'
                                    v-if='!$v.resetPassword.newPassword.required'>
-                                Your password is required.
+                                الرقم السري اجباري.
                             </small>
                             <small class='form-text text-danger'
                                    v-if='!$v.resetPassword.newPassword.minLength'>
-                                Your password is required to be at least 4 characters.
+                                يجب ان يكون الرقم السري على الاقل 4 احرف.
                             </small>
                             <small class='form-text text-danger'
                                    v-if='!$v.resetPassword.newPassword.maxLength'>
-                                Your password cannot be longer than 50 characters.
+                                لا يمكن ان يكون الرقم السري اطول من 50.
                             </small>
                         </div>
                         <!--<jhi-password-strength-bar [passwordToCheck]="newPassword"></jhi-password-strength-bar>-->
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='confirmPassword'>New password confirmation</label>
+                        <label class='form-control-label' for='confirmPassword'>تاكيد الرقم السري الجديد</label>
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
                                :class="{'valid': !$v.resetPassword.confirmPassword.$invalid, 'invalid': $v.resetPassword.confirmPassword.$invalid }"
 
@@ -61,15 +61,15 @@
                         <div v-if="$v.resetPassword.confirmPassword.$anyDirty && $v.resetPassword.confirmPassword.$invalid">
                             <small class='form-text text-danger'
                                    v-if='!$v.resetPassword.confirmPassword.required'>
-                                Your confirmation password is required.
+                                تاكيد الرقم السري اجباري
                             </small>
                             <small class='form-text text-danger'
                                    v-if='!$v.resetPassword.confirmPassword.minLength'>
-                                Your confirmation password is required to be at least 4 characters.
+                                تاكيد الرقم السري يجب ان  يكون على الاقل 4 احرف
                             </small>
                             <small class='form-text text-danger'
                                    v-if='!$v.resetPassword.confirmPassword.maxLength'>
-                                Your confirmation password cannot be longer than 50 characters.
+                                لا يمكن ان يكون تاكيد الرقم السري اطول من 50
                             </small>
                         </div>
                     </div>

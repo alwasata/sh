@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='firstName'>First Name</label>
+                        <label class='form-control-label' for='firstName'>الاسم الاول</label>
                         <input id='firstName' class='form-control' name='firstName' type='text'
                                :class="{'valid': !$v.userAccount.firstName.$invalid, 'invalid': $v.userAccount.firstName.$invalid }"
                                v-model='$v.userAccount.firstName.$model'>
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='lastName'>Last Name</label>
+                        <label class='form-control-label' for='lastName'>اللقب</label>
                         <input id='lastName' class='form-control' name='lastName' type='text'
                                :class="{'valid': !$v.userAccount.lastName.$invalid, 'invalid': $v.userAccount.lastName.$invalid }"
                                v-model='$v.userAccount.lastName.$model'>
@@ -67,15 +67,15 @@
                         <div v-if='$v.userAccount.email.$anyDirty && $v.userAccount.email.$invalid'>
                             <small class='form-text text-danger' v-if='!$v.userAccount.email.required'
                             >
-                                Your email is required.
+                                البريد الاكتروني اجباري
                             </small>
                             <small class='form-text text-danger' v-if='!$v.userAccount.email.email'
                             >
-                                Your email is invalid.
+                                البريد الاكتروني غير صحيح
                             </small>
                             <small class="form-text text-danger" v-if="!$v.userAccount.email.minLength"
                             >
-                                Your email is required to be at least 5 characters.
+                                يجب ان يكون طول البريد الالكتروني اكبر من 5.
                             </small>
                             <small class="form-text text-danger" v-if="!$v.userAccount.email.maxLength"
                             >

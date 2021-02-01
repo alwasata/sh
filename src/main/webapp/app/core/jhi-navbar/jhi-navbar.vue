@@ -133,6 +133,9 @@
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
+             <b-button v-b-toggle.sidebar-1 >
+                <font-awesome-icon icon="bars" />
+            </b-button>
         </b-collapse>
     </b-navbar>
 </template>
@@ -234,4 +237,5 @@
   width: 100%;
   filter: drop-shadow(0 0 0.05rem white);
 }
+
 </style>

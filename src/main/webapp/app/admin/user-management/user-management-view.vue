@@ -12,9 +12,9 @@
                         <b-badge v-if='user.activated' variant='success'>Activated</b-badge>
                         <b-badge v-if='!user.activated' variant='danger'>Deactivated</b-badge>
                     </dd>
-                    <dt><span>First Name</span></dt>
+                    <dt><span>الاسم الاول</span></dt>
                     <dd>{{ user.firstName }}</dd>
-                    <dt><span>Last Name</span></dt>
+                    <dt><span>اللقب</span></dt>
                     <dd>{{ user.lastName }}</dd>
                     <dt><span>البريد الالكتروني</span></dt>
                     <dd>{{ user.email }}</dd>

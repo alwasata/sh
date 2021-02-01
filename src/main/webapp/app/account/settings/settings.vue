@@ -2,14 +2,14 @@
     <div>
         <div class="row justify-content-center">
             <div class="col-md-8 toastify-container">
-                <h2 v-if='username' id='settings-title'><span>User settings for [<b>{{ username }}</b>]</span></h2>
+                <h2 v-if='username' id='settings-title'><span>اعدادات المستخدم [<b>{{ username }}</b>]</span></h2>
 
                 <div v-if='success' class='alert alert-success' role='alert'>
-                    <strong>Settings saved!</strong>
+                    <strong>تم حفظ الاعدادات!</strong>
                 </div>
 
                 <div v-if='errorEmailExists' class='alert alert-danger' role='alert'>
-                    <strong>البريد الالكتروني is already in use!</strong> Please choose another one.
+                    <strong>البريد الالكتروني مستخدم مسبقا</strong>
                 </div>
 
                 <!--<jhi-alert-error></jhi-alert-error>-->
@@ -17,14 +17,14 @@
                 <form name="form" id="settings-form" role="form" v-on:submit.prevent="save()" v-if="settingsAccount" novalidate>
 
                     <div class='form-group'>
-                        <label class='form-control-label' for='firstName'>First Name</label>
+                        <label class='form-control-label' for='firstName'>الاسم الاول</label>
                         <input id='firstName' class='form-control' name='firstName' type='text'
                                :class="{'valid': !$v.settingsAccount.firstName.$invalid, 'invalid': $v.settingsAccount.firstName.$invalid }"
                                v-model='$v.settingsAccount.firstName.$model' minlength='1' maxlength='50' required>
                         <div v-if='$v.settingsAccount.firstName.$anyDirty && $v.settingsAccount.firstName.$invalid'>
                             <small class='form-text text-danger'
                                    v-if='!$v.settingsAccount.firstName.required'>
-                                Your first name is required.
+                                 الاسم الاول اجباري
                             </small>
                             <small class='form-text text-danger'
                                    v-if='!$v.settingsAccount.firstName.minLength'>
@@ -32,19 +32,19 @@
                             </small>
                             <small class='form-text text-danger'
                                    v-if='!$v.settingsAccount.firstName.maxLength'>
-                                Your first name cannot be longer than 50 characters.
+                                لا يمكن ان يكون الاسم الاول اكثر من 50 حرف
                             </small>
                         </div>
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='lastName'>Last Name</label>
+                        <label class='form-control-label' for='lastName'>اللقب</label>
                         <input id='lastName' class='form-control' name='lastName' type='text'
                                :class="{'valid': !$v.settingsAccount.lastName.$invalid, 'invalid': $v.settingsAccount.lastName.$invalid }"
                                v-model='$v.settingsAccount.lastName.$model' minlength='1' maxlength='50' required>
                         <div v-if='$v.settingsAccount.lastName.$anyDirty && $v.settingsAccount.lastName.$invalid'>
                             <small class='form-text text-danger'
                                    v-if='!$v.settingsAccount.lastName.required'>
-                                Your last name is required.
+                                اللقب اجباري
                             </small>
                             <small class='form-text text-danger'
                                    v-if='!$v.settingsAccount.lastName.minLength'>
@@ -52,7 +52,7 @@
                             </small>
                             <small class='form-text text-danger'
                                    v-if='!$v.settingsAccount.lastName.maxLength'>
-                                Your last name cannot be longer than 50 characters.
+                                اللقب لا يمكن ان يكون اطول من 50
                             </small>
                         </div>
                     </div>
@@ -64,19 +64,19 @@
                         <div v-if='$v.settingsAccount.email.$anyDirty && $v.settingsAccount.email.$invalid'>
                             <small class='form-text text-danger' v-if='!$v.settingsAccount.email.required'
                             >
-                                Your email is required.
+                                البريد الاكتروني اجباري
                             </small>
                             <small class='form-text text-danger' v-if='!$v.settingsAccount.email.email'
                             >
-                                Your email is invalid.
+                                البريد الاكتروني غير صحيح
                             </small>
                             <small class="form-text text-danger" v-if="!$v.settingsAccount.email.minLength"
                             >
-                                Your email is required to be at least 5 characters.
+                                يجب ان يكون طول البريد الالكتروني اكبر من 5.
                             </small>
                             <small class="form-text text-danger" v-if="!$v.settingsAccount.email.maxLength"
                             >
-                                Your email cannot be longer than 100 characters.
+                               البريد الالكتروني لا يمكن  اطول من 100.
                             </small>
                         </div>
                     </div>

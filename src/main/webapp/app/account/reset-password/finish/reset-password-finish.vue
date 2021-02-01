@@ -2,7 +2,7 @@
     <div>
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1>Reset your password</h1>
+                <h1>اعادة تعيين كلمة المرور</h1>
 
                 <div class='alert alert-danger'
                      v-if='keyMissing'>
@@ -18,7 +18,7 @@
                     <a class='alert-link' v-on:click='openLogin'>sign in</a>
                 </div>
                 <div class="alert alert-danger" v-if="doNotMatch">
-                    <p>The password and its confirmation do not match!</p>
+                    <p>تاكيد الرقم السري يجب ان يكون مطابق للرقم السري</p>
                 </div>
 
                 <div class="alert alert-warning" v-if="!success && !keyMissing">
@@ -36,21 +36,21 @@
                             <div v-if="$v.resetAccount.newPassword.$anyDirty && $v.resetAccount.newPassword.$invalid">
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.newPassword.required'>
-                                    Your password is required.
+                                    الرقم السري اجباري.
                                 </small>
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.newPassword.minLength'>
-                                    Your password is required to be at least 4 characters.
+                                    يجب ان يكون الرقم السري على الاقل 4 احرف.
                                 </small>
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.newPassword.maxLength'>
-                                    Your password cannot be longer than 50 characters.
+                                    لا يمكن ان يكون الرقم السري اطول من 50.
                                 </small>
                             </div>
                         </div>
                         <!--<jhi-password-strength-bar [passwordToCheck]="newPassword"></jhi-password-strength-bar>-->
                         <div class="form-group">
-                            <label class='form-control-label' for='confirmPassword'>New password confirmation</label>
+                            <label class='form-control-label' for='confirmPassword'>تاكيد الرقم السري</label>
                             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
                                :class="{'valid': !$v.resetAccount.confirmPassword.$invalid, 'invalid': $v.resetAccount.confirmPassword.$invalid }"
 
@@ -58,15 +58,15 @@
                             <div v-if="$v.resetAccount.confirmPassword.$anyDirty && $v.resetAccount.confirmPassword.$invalid">
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.confirmPassword.required'>
-                                    Your confirmation password is required.
+                                    تاكيد الرقم السري اجباري
                                 </small>
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.confirmPassword.minLength'>
-                                    Your confirmation password is required to be at least 4 characters.
+                                    تاكيد الرقم السري يجب ان  يكون على الاقل 4 احرف
                                 </small>
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.confirmPassword.maxLength'>
-                                    Your confirmation password cannot be longer than 50 characters.
+                                    لا يمكن ان يكون تاكيد الرقم السري اطول من 50
                                 </small>
                             </div>
                         </div>
