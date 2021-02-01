@@ -2,10 +2,10 @@
     <div>
         <h2 id="page-heading">
             <span id='attatchment-heading'>Attatchments</span>
-            <router-link :to="{name: 'AttatchmentCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-attatchment">
+            <router-link :to="{name: 'AttatchmentCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-attatchment">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
-                    Create a new Attatchment
+                    اضافة Attatchment
                 </span>
             </router-link>
         </h2>
@@ -28,7 +28,7 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('name')"><span>Name</span>
+                    <th v-on:click="changeOrder('name')"><span>الاسم</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'name'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -40,7 +40,7 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'fileUrl'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('employee.name')"><span>Employee</span>
+                    <th v-on:click="changeOrder('employee.name')"><span>موظف</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'employee.name'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -70,18 +70,18 @@
                         <div class="btn-group">
                             <router-link :to="{name: 'AttatchmentView', params: {attatchmentId: attatchment.id}}" tag="button" class="btn btn-info btn-sm details">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>View</span>
+                                <span class='d-none d-md-inline'>عرض</span>
                             </router-link>
                             <router-link :to="{name: 'AttatchmentEdit', params: {attatchmentId: attatchment.id}}"  tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>Edit</span>
+                                <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
                             <b-button v-on:click="prepareRemove(attatchment)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>Delete</span>
+                                <span class='d-none d-md-inline'>حذف</span>
                             </b-button>
                         </div>
                     </td>
@@ -91,14 +91,14 @@
         </div>
         <b-modal ref="removeEntity" id="removeEntity" >
             <span slot='modal-title'><span
-                id='sahatiApp.attatchment.delete.question'>Confirm delete operation</span></span>
+                id='sahatiApp.attatchment.delete.question'>تاكيد عملية الحذف</span></span>
             <div class="modal-body">
-                <p id='jhi-delete-attatchment-heading'>Are you sure you want to delete this Attatchment?</p>
+                <p id='jhi-delete-attatchment-heading'>هل انت متاكد من حذف Attatchment?</p>
             </div>
             <div slot='modal-footer'>
-                <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>Cancel</button>
+                <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>الغاء</button>
                 <button id='jhi-confirm-delete-attatchment' class='btn btn-primary' type='button'
-                        v-on:click='removeAttatchment()'>Delete
+                        v-on:click='removeAttatchment()'>حذف
                 </button>
             </div>
         </b-modal>

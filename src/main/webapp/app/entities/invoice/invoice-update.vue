@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
-                <h2 id='sahatiApp.invoice.home.createOrEditLabel'>Create or edit a Invoice</h2>
+                <h2 id='sahatiApp.invoice.home.createOrEditLabel'>اضافة او تعديل Invoice</h2>
                 <div>
                     <div class="form-group" v-if="invoice.id">
                         <label for='id'>ID</label>
@@ -57,12 +57,12 @@
                         </b-input-group>
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='invoice-total'>Total</label>
+                        <label class='form-control-label' for='invoice-total'>المجموع</label>
                         <input type="number" class="form-control" name="total" id="invoice-total"
                             :class="{'valid': !$v.invoice.total.$invalid, 'invalid': $v.invoice.total.$invalid }" v-model.number="$v.invoice.total.$model" />
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='invoice-invoiceStatus'>Invoice Status</label>
+                        <label class='form-control-label' for='invoice-invoiceStatus'>Invoice حالة</label>
                         <select class='form-control' name='invoiceStatus'
                                 :class="{'valid': !$v.invoice.invoiceStatus.$invalid, 'invalid': $v.invoice.invoiceStatus.$invalid }"
                                 v-model='$v.invoice.invoiceStatus.$model' id='invoice-invoiceStatus'>
@@ -71,12 +71,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='invoice-notes'>Notes</label>
+                        <label class='form-control-label' for='invoice-notes'>الملاحظات</label>
                         <input type="text" class="form-control" name="notes" id="invoice-notes"
                             :class="{'valid': !$v.invoice.notes.$invalid, 'invalid': $v.invoice.notes.$invalid }" v-model="$v.invoice.notes.$model" />
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='invoice-cardTransaction'>Card Transaction</label>
+                        <label class='form-control-label' for='invoice-cardTransaction'>بطاقةTransaction</label>
                         <select id='invoice-cardTransaction' v-model='invoice.cardTransaction' class='form-control'
                                 name='cardTransaction'>
                             <option v-bind:value='null'></option>
@@ -89,11 +89,11 @@
                 </div>
                 <div>
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
-                        <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>Cancel</span>
+                        <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>الغاء</span>
                     </button>
                     <button type='submit' id='save-entity' :disabled='$v.invoice.$invalid || isSaving'
                             class='btn btn-primary'>
-                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>Save</span>
+                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>حفظ</span>
                     </button>
                 </div>
             </form>

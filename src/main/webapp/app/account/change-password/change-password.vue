@@ -74,7 +74,7 @@
                         </div>
                     </div>
 
-                    <button :disabled='$v.resetPassword.$invalid' class='btn btn-primary' type='submit'>Save</button>
+                    <button :disabled='$v.resetPassword.$invalid' class='btn btn-primary' type='submit'>حفظ</button>
                 </form>
             </div>
         </div>

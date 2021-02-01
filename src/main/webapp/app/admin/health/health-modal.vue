@@ -6,8 +6,8 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th class='text-left'>Name</th>
-                        <th class='text-left'>Value</th>
+                        <th class='text-left'>الاسم</th>
+                        <th class='text-left'>القيمة</th>
                     </tr>
                     </thead>
                     <tbody>

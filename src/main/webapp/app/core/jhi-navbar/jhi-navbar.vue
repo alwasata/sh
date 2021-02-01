@@ -2,7 +2,7 @@
     <b-navbar class='jh-navbar' toggleable='md' type='dark'>
         <b-navbar-brand b-link class='logo' to='/'>
             <span class='logo-img'></span>
-            <span class='navbar-title'>sahati</span> <span class='navbar-version'>{{ version }}</span>
+            <span class='navbar-title'>صحتي</span> <span class='navbar-version'>{{ version }}</span>
         </b-navbar-brand>
         <b-navbar-toggle
             aria-expanded='false'
@@ -20,7 +20,7 @@
                 <b-nav-item exact to='/'>
                     <span>
                         <font-awesome-icon icon='home' />
-                        <span>Home</span>
+                        <span>الرئيسية</span>
                     </span>
                 </b-nav-item>
                 <b-nav-item-dropdown
@@ -30,7 +30,7 @@
                     active-class='active' class='pointer'>
                     <span slot="button-content" class="navbar-dropdown-menu">
                         <font-awesome-icon icon="th-list" />
-                        <span>Entities</span>
+                        <span>العناصر</span>
                     </span>
                     <b-dropdown-item to="/attatchment">
                         <font-awesome-icon icon="asterisk" />
@@ -38,44 +38,44 @@
                     </b-dropdown-item>
                     <b-dropdown-item to='/benefit'>
                         <font-awesome-icon icon='asterisk' />
-                        <span>Benefit</span>
+                        <span>المنفعات</span>
                     </b-dropdown-item>
                     <b-dropdown-item to='/benefit-request'>
                         <font-awesome-icon icon='asterisk' />
-                        <span>BenefitRequest</span>
+                        <span>طلب منفعة</span>
                     </b-dropdown-item>
                     <b-dropdown-item to='/card'>
                         <font-awesome-icon icon='asterisk' />
-                        <span>Card</span>
+                        <span>البطاقات</span>
                     </b-dropdown-item>
                     <b-dropdown-item to='/card-transaction'>
                         <font-awesome-icon icon='asterisk' />
-                        <span>CardTransaction</span>
+                        <span>حركات البطاقة</span>
                     </b-dropdown-item>
                     <b-dropdown-item to="/category">
                         <font-awesome-icon icon="asterisk" />
-                        <span>Category</span>
+                        <span>الفئات</span>
                     </b-dropdown-item>
                     <b-dropdown-item to='/company'>
                         <font-awesome-icon icon='asterisk' />
-                        <span>Company</span>
+                        <span>الشركات</span>
                     </b-dropdown-item>
                     <b-dropdown-item to='/employee'>
                         <font-awesome-icon icon='asterisk' />
-                        <span>Employee</span>
+                        <span>الموظفين</span>
                     </b-dropdown-item>
                     <b-dropdown-item to='/hospital'>
                         <font-awesome-icon icon='asterisk' />
-                        <span>Hospital</span>
+                        <span>المستشفيات</span>
                     </b-dropdown-item>
                     <b-dropdown-item to="/invoice">
                         <font-awesome-icon icon="asterisk" />
-                        <span>Invoice</span>
+                        <span>الفواتير</span>
                     </b-dropdown-item>
-                    <b-dropdown-item to="/invoice-benefits">
+                    <!-- <b-dropdown-item to="/invoice-benefits">
                         <font-awesome-icon icon="asterisk" />
                         <span>InvoiceBenefits</span>
-                    </b-dropdown-item>
+                    </b-dropdown-item> -->
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown
@@ -87,11 +87,11 @@
                     class="pointer">
                     <span slot="button-content" class="navbar-dropdown-menu">
                         <font-awesome-icon icon="cogs" />
-                        <span>Administration</span>
+                        <span>المسؤلين</span>
                     </span>
                     <b-dropdown-item to="/admin/user-management" active-class="active">
                         <font-awesome-icon icon="user" />
-                        <span>User management</span>
+                        <span>ادارة المسؤلين </span>
                     </b-dropdown-item>
                     <b-dropdown-item active-class='active' to='/admin/docs'>
                         <font-awesome-icon icon='book' />
@@ -108,28 +108,28 @@
                     <span slot="button-content" class="navbar-dropdown-menu">
                         <font-awesome-icon icon="user" />
                         <span>
-                            Account
+                            الحساب
                         </span>
                     </span>
                     <b-dropdown-item to="/account/settings" tag="b-dropdown-item" v-if="authenticated" active-class="active">
                         <font-awesome-icon icon="wrench" />
-                        <span>Settings</span>
+                        <span>الاعدادات</span>
                     </b-dropdown-item>
                     <b-dropdown-item to="/account/password" tag="b-dropdown-item" v-if="authenticated" active-class="active">
                         <font-awesome-icon icon="lock" />
-                        <span>Password</span>
+                        <span>الرقم السري</span>
                     </b-dropdown-item>
                     <b-dropdown-item v-if="authenticated"  v-on:click="logout()" id="logout" active-class="active">
                         <font-awesome-icon icon="sign-out-alt" />
-                        <span>Sign out</span>
+                        <span>تسجيل الخروج</span>
                     </b-dropdown-item>
                     <b-dropdown-item v-if="!authenticated"  v-on:click="openLogin()" id="login" active-class="active">
                         <font-awesome-icon icon="sign-in-alt" />
-                        <span>Sign in</span>
+                        <span> تسجيل الدخول</span>
                     </b-dropdown-item>
                     <b-dropdown-item to="/register" tag="b-dropdown-item" id="register" v-if="!authenticated" active-class="active">
                         <font-awesome-icon icon="user-plus" />
-                        <span>Register</span>
+                        <span>تسجيل حساب جديد</span>
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>

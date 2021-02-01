@@ -2,10 +2,10 @@
     <div>
         <h2 id="page-heading">
             <span id='invoice-benefits-heading'>Invoice Benefits</span>
-            <router-link :to="{name: 'InvoiceBenefitsCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-invoice-benefits">
+            <router-link :to="{name: 'InvoiceBenefitsCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-invoice-benefits">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
-                    Create a new Invoice Benefits
+                    اضافة Invoice Benefits
                 </span>
             </router-link>
         </h2>
@@ -28,23 +28,23 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('pointsCost')"><span>Points Cost</span>
+                    <th v-on:click="changeOrder('pointsCost')"><span>النقاط</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'pointsCost'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('cost')"><span>Cost</span>
+                    <th v-on:click="changeOrder('cost')"><span>القيمة المالية</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'cost'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('quantity')"><span>Quantity</span>
+                    <th v-on:click="changeOrder('quantity')"><span>الكمية</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'quantity'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('total')"><span>Total</span>
+                    <th v-on:click="changeOrder('total')"><span>المجموع</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'total'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('benefit.nameAr')"><span>Benefit</span>
+                    <th v-on:click="changeOrder('benefit.nameAr')"><span>المنفعة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'benefit.nameAr'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -83,18 +83,18 @@
                         <div class="btn-group">
                             <router-link :to="{name: 'InvoiceBenefitsView', params: {invoiceBenefitsId: invoiceBenefits.id}}" tag="button" class="btn btn-info btn-sm details">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>View</span>
+                                <span class='d-none d-md-inline'>عرض</span>
                             </router-link>
                             <router-link :to="{name: 'InvoiceBenefitsEdit', params: {invoiceBenefitsId: invoiceBenefits.id}}"  tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>Edit</span>
+                                <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
                             <b-button v-on:click="prepareRemove(invoiceBenefits)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>Delete</span>
+                                <span class='d-none d-md-inline'>حذف</span>
                             </b-button>
                         </div>
                     </td>
@@ -104,14 +104,14 @@
         </div>
         <b-modal ref="removeEntity" id="removeEntity" >
             <span slot='modal-title'><span
-                id='sahatiApp.invoiceBenefits.delete.question'>Confirm delete operation</span></span>
+                id='sahatiApp.invoiceBenefits.delete.question'>تاكيد عملية الحذف</span></span>
             <div class="modal-body">
-                <p id='jhi-delete-invoiceBenefits-heading'>Are you sure you want to delete this Invoice Benefits?</p>
+                <p id='jhi-delete-invoiceBenefits-heading'>هل انت متاكد من حذف Invoice Benefits?</p>
             </div>
             <div slot='modal-footer'>
-                <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>Cancel</button>
+                <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>الغاء</button>
                 <button id='jhi-confirm-delete-invoiceBenefits' class='btn btn-primary' type='button'
-                        v-on:click='removeInvoiceBenefits()'>Delete
+                        v-on:click='removeInvoiceBenefits()'>حذف
                 </button>
             </div>
         </b-modal>

@@ -2,40 +2,40 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="employee">
-                <h2 class='jh-entity-heading'><span>Employee</span> {{ employee.id }}</h2>
+                <h2 class='jh-entity-heading'><span>موظف</span> {{ employee.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Name</span>
+                        <span>الاسم</span>
                     </dt>
                     <dd>
                         <span>{{employee.name}}</span>
                     </dd>
                     <dt>
-                        <span>Phone</span>
+                        <span>رقم الهاتف</span>
                     </dt>
                     <dd>
                         <span>{{employee.phone}}</span>
                     </dd>
                     <dt>
-                        <span>Identity No</span>
+                        <span>رقم الهوية</span>
                     </dt>
                     <dd>
                         <span>{{employee.identityNo}}</span>
                     </dd>
                     <dt>
-                        <span>Employee Status</span>
+                        <span>الموظف حالة</span>
                     </dt>
                     <dd>
                         <span>{{ employee.employeeStatus }}</span>
                     </dd>
                     <dt>
-                        <span>Notes</span>
+                        <span>الملاحظات</span>
                     </dt>
                     <dd>
                         <span>{{employee.notes}}</span>
                     </dd>
                     <dt>
-                        <span>Company</span>
+                        <span>شركة</span>
                     </dt>
                     <dd>
                         <div v-if='employee.company'>
@@ -52,7 +52,7 @@
                 </button>
                 <router-link v-if='employee.id' :to="{name: 'EmployeeEdit', params: {employeeId: employee.id}}"
                              tag='button' class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

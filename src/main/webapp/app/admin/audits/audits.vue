@@ -49,7 +49,7 @@
                     <td>
                         <span v-if="audit.data && audit.data.message">{{audit.data.message}}</span>
                         <span
-                            v-if='audit.data && audit.data.remoteAddress'><span>Remote Address</span> {{ audit.data.remoteAddress }}</span>
+                            v-if='audit.data && audit.data.remoteAddress'><span>Remote العنوان</span> {{ audit.data.remoteAddress }}</span>
                     </td>
                 </tr>
                 </tbody>

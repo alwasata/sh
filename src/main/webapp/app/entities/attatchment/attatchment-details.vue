@@ -5,7 +5,7 @@
                 <h2 class='jh-entity-heading'><span>Attatchment</span> {{ attatchment.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Name</span>
+                        <span>الاسم</span>
                     </dt>
                     <dd>
                         <span>{{attatchment.name}}</span>
@@ -26,7 +26,7 @@
                         <span>{{attatchment.fileUrl}}</span>
                     </dd>
                     <dt>
-                        <span>Employee</span>
+                        <span>موظف</span>
                     </dt>
                     <dd>
                         <div v-if='attatchment.employee'>
@@ -44,7 +44,7 @@
                 <router-link v-if='attatchment.id'
                              :to="{name: 'AttatchmentEdit', params: {attatchmentId: attatchment.id}}" tag='button'
                              class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

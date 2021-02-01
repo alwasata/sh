@@ -5,7 +5,7 @@
                 <h2 class='jh-entity-heading'><span>CardTransaction</span> {{ cardTransaction.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Transaction No</span>
+                        <span> رقم الحركة</span>
                     </dt>
                     <dd>
                         <span>{{cardTransaction.transactionNo}}</span>
@@ -29,7 +29,7 @@
                         <span>{{ cardTransaction.action }}</span>
                     </dd>
                     <dt>
-                        <span>Notes</span>
+                        <span>الملاحظات</span>
                     </dt>
                     <dd>
                         <span>{{cardTransaction.notes}}</span>
@@ -53,7 +53,7 @@
                 <router-link v-if='cardTransaction.id'
                              :to="{name: 'CardTransactionEdit', params: {cardTransactionId: cardTransaction.id}}"
                              tag='button' class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

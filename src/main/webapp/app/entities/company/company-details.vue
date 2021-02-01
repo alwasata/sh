@@ -2,34 +2,34 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="company">
-                <h2 class='jh-entity-heading'><span>Company</span> {{ company.id }}</h2>
+                <h2 class='jh-entity-heading'><span>شركة</span> {{ company.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Name Ar</span>
+                        <span>الاسم بالعربية</span>
                     </dt>
                     <dd>
                         <span>{{company.nameAr}}</span>
                     </dd>
                     <dt>
-                        <span>Name En</span>
+                        <span>الاسم بالانجليزية</span>
                     </dt>
                     <dd>
                         <span>{{company.nameEn}}</span>
                     </dd>
                     <dt>
-                        <span>Email</span>
+                        <span>البريد الالكتروني</span>
                     </dt>
                     <dd>
                         <span>{{company.email}}</span>
                     </dd>
                     <dt>
-                        <span>Phone</span>
+                        <span>رقم الهاتف</span>
                     </dt>
                     <dd>
                         <span>{{company.phone}}</span>
                     </dd>
                     <dt>
-                        <span>Address</span>
+                        <span>العنوان</span>
                     </dt>
                     <dd>
                         <span>{{company.address}}</span>
@@ -62,7 +62,7 @@
                 </button>
                 <router-link v-if='company.id' :to="{name: 'CompanyEdit', params: {companyId: company.id}}" tag='button'
                              class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

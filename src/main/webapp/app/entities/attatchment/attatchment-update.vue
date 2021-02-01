@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
-                <h2 id='sahatiApp.attatchment.home.createOrEditLabel'>Create or edit a Attatchment</h2>
+                <h2 id='sahatiApp.attatchment.home.createOrEditLabel'>اضافة او تعديل Attatchment</h2>
                 <div>
                     <div class="form-group" v-if="attatchment.id">
                         <label for='id'>ID</label>
@@ -10,7 +10,7 @@
                                v-model="attatchment.id" readonly />
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='attatchment-name'>Name</label>
+                        <label class='form-control-label' for='attatchment-name'>الاسم</label>
                         <input type="text" class="form-control" name="name" id="attatchment-name"
                             :class="{'valid': !$v.attatchment.name.$invalid, 'invalid': $v.attatchment.name.$invalid }" v-model="$v.attatchment.name.$model" />
                     </div>
@@ -42,7 +42,7 @@
                             :class="{'valid': !$v.attatchment.fileUrl.$invalid, 'invalid': $v.attatchment.fileUrl.$invalid }" v-model="$v.attatchment.fileUrl.$model" />
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='attatchment-employee'>Employee</label>
+                        <label class='form-control-label' for='attatchment-employee'>موظف</label>
                         <select id='attatchment-employee' v-model='attatchment.employee' class='form-control'
                                 name='employee'>
                             <option v-bind:value='null'></option>
@@ -55,11 +55,11 @@
                 </div>
                 <div>
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
-                        <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>Cancel</span>
+                        <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>الغاء</span>
                     </button>
                     <button type='submit' id='save-entity' :disabled='$v.attatchment.$invalid || isSaving'
                             class='btn btn-primary'>
-                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>Save</span>
+                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>حفظ</span>
                     </button>
                 </div>
             </form>

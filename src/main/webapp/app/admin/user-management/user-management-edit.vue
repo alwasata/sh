@@ -3,7 +3,7 @@
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" v-if="userAccount">
                 <h2 id='myUserLabel'>
-                    Create or edit a User
+                    اضافة او تعديل User
                 </h2>
                 <div>
                     <div class="form-group" :hidden="!userAccount.id">
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='email'>Email</label>
+                        <label class='form-control-label' for='email'>البريد الالكتروني</label>
                         <input id='email' class='form-control' name='email' type='email'
                                :class="{'valid': !$v.userAccount.email.$invalid, 'invalid': $v.userAccount.email.$invalid }"
                                v-model='$v.userAccount.email.$model' email required>
@@ -100,10 +100,10 @@
                 <div>
                     <button type="button" class="btn btn-secondary" v-on:click="previousState()">
                         <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span
-                    >Cancel</span>
+                    >الغاء</span>
                     </button>
                     <button type='submit' :disabled='$v.userAccount.$invalid || isSaving' class='btn btn-primary'>
-                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>Save</span>
+                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>حفظ</span>
                     </button>
                 </div>
             </form>

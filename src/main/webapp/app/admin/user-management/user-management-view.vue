@@ -16,7 +16,7 @@
                     <dd>{{ user.firstName }}</dd>
                     <dt><span>Last Name</span></dt>
                     <dd>{{ user.lastName }}</dd>
-                    <dt><span>Email</span></dt>
+                    <dt><span>البريد الالكتروني</span></dt>
                     <dd>{{ user.email }}</dd>
                     <dt><span>Created By</span></dt>
                     <dd>{{ user.createdBy }}</dd>

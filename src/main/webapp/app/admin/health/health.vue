@@ -2,7 +2,7 @@
     <div>
         <h2>
             <span id='health-page-heading'>Health Checks</span>
-            <button class='btn btn-primary float-right' v-on:click='refresh()' :disabled='updatingHealth'>
+            <button class='btn btn-primary float-left' v-on:click='refresh()' :disabled='updatingHealth'>
                 <font-awesome-icon icon='sync'></font-awesome-icon>
                 <span>Refresh</span>
             </button>
@@ -12,7 +12,7 @@
                 <thead>
                 <tr>
                     <th>Service Name</th>
-                    <th class='text-center'>Status</th>
+                    <th class='text-center'>حالة</th>
                     <th class='text-center'>Details</th>
                 </tr>
                 </thead>

@@ -9,7 +9,7 @@
                 </div>
 
                 <div v-if='errorEmailExists' class='alert alert-danger' role='alert'>
-                    <strong>Email is already in use!</strong> Please choose another one.
+                    <strong>البريد الالكتروني is already in use!</strong> Please choose another one.
                 </div>
 
                 <!--<jhi-alert-error></jhi-alert-error>-->
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='email'>Email</label>
+                        <label class='form-control-label' for='email'>البريد الالكتروني</label>
                         <input id='email' class='form-control' name='email' type='email'
                                :class="{'valid': !$v.settingsAccount.email.$invalid, 'invalid': $v.settingsAccount.email.$invalid }"
                                v-model='$v.settingsAccount.email.$model' minlength='5' maxlength='254' email required>
@@ -86,7 +86,7 @@
                             <option v-for="(language, key) in languages" :value="key" :key="`lang-${key}`">{{language.name}}</option>
                         </select>
                     </div>
-                    <button :disabled='$v.settingsAccount.$invalid' class='btn btn-primary' type='submit'>Save</button>
+                    <button :disabled='$v.settingsAccount.$invalid' class='btn btn-primary' type='submit'>حفظ</button>
                 </form>
             </div>
         </div>

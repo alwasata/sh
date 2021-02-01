@@ -14,7 +14,7 @@
 
                 <form v-if="!success" name="form" role="form" v-on:submit.prevent="requestReset()">
                     <div class='form-group'>
-                        <label class='form-control-label' for='email'>Email</label>
+                        <label class='form-control-label' for='email'>البريد الالكتروني</label>
                         <input id='email' class='form-control' name='email' type='email'
                                :class="{'valid': !$v.resetAccount.email.$invalid, 'invalid': $v.resetAccount.email.$invalid }"
                                v-model='$v.resetAccount.email.$model' minlength='5' maxlength='254' email required>

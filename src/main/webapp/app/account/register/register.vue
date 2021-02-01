@@ -17,7 +17,7 @@
                 </div>
 
                 <div v-if='errorEmailExists' class='alert alert-danger' role='alert'>
-                    <strong>Email is already in use!</strong> Please choose another one.
+                    <strong>البريد الالكتروني is already in use!</strong> Please choose another one.
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='email'>Email</label>
+                        <label class='form-control-label' for='email'>البريد الالكتروني</label>
                         <input type='email' class='form-control' id='email' name='email'
                                :class="{'valid': !$v.registerAccount.email.$invalid, 'invalid': $v.registerAccount.email.$invalid }"
                                v-model='$v.registerAccount.email.$model' email maxlength='254' minlength='5' required>

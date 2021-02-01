@@ -1,13 +1,13 @@
 <template>
     <div>
         <h2 id="page-heading">
-            <span id='card-transaction-heading'>Card Transactions</span>
-            <router-link :to="{name: 'CardTransactionCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-card-transaction">
+            <span id='card-transaction-heading'>تتبع حركة البطاقة</span>
+            <!-- <router-link :to="{name: 'CardTransactionCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-card-transaction">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
-                    Create a new Card Transaction
+                    اضافة بطاقةTransaction
                 </span>
-            </router-link>
+            </router-link> -->
         </h2>
         <b-alert :show="dismissCountDown"
             dismissible
@@ -18,7 +18,7 @@
         </b-alert>
         <br/>
         <div class="alert alert-warning" v-if="!isFetching && cardTransactions && cardTransactions.length === 0">
-            <span>No cardTransactions found</span>
+            <span>لا يوجد بيانات</span>
         </div>
         <div class="table-responsive" v-if="cardTransactions && cardTransactions.length > 0">
             <table class="table table-striped">
@@ -28,7 +28,7 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('transactionNo')"><span>Transaction No</span>
+                    <th v-on:click="changeOrder('transactionNo')"><span>الحركة No</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'transactionNo'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -44,7 +44,7 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'action'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('notes')"><span>Notes</span>
+                    <th v-on:click="changeOrder('notes')"><span>الملاحظات</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -77,18 +77,18 @@
                         <div class="btn-group">
                             <router-link :to="{name: 'CardTransactionView', params: {cardTransactionId: cardTransaction.id}}" tag="button" class="btn btn-info btn-sm details">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>View</span>
+                                <span class='d-none d-md-inline'>عرض</span>
                             </router-link>
                             <router-link :to="{name: 'CardTransactionEdit', params: {cardTransactionId: cardTransaction.id}}"  tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>Edit</span>
+                                <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
                             <b-button v-on:click="prepareRemove(cardTransaction)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>Delete</span>
+                                <span class='d-none d-md-inline'>حذف</span>
                             </b-button>
                         </div>
                     </td>
@@ -98,14 +98,14 @@
         </div>
         <b-modal ref="removeEntity" id="removeEntity" >
             <span slot='modal-title'><span
-                id='sahatiApp.cardTransaction.delete.question'>Confirm delete operation</span></span>
+                id='sahatiApp.cardTransaction.delete.question'>تاكيد عملية الحذف</span></span>
             <div class="modal-body">
-                <p id='jhi-delete-cardTransaction-heading'>Are you sure you want to delete this Card Transaction?</p>
+                <p id='jhi-delete-cardTransaction-heading'>هل انت متاكد من حذف بطاقةTransaction?</p>
             </div>
             <div slot='modal-footer'>
-                <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>Cancel</button>
+                <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>الغاء</button>
                 <button id='jhi-confirm-delete-cardTransaction' class='btn btn-primary' type='button'
-                        v-on:click='removeCardTransaction()'>Delete
+                        v-on:click='removeCardTransaction()'>حذف
                 </button>
             </div>
         </b-modal>

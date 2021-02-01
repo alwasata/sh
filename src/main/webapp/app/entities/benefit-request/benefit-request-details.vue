@@ -2,46 +2,46 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="benefitRequest">
-                <h2 class='jh-entity-heading'><span>BenefitRequest</span> {{ benefitRequest.id }}</h2>
+                <h2 class='jh-entity-heading'><span>طلب منفعة</span> {{ benefitRequest.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Name Ar</span>
+                        <span>الاسم بالعربية</span>
                     </dt>
                     <dd>
                         <span>{{benefitRequest.nameAr}}</span>
                     </dd>
                     <dt>
-                        <span>Name En</span>
+                        <span>الاسم بالانجليزية</span>
                     </dt>
                     <dd>
                         <span>{{benefitRequest.nameEn}}</span>
                     </dd>
                     <dt>
-                        <span>Points Cost</span>
+                        <span>النقاط</span>
                     </dt>
                     <dd>
                         <span>{{benefitRequest.pointsCost}}</span>
                     </dd>
                     <dt>
-                        <span>Cost</span>
+                        <span>القيمة المالية</span>
                     </dt>
                     <dd>
                         <span>{{benefitRequest.cost}}</span>
                     </dd>
                     <dt>
-                        <span>Benefit Status</span>
+                        <span>حالة المنفعة</span>
                     </dt>
                     <dd>
                         <span>{{ benefitRequest.benefitStatus }}</span>
                     </dd>
                     <dt>
-                        <span>Notes</span>
+                        <span>الملاحظات</span>
                     </dt>
                     <dd>
                         <span>{{benefitRequest.notes}}</span>
                     </dd>
                     <dt>
-                        <span>Category</span>
+                        <span>الفئة</span>
                     </dt>
                     <dd>
                         <div v-if='benefitRequest.category'>
@@ -51,7 +51,7 @@
                         </div>
                     </dd>
                     <dt>
-                        <span>Hospital</span>
+                        <span>المستشفى</span>
                     </dt>
                     <dd>
                         <div v-if='benefitRequest.hospital'>
@@ -61,7 +61,7 @@
                         </div>
                     </dd>
                     <dt>
-                        <span>Benefit</span>
+                        <span>المنفعة</span>
                     </dt>
                     <dd>
                         <div v-if='benefitRequest.benefit'>
@@ -79,7 +79,7 @@
                 <router-link v-if='benefitRequest.id'
                              :to="{name: 'BenefitRequestEdit', params: {benefitRequestId: benefitRequest.id}}"
                              tag='button' class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

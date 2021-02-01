@@ -2,34 +2,34 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="hospital">
-                <h2 class='jh-entity-heading'><span>Hospital</span> {{ hospital.id }}</h2>
+                <h2 class='jh-entity-heading'><span>المستشفى</span> {{ hospital.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Name Ar</span>
+                        <span>الاسم بالعربية</span>
                     </dt>
                     <dd>
                         <span>{{hospital.nameAr}}</span>
                     </dd>
                     <dt>
-                        <span>Name En</span>
+                        <span>الاسم بالانجليزية</span>
                     </dt>
                     <dd>
                         <span>{{hospital.nameEn}}</span>
                     </dd>
                     <dt>
-                        <span>Email</span>
+                        <span>البريد الالكتروني</span>
                     </dt>
                     <dd>
                         <span>{{hospital.email}}</span>
                     </dd>
                     <dt>
-                        <span>Phone</span>
+                        <span>رقم الهاتف</span>
                     </dt>
                     <dd>
                         <span>{{hospital.phone}}</span>
                     </dd>
                     <dt>
-                        <span>Address</span>
+                        <span>العنوان</span>
                     </dt>
                     <dd>
                         <span>{{hospital.address}}</span>
@@ -50,7 +50,7 @@
                 </button>
                 <router-link v-if='hospital.id' :to="{name: 'HospitalEdit', params: {hospitalId: hospital.id}}"
                              tag='button' class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

@@ -2,7 +2,7 @@
   <div>
     <h2>
       <span id='metrics-page-heading'>Application Metrics</span>
-        <button class='btn btn-primary float-right' v-on:click='refresh()'>
+        <button class='btn btn-primary float-left' v-on:click='refresh()'>
             <font-awesome-icon icon='sync'></font-awesome-icon>
             <span>Refresh</span>
         </button>
@@ -51,7 +51,7 @@
           <b-progress-bar :value="threadStats.threadDumpBlocked" :label="formatNumber1(threadStats.threadDumpBlocked * 100 / threadStats.threadDumpAll) + '%'"></b-progress-bar>
         </b-progress>
 
-        <span>Total: {{threadStats.threadDumpAll}}
+        <span>المجموع: {{threadStats.threadDumpAll}}
           <a class="hand" v-b-modal.metricsModal
             data-toggle="modal"
             v-on:click="openModal()"

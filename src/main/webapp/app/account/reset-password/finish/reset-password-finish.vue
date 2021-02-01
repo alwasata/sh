@@ -70,7 +70,7 @@
                                 </small>
                             </div>
                         </div>
-                        <button :disabled='$v.resetAccount.$invalid' class='btn btn-primary' type='submit'>Save</button>
+                        <button :disabled='$v.resetAccount.$invalid' class='btn btn-primary' type='submit'>حفظ</button>
                     </form>
                 </div>
             </div>

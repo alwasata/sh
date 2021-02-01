@@ -1,11 +1,11 @@
 <template>
     <div>
         <h2 id="page-heading">
-            <span id='employee-heading'>Employees</span>
-            <router-link :to="{name: 'EmployeeCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-employee">
+            <span id='employee-heading'>الموظفين</span>
+            <router-link :to="{name: 'EmployeeCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-employee">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
-                    Create a new Employee
+                    اضافة موظف
                 </span>
             </router-link>
         </h2>
@@ -18,7 +18,7 @@
         </b-alert>
         <br/>
         <div class="alert alert-warning" v-if="!isFetching && employees && employees.length === 0">
-            <span>No employees found</span>
+            <span>لا يوجد موظفين</span>
         </div>
         <div class="table-responsive" v-if="employees && employees.length > 0">
             <table class="table table-striped">
@@ -28,27 +28,27 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('name')"><span>Name</span>
+                    <th v-on:click="changeOrder('name')"><span>الاسم</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'name'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('phone')"><span>Phone</span>
+                    <th v-on:click="changeOrder('phone')"><span>رقم الهاتف</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'phone'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('identityNo')"><span>Identity No</span>
+                    <th v-on:click="changeOrder('identityNo')"><span>رقم الهوية</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'identityNo'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('employeeStatus')"><span>Employee Status</span>
+                    <th v-on:click="changeOrder('employeeStatus')"><span>الموظف حالة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'employeeStatus'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('notes')"><span>Notes</span>
+                    <th v-on:click="changeOrder('notes')"><span>الملاحظات</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('company.nameAr')"><span>Company</span>
+                    <th v-on:click="changeOrder('company.nameAr')"><span>شركة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'company.nameAr'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -77,18 +77,18 @@
                         <div class="btn-group">
                             <router-link :to="{name: 'EmployeeView', params: {employeeId: employee.id}}" tag="button" class="btn btn-info btn-sm details">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>View</span>
+                                <span class='d-none d-md-inline'>عرض</span>
                             </router-link>
                             <router-link :to="{name: 'EmployeeEdit', params: {employeeId: employee.id}}"  tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>Edit</span>
+                                <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
                             <b-button v-on:click="prepareRemove(employee)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>Delete</span>
+                                <span class='d-none d-md-inline'>حذف</span>
                             </b-button>
                         </div>
                     </td>
@@ -98,14 +98,14 @@
         </div>
         <b-modal ref="removeEntity" id="removeEntity" >
             <span slot='modal-title'><span
-                id='sahatiApp.employee.delete.question'>Confirm delete operation</span></span>
+                id='sahatiApp.employee.delete.question'>تاكيد عملية الحذف</span></span>
             <div class="modal-body">
-                <p id='jhi-delete-employee-heading'>Are you sure you want to delete this Employee?</p>
+                <p id='jhi-delete-employee-heading'>هل انت متاكد من حذف موظف?</p>
             </div>
             <div slot='modal-footer'>
-                <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>Cancel</button>
+                <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>الغاء</button>
                 <button id='jhi-confirm-delete-employee' class='btn btn-primary' type='button'
-                        v-on:click='removeEmployee()'>Delete
+                        v-on:click='removeEmployee()'>حذف
                 </button>
             </div>
         </b-modal>

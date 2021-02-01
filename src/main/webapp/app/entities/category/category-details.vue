@@ -2,16 +2,16 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="category">
-                <h2 class='jh-entity-heading'><span>Category</span> {{ category.id }}</h2>
+                <h2 class='jh-entity-heading'><span>الفئة</span> {{ category.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Name Ar</span>
+                        <span>الاسم بالعربية</span>
                     </dt>
                     <dd>
                         <span>{{category.nameAr}}</span>
                     </dd>
                     <dt>
-                        <span>Name En</span>
+                        <span>الاسم بالانجليزية</span>
                     </dt>
                     <dd>
                         <span>{{category.nameEn}}</span>
@@ -24,7 +24,7 @@
                 </button>
                 <router-link v-if='category.id' :to="{name: 'CategoryEdit', params: {categoryId: category.id}}"
                              tag='button' class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

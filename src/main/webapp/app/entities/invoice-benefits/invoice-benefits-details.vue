@@ -5,31 +5,31 @@
                 <h2 class='jh-entity-heading'><span>InvoiceBenefits</span> {{ invoiceBenefits.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Points Cost</span>
+                        <span>النقاط</span>
                     </dt>
                     <dd>
                         <span>{{invoiceBenefits.pointsCost}}</span>
                     </dd>
                     <dt>
-                        <span>Cost</span>
+                        <span>القيمة المالية</span>
                     </dt>
                     <dd>
                         <span>{{invoiceBenefits.cost}}</span>
                     </dd>
                     <dt>
-                        <span>Quantity</span>
+                        <span>الكمية</span>
                     </dt>
                     <dd>
                         <span>{{invoiceBenefits.quantity}}</span>
                     </dd>
                     <dt>
-                        <span>Total</span>
+                        <span>المجموع</span>
                     </dt>
                     <dd>
                         <span>{{invoiceBenefits.total}}</span>
                     </dd>
                     <dt>
-                        <span>Benefit</span>
+                        <span>المنفعة</span>
                     </dt>
                     <dd>
                         <div v-if='invoiceBenefits.benefit'>
@@ -57,7 +57,7 @@
                 <router-link v-if='invoiceBenefits.id'
                              :to="{name: 'InvoiceBenefitsEdit', params: {invoiceBenefitsId: invoiceBenefits.id}}"
                              tag='button' class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

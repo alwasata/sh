@@ -5,25 +5,25 @@
                 <h2 class='jh-entity-heading'><span>Card</span> {{ card.id }}</h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>Card No</span>
+                        <span>رقم البطاقة</span>
                     </dt>
                     <dd>
                         <span>{{card.cardNo}}</span>
                     </dd>
                     <dt>
-                        <span>Expiry Date</span>
+                        <span>تاريخ الانتهاء</span>
                     </dt>
                     <dd>
                         <span>{{card.expiryDate}}</span>
                     </dd>
                     <dt>
-                        <span>Is Active</span>
+                        <span>مفعل</span>
                     </dt>
                     <dd>
                         <span>{{card.isActive}}</span>
                     </dd>
                     <dt>
-                        <span>Employee</span>
+                        <span>موظف</span>
                     </dt>
                     <dd>
                         <div v-if='card.employee'>
@@ -40,7 +40,7 @@
                 </button>
                 <router-link v-if='card.id' :to="{name: 'CardEdit', params: {cardId: card.id}}" tag='button'
                              class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

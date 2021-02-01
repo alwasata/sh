@@ -23,25 +23,25 @@
                         <span>{{invoice.payDate}}</span>
                     </dd>
                     <dt>
-                        <span>Total</span>
+                        <span>المجموع</span>
                     </dt>
                     <dd>
                         <span>{{invoice.total}}</span>
                     </dd>
                     <dt>
-                        <span>Invoice Status</span>
+                        <span>Invoice حالة</span>
                     </dt>
                     <dd>
                         <span>{{ invoice.invoiceStatus }}</span>
                     </dd>
                     <dt>
-                        <span>Notes</span>
+                        <span>الملاحظات</span>
                     </dt>
                     <dd>
                         <span>{{invoice.notes}}</span>
                     </dd>
                     <dt>
-                        <span>Card Transaction</span>
+                        <span>بطاقةTransaction</span>
                     </dt>
                     <dd>
                         <div v-if='invoice.cardTransaction'>
@@ -59,7 +59,7 @@
                 </button>
                 <router-link v-if='invoice.id' :to="{name: 'InvoiceEdit', params: {invoiceId: invoice.id}}" tag='button'
                              class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> Edit</span>
+                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
                 </router-link>
             </div>
         </div>

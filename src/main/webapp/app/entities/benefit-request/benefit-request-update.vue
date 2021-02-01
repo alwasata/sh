@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
-                <h2 id='sahatiApp.benefitRequest.home.createOrEditLabel'>Create or edit a BenefitRequest</h2>
+                <h2 id='sahatiApp.benefitRequest.home.createOrEditLabel'>اضافة او تعديل طلب منفعة</h2>
                 <div>
                     <div class="form-group" v-if="benefitRequest.id">
                         <label for='id'>ID</label>
@@ -10,7 +10,7 @@
                                v-model="benefitRequest.id" readonly />
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='benefit-request-nameAr'>Name Ar</label>
+                        <label class='form-control-label' for='benefit-request-nameAr'>الاسم بالعربية</label>
                         <input type="text" class="form-control" name="nameAr" id="benefit-request-nameAr"
                             :class="{'valid': !$v.benefitRequest.nameAr.$invalid, 'invalid': $v.benefitRequest.nameAr.$invalid }" v-model="$v.benefitRequest.nameAr.$model"  required/>
                         <div v-if="$v.benefitRequest.nameAr.$anyDirty && $v.benefitRequest.nameAr.$invalid">
@@ -20,22 +20,22 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='benefit-request-nameEn'>Name En</label>
+                        <label class='form-control-label' for='benefit-request-nameEn'>الاسم بالانجليزية</label>
                         <input type="text" class="form-control" name="nameEn" id="benefit-request-nameEn"
                             :class="{'valid': !$v.benefitRequest.nameEn.$invalid, 'invalid': $v.benefitRequest.nameEn.$invalid }" v-model="$v.benefitRequest.nameEn.$model" />
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='benefit-request-pointsCost'>Points Cost</label>
+                        <label class='form-control-label' for='benefit-request-pointsCost'>النقاط</label>
                         <input type="number" class="form-control" name="pointsCost" id="benefit-request-pointsCost"
                             :class="{'valid': !$v.benefitRequest.pointsCost.$invalid, 'invalid': $v.benefitRequest.pointsCost.$invalid }" v-model.number="$v.benefitRequest.pointsCost.$model" />
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='benefit-request-cost'>Cost</label>
+                        <label class='form-control-label' for='benefit-request-cost'>القيمة المالية</label>
                         <input type="number" class="form-control" name="cost" id="benefit-request-cost"
                             :class="{'valid': !$v.benefitRequest.cost.$invalid, 'invalid': $v.benefitRequest.cost.$invalid }" v-model.number="$v.benefitRequest.cost.$model" />
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='benefit-request-benefitStatus'>Benefit Status</label>
+                        <label class='form-control-label' for='benefit-request-benefitStatus'>حالة المنفعة</label>
                         <select class='form-control' name='benefitStatus'
                                 :class="{'valid': !$v.benefitRequest.benefitStatus.$invalid, 'invalid': $v.benefitRequest.benefitStatus.$invalid }"
                                 v-model='$v.benefitRequest.benefitStatus.$model' id='benefit-request-benefitStatus'>
@@ -46,12 +46,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='benefit-request-notes'>Notes</label>
+                        <label class='form-control-label' for='benefit-request-notes'>الملاحظات</label>
                         <input type="text" class="form-control" name="notes" id="benefit-request-notes"
                             :class="{'valid': !$v.benefitRequest.notes.$invalid, 'invalid': $v.benefitRequest.notes.$invalid }" v-model="$v.benefitRequest.notes.$model" />
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='benefit-request-category'>Category</label>
+                        <label class='form-control-label' for='benefit-request-category'>الفئة</label>
                         <select id='benefit-request-category' v-model='benefitRequest.category' class='form-control'
                                 name='category'>
                             <option v-bind:value='null'></option>
@@ -62,7 +62,7 @@
                         </select>
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='benefit-request-hospital'>Hospital</label>
+                        <label class='form-control-label' for='benefit-request-hospital'>المستشفى</label>
                         <select id='benefit-request-hospital' v-model='benefitRequest.hospital' class='form-control'
                                 name='hospital'>
                             <option v-bind:value='null'></option>
@@ -73,7 +73,7 @@
                         </select>
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='benefit-request-benefit'>Benefit</label>
+                        <label class='form-control-label' for='benefit-request-benefit'>المنفعة</label>
                         <select id='benefit-request-benefit' v-model='benefitRequest.benefit' class='form-control'
                                 name='benefit'>
                             <option v-bind:value='null'></option>
@@ -86,11 +86,11 @@
                 </div>
                 <div>
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
-                        <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>Cancel</span>
+                        <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>الغاء</span>
                     </button>
                     <button type='submit' id='save-entity' :disabled='$v.benefitRequest.$invalid || isSaving'
                             class='btn btn-primary'>
-                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>Save</span>
+                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>حفظ</span>
                     </button>
                 </div>
             </form>
