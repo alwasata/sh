@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post as PostMethod, Put, UseGuards, Req, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post as PostMethod, Put, UseGuards, Req, UseInterceptors, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiUseTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { Request } from 'express';
 import { BenefitRequestDTO } from '../../service/dto/benefit-request.dto';
@@ -7,6 +7,7 @@ import { PageRequest, Page } from '../../domain/base/pagination.entity';
 import { AuthGuard, Roles, RolesGuard, RoleType } from '../../security';
 import { HeaderUtil } from '../../client/header-util';
 import { LoggingInterceptor } from '../../client/interceptors/logging.interceptor';
+import { BenefitStatus } from '../../domain/enumeration/benefit-status';
 
 @Controller('api/benefit-requests')
 @UseGuards(AuthGuard, RolesGuard)
@@ -57,9 +58,13 @@ export class BenefitRequestController {
     })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async post(@Req() req: Request, @Body() benefitRequestDTO: BenefitRequestDTO): Promise<BenefitRequestDTO> {
-        const created = await this.benefitRequestService.save(benefitRequestDTO);
-        HeaderUtil.addEntityCreatedHeaders(req.res, 'BenefitRequest', created.id);
-        return created;
+      const value = process.env.POINT_COST;
+      benefitRequestDTO.pointsCost = (benefitRequestDTO.cost * value);
+      benefitRequestDTO.benefitStatus = BenefitStatus.PENDING;
+
+      const created = await this.benefitRequestService.save(benefitRequestDTO);
+      HeaderUtil.addEntityCreatedHeaders(req.res, 'BenefitRequest', created.id);
+      return created;
     }
 
     @Put('/')
@@ -70,9 +75,26 @@ export class BenefitRequestController {
         description: 'The record has been successfully updated.',
         type: BenefitRequestDTO,
     })
+    @ApiResponse({
+        status: 422,
+        description: "Benefit Request Can't be modified.",
+        type: {
+          statusCode: 422,
+          Message: "Benefit Request Can't be modified."
+        },
+    })
     async put(@Req() req: Request, @Body() benefitRequestDTO: BenefitRequestDTO): Promise<BenefitRequestDTO> {
+      // you can't modify Benefit Request if its not in PENDING status
+      if (benefitRequestDTO.benefitStatus == BenefitStatus.PENDING) {
         HeaderUtil.addEntityCreatedHeaders(req.res, 'BenefitRequest', benefitRequestDTO.id);
+
+        const value = process.env.POINT_COST;
+        benefitRequestDTO.pointsCost = (benefitRequestDTO.cost * value);
+        benefitRequestDTO.benefitStatus = BenefitStatus.PENDING;
+
         return await this.benefitRequestService.update(benefitRequestDTO);
+      }
+      throw new HttpException("Benefit Request Can't be modified.", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @Delete('/:id')
@@ -82,8 +104,20 @@ export class BenefitRequestController {
         status: 204,
         description: 'The record has been successfully deleted.',
     })
+    @ApiResponse({
+      status: 422,
+      description: "Benefit Request Can't be deleted.",
+      type: {
+        statusCode: 422,
+        Message: "Benefit Request Can't be deleted."
+      },
+    })
     async deleteById(@Req() req: Request, @Param('id') id: string): Promise<void> {
+      // you can't modify Benefit Request if its not in PENDING status
+      if (benefitRequestDTO.benefitStatus == BenefitStatus.PENDING) {
         HeaderUtil.addEntityDeletedHeaders(req.res, 'BenefitRequest', id);
         return await this.benefitRequestService.deleteById(id);
+      }
+      throw new HttpException("Benefit Request Can't be deleted.", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

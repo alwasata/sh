@@ -97,6 +97,9 @@ export default class BenefitRequestUpdate extends Vue {
       .find(benefitRequestId)
       .then(res => {
         this.benefitRequest = res;
+        if (this.benefitRequest.benefitStatus != 'PENDING') {
+          this.previousState();
+        }
       });
   }
 

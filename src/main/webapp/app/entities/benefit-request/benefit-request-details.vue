@@ -76,7 +76,7 @@
                         class='btn btn-info'>
                     <font-awesome-icon icon='arrow-left'></font-awesome-icon>&nbsp;<span> Back</span>
                 </button>
-                <router-link v-if='benefitRequest.id'
+                <router-link v-if='benefitRequest.id && benefitRequest.benefitStatus == "PENDING"'
                              :to="{name: 'BenefitRequestEdit', params: {benefitRequestId: benefitRequest.id}}"
                              tag='button' class='btn btn-primary'>
                     <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>

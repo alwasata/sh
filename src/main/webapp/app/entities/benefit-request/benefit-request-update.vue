@@ -24,11 +24,11 @@
                         <input type="text" class="form-control" name="nameEn" id="benefit-request-nameEn"
                             :class="{'valid': !$v.benefitRequest.nameEn.$invalid, 'invalid': $v.benefitRequest.nameEn.$invalid }" v-model="$v.benefitRequest.nameEn.$model" />
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class='form-control-label' for='benefit-request-pointsCost'>النقاط</label>
                         <input type="number" class="form-control" name="pointsCost" id="benefit-request-pointsCost"
                             :class="{'valid': !$v.benefitRequest.pointsCost.$invalid, 'invalid': $v.benefitRequest.pointsCost.$invalid }" v-model.number="$v.benefitRequest.pointsCost.$model" />
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-request-cost'>القيمة المالية</label>
                         <input type="number" class="form-control" name="cost" id="benefit-request-cost"
@@ -44,7 +44,7 @@
                             <option value='REFUSED'>REFUSED</option>
                             <option value='CANCELLED'>CANCELLED</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-request-notes'>الملاحظات</label>
                         <input type="text" class="form-control" name="notes" id="benefit-request-notes"
@@ -72,7 +72,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class='form-group'>
+                    <!-- <div class='form-group'>
                         <label class='form-control-label' for='benefit-request-benefit'>المنفعة</label>
                         <select id='benefit-request-benefit' v-model='benefitRequest.benefit' class='form-control'
                                 name='benefit'>
@@ -82,7 +82,7 @@
                                 {{ benefitOption.nameAr }}
                             </option>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
                 <div>
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
