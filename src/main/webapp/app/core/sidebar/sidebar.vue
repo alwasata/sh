@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-sidebar id='sidebar-1' name='sidebar' no-close-on-backdrop left shadow title='صحتي' >
+        <b-sidebar id='sidebar-1' name='sidebar' left shadow title='صحتي' >
             <div class="sidebar-sticky">
             <!-- <ul class="nav flex-column">
               <li class="nav-item">
@@ -11,9 +11,9 @@
               </li>
 
             </ul> -->
-            <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
               <span>العناصر</span>
-              <a class="d-flex align-items-center text-muted" href="#">
+              <a class="d-flex align-items-center" href="#">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
               </a>
             </h6>
@@ -26,7 +26,16 @@
               </li>
             </ul> -->
 
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <ul class="nav flex-column">
+                <li class='nav-item'>
+                    <router-link class='nav-link' to='/'>
+                        <font-awesome-icon icon='home' />
+                        <span>الرئيسية</span>
+                    </router-link>
+                </li>
+            </ul>
+            <hr>
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
                 <span>العناصر</span>
                 <font-awesome-icon icon='th-list' />
             </h6>
@@ -86,7 +95,8 @@
                         </router-link>
                     </li>
             </ul>
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <hr>
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
                 <span>المسؤولين</span>
                 <font-awesome-icon icon="cogs" />
             </h6>
@@ -111,8 +121,10 @@
 <style scoped>
     a {
         color: #333;
+        font-weight: normal;
     }
-    a:hover {
-        color: black;
+    h6, a:hover {
+        color: black !important;
+        font-weight: bold;
     }
 </style>
