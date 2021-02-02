@@ -117,7 +117,7 @@
                     </b-dropdown-item>
                     <b-dropdown-item to="/account/password" tag="b-dropdown-item" v-if="authenticated" active-class="active">
                         <font-awesome-icon icon="lock" />
-                        <span>الرقم السري</span>
+                        <span>كلمة المرور</span>
                     </b-dropdown-item>
                     <b-dropdown-item v-if="authenticated"  v-on:click="logout()" id="logout" active-class="active">
                         <font-awesome-icon icon="sign-out-alt" />

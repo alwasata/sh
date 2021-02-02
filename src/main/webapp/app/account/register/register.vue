@@ -75,47 +75,47 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='firstPassword'>الرقم السري</label>
+                        <label class='form-control-label' for='firstPassword'>كلمة المرور</label>
                         <input type='password' class='form-control' id='firstPassword' name='password'
                                :class="{'valid': !$v.registerAccount.password.$invalid, 'invalid': $v.registerAccount.password.$invalid }"
                                v-model='$v.registerAccount.password.$model' maxlength='50' minlength='4' required >
                         <div v-if="$v.registerAccount.password.$anyDirty && $v.registerAccount.password.$invalid">
                             <small class="form-text text-danger" v-if="!$v.registerAccount.password.required"
                             >
-                                الرقم السري اجباري.
+                                كلمة المرور اجباري.
                             </small>
                             <small class="form-text text-danger" v-if="!$v.registerAccount.password.minLength"
                             >
-                                يجب ان يكون الرقم السري على الاقل 4 احرف.
+                                يجب ان يكون كلمة المرور على الاقل 4 احرف.
                             </small>
                             <small class="form-text text-danger" v-if="!$v.registerAccount.password.maxLength"
                             >
-                                لا يمكن ان يكون الرقم السري اطول من 50.
+                                لا يمكن ان يكون كلمة المرور اطول من 50.
                             </small>
                         </div>
                         <!--<jhi-password-strength-bar [passwordToCheck]="registerAccount.password"></jhi-password-strength-bar>-->
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='secondPassword'>تاكيد الرقم السري</label>
+                        <label class='form-control-label' for='secondPassword'>تاكيد كلمة المرور</label>
                         <input type='password' class='form-control' id='secondPassword' name='confirmPasswordInput'
                                :class="{'valid': !$v.confirmPassword.$invalid, 'invalid': $v.confirmPassword.$invalid }"
                                v-model='$v.confirmPassword.$model' maxlength='50' minlength='4' required >
                         <div v-if="$v.confirmPassword.$dirty && $v.confirmPassword.$invalid">
                             <small class="form-text text-danger" v-if="!$v.confirmPassword.required"
                             >
-                                تاكيد الرقم السري اجباري
+                                تاكيد كلمة المرور اجباري
                             </small>
                             <small class="form-text text-danger" v-if="!$v.confirmPassword.minLength"
                             >
-                                تاكيد الرقم السري يجب ان  يكون على الاقل 4 احرف
+                                تاكيد كلمة المرور يجب ان  يكون على الاقل 4 احرف
                             </small>
                             <small class="form-text text-danger" v-if="!$v.confirmPassword.maxLength"
                             >
-                                لا يمكن ان يكون تاكيد الرقم السري اطول من 50
+                                لا يمكن ان يكون تاكيد كلمة المرور اطول من 50
                             </small>
                             <small class="form-text text-danger" v-if="!$v.confirmPassword.sameAsPassword"
                             >
-                                تاكيد الرقم السري يجب ان يكون مطابق للرقم السري
+                                تاكيد كلمة المرور يجب ان يكون مطابق للرقم السري
                             </small>
                         </div>
                     </div>
