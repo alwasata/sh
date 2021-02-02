@@ -76,10 +76,10 @@ export class BenefitRequestController {
         type: BenefitRequestDTO,
     })
     @ApiResponse({
-        status: 422,
+        status: HttpStatus.FORBIDDEN,
         description: "Benefit Request Can't be modified.",
         type: {
-          statusCode: 422,
+          statusCode: HttpStatus.FORBIDDEN,
           Message: "Benefit Request Can't be modified."
         },
     })
@@ -94,7 +94,7 @@ export class BenefitRequestController {
 
         return await this.benefitRequestService.update(benefitRequestDTO);
       }
-      throw new HttpException("Benefit Request Can't be modified.", HttpStatus.UNPROCESSABLE_ENTITY);
+      throw new HttpException("Benefit Request Can't be modified.", HttpStatus.FORBIDDEN);
     }
 
     @Delete('/:id')
@@ -105,19 +105,21 @@ export class BenefitRequestController {
         description: 'The record has been successfully deleted.',
     })
     @ApiResponse({
-      status: 422,
+      status: HttpStatus.FORBIDDEN,
       description: "Benefit Request Can't be deleted.",
       type: {
-        statusCode: 422,
+        statusCode: HttpStatus.FORBIDDEN,
         Message: "Benefit Request Can't be deleted."
       },
     })
     async deleteById(@Req() req: Request, @Param('id') id: string): Promise<void> {
+      const benefitRequestDTO: BenefitRequestDTO = await this.benefitRequestService.findById(id);
+
       // you can't modify Benefit Request if its not in PENDING status
       if (benefitRequestDTO.benefitStatus == BenefitStatus.PENDING) {
         HeaderUtil.addEntityDeletedHeaders(req.res, 'BenefitRequest', id);
         return await this.benefitRequestService.deleteById(id);
       }
-      throw new HttpException("Benefit Request Can't be deleted.", HttpStatus.UNPROCESSABLE_ENTITY);
+      throw new HttpException("Benefit Request Can't be deleted.", HttpStatus.FORBIDDEN);
     }
 }
