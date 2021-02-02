@@ -23,7 +23,7 @@
                         <span>{{employee.identityNo}}</span>
                     </dd>
                     <dt>
-                        <span>الموظف حالة</span>
+                        <span>حالة الموظف</span>
                     </dt>
                     <dd>
                         <span>{{ employee.employeeStatus }}</span>
