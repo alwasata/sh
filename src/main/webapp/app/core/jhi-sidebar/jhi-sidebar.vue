@@ -26,5 +26,4 @@
     </div>
 </template>
 
-<script lang="ts" src="./jhi-sidebar.component.ts">
-</script>
+

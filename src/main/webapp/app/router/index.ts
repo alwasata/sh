@@ -7,7 +7,7 @@ Component.registerHooks([
 ]);
 import Router from 'vue-router';
 
-const Home = () => import('@/core/jhi-sidebar/jhi-sidebar.vue');
+const Home = () => import('@/core/home/home.vue');
 const Error = () => import('@/core/error/error.vue');
 import account from '@/router/account.ts';
 import admin from '@/router/admin.ts';
