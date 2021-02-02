@@ -32,10 +32,10 @@
                         <font-awesome-icon icon="th-list" />
                         <span>العناصر</span>
                     </span>
-                    <b-dropdown-item to="/attatchment">
+                    <!-- <b-dropdown-item to="/attatchment">
                         <font-awesome-icon icon="asterisk" />
                         <span>Attatchment</span>
-                    </b-dropdown-item>
+                    </b-dropdown-item> -->
                     <b-dropdown-item to='/benefit'>
                         <font-awesome-icon icon='asterisk' />
                         <span>المنفعات</span>
@@ -231,7 +231,7 @@
 
 .logo-img {
   height: 100%;
-  background: url("../../../content/images/logo-jhipster.png") no-repeat center
+  background: url("../../../content/images/sahati-logo.gif") no-repeat center
     center;
   background-size: contain;
   width: 100%;
