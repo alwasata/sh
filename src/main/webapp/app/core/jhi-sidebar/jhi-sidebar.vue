@@ -1,7 +1,6 @@
 <template>
     <div>
-        <b-button v-b-toggle.sidebar-1>Toggle Sidebar</b-button>
-        <b-sidebar id='sidebar-1' name='sidebar' right shadow title='صحتي'>
+        <b-sidebar id='sidebar-1' name='sidebar' left shadow title='صحتي' >
             <div class='px-3 py-2'>
                 <section>
                     <p>sidebar</p>
