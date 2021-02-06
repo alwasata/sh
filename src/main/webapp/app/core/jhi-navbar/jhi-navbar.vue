@@ -32,10 +32,10 @@
                         <font-awesome-icon icon="th-list" />
                         <span>العناصر</span>
                     </span>
-                    <!-- <b-dropdown-item to="/attatchment">
+                    <b-dropdown-item to="/attatchment">
                         <font-awesome-icon icon="asterisk" />
                         <span>Attatchment</span>
-                    </b-dropdown-item> -->
+                    </b-dropdown-item>
                     <b-dropdown-item to='/benefit'>
                         <font-awesome-icon icon='asterisk' />
                         <span>المنفعات</span>
@@ -72,11 +72,11 @@
                         <font-awesome-icon icon="asterisk" />
                         <span>الفواتير</span>
                     </b-dropdown-item>
-                    <!-- <b-dropdown-item to="/invoice-benefits">
+                    <b-dropdown-item to="/invoice-benefits">
                         <font-awesome-icon icon="asterisk" />
                         <span>InvoiceBenefits</span>
-                    </b-dropdown-item> -->
-                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+                    </b-dropdown-item>
+                    jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown
                     right
