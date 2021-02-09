@@ -40,7 +40,7 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'identityNo'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('employeeStatus')"><span>الموظف حالة</span>
+                    <th v-on:click="changeOrder('employeeStatus')"><span>حالة الموظف</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'employeeStatus'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>

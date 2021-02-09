@@ -1,4 +1,4 @@
-import { ObjectIdColumn, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { ObjectIdColumn, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn,Column } from 'typeorm';
 
 export abstract class BaseEntity {
     @ObjectIdColumn()
@@ -7,10 +7,11 @@ export abstract class BaseEntity {
 
     @Column({ nullable: true })
     createdBy?: string;
-    @Column({ nullable: true })
+    @CreateDateColumn({ nullable: true })
     createdDate?: Date;
     @Column({ nullable: true })
     lastModifiedBy?: string;
-    @Column({ nullable: true })
+    @UpdateDateColumn({ nullable: true })
     lastModifiedDate?: Date;
+
 }

@@ -16,7 +16,7 @@
                     </div>
                     <div class="form-group">
                         <label class='form-control-label' for='employee-phone'>رقم الهاتف</label>
-                        <input type="text" class="form-control" name="phone" id="employee-phone"
+                        <input type="number" class="form-control" name="phone" id="employee-phone"
                             :class="{'valid': !$v.employee.phone.$invalid, 'invalid': $v.employee.phone.$invalid }" v-model="$v.employee.phone.$model" />
                     </div>
                     <div class="form-group">
@@ -25,15 +25,27 @@
                             :class="{'valid': !$v.employee.identityNo.$invalid, 'invalid': $v.employee.identityNo.$invalid }" v-model="$v.employee.identityNo.$model" />
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='employee-employeeStatus'>الموظف حالة</label>
+                      <div v-if="employee.employeeStatus">
+                        <label class='form-control-label' for='employee-employeeStatus'>حالة الموظف</label>
                         <select class='form-control' name='employeeStatus'
                                 :class="{'valid': !$v.employee.employeeStatus.$invalid, 'invalid': $v.employee.employeeStatus.$invalid }"
-                                v-model='$v.employee.employeeStatus.$model' id='employee-employeeStatus'>
+                                 v-model='$v.employee.employeeStatus.$model' id='employee-employeeStatus'>
                             <option value='PENDING'>PENDING</option>
                             <option value='APPROVED'>APPROVED</option>
                             <option value='REFUSED'>REFUSED</option>
                             <option value='CANCELLED'>CANCELLED</option>
                         </select>
+                      </div>
+                      <div v-else>
+                        <select class='form-control' name='employeeStatus'
+                                :class="{'valid': !$v.employee.employeeStatus.$invalid, 'invalid': $v.employee.employeeStatus.$invalid }"
+                                hidden id='employee-employeeStatus'>
+                            <option selected value='PENDING'>PENDING</option>
+                            <option value='APPROVED'>APPROVED</option>
+                            <option value='REFUSED'>REFUSED</option>
+                            <option value='CANCELLED'>CANCELLED</option>
+                        </select>
+                      </div>
                     </div>
                     <div class="form-group">
                         <label class='form-control-label' for='employee-notes'>الملاحظات</label>

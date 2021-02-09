@@ -18,7 +18,7 @@
                     <a class='alert-link' v-on:click='openLogin'>sign in</a>
                 </div>
                 <div class="alert alert-danger" v-if="doNotMatch">
-                    <p>تاكيد الرقم السري يجب ان يكون مطابق للرقم السري</p>
+                    <p>تاكيد كلمة المرور يجب ان يكون مطابق للرقم السري</p>
                 </div>
 
                 <div class="alert alert-warning" v-if="!success && !keyMissing">
@@ -36,21 +36,21 @@
                             <div v-if="$v.resetAccount.newPassword.$anyDirty && $v.resetAccount.newPassword.$invalid">
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.newPassword.required'>
-                                    الرقم السري اجباري.
+                                    كلمة المرور اجباري.
                                 </small>
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.newPassword.minLength'>
-                                    يجب ان يكون الرقم السري على الاقل 4 احرف.
+                                    يجب ان يكون كلمة المرور على الاقل 4 احرف.
                                 </small>
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.newPassword.maxLength'>
-                                    لا يمكن ان يكون الرقم السري اطول من 50.
+                                    لا يمكن ان يكون كلمة المرور اطول من 50.
                                 </small>
                             </div>
                         </div>
                         <!--<jhi-password-strength-bar [passwordToCheck]="newPassword"></jhi-password-strength-bar>-->
                         <div class="form-group">
-                            <label class='form-control-label' for='confirmPassword'>تاكيد الرقم السري</label>
+                            <label class='form-control-label' for='confirmPassword'>تاكيد كلمة المرور</label>
                             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
                                :class="{'valid': !$v.resetAccount.confirmPassword.$invalid, 'invalid': $v.resetAccount.confirmPassword.$invalid }"
 
@@ -58,15 +58,15 @@
                             <div v-if="$v.resetAccount.confirmPassword.$anyDirty && $v.resetAccount.confirmPassword.$invalid">
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.confirmPassword.required'>
-                                    تاكيد الرقم السري اجباري
+                                    تاكيد كلمة المرور اجباري
                                 </small>
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.confirmPassword.minLength'>
-                                    تاكيد الرقم السري يجب ان  يكون على الاقل 4 احرف
+                                    تاكيد كلمة المرور يجب ان  يكون على الاقل 4 احرف
                                 </small>
                                 <small class='form-text text-danger'
                                        v-if='!$v.resetAccount.confirmPassword.maxLength'>
-                                    لا يمكن ان يكون تاكيد الرقم السري اطول من 50
+                                    لا يمكن ان يكون تاكيد كلمة المرور اطول من 50
                                 </small>
                             </div>
                         </div>

@@ -20,7 +20,7 @@ export class CompanyController {
     constructor(private readonly companyService: CompanyService, private readonly userService : UserService) {}
 
     @Get('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'List all records',
@@ -38,7 +38,7 @@ export class CompanyController {
     }
 
     @Get('/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'The found record',
@@ -62,13 +62,13 @@ export class CompanyController {
       const userDTO =   new UserDTO();
       userDTO.firstName   = companyDTO['nameAr'];
       userDTO.lastName    = companyDTO['nameEn'];
-      userDTO.email       = companyDTO['nameEn']+'@hospital.com';
+      userDTO.email       = companyDTO['nameEn']+'@company.com';
       userDTO.login       = companyDTO['nameEn'];
       userDTO.password    = companyDTO['nameEn'];
-      userDTO.authorities = ["ROLE_COMPANY_ADMIN"];
+      userDTO.authorities = [RoleType.COMPANY_ADMIN, RoleType.USER];
 
-      const createdUser     = await this.userService.save(userDTO);
-      companyDTO["users"]  = [ createdUser ];
+      const createdUser = await this.userService.save(userDTO);
+      companyDTO.users  = [ createdUser ];
 
         const created = await this.companyService.save(companyDTO);
         HeaderUtil.addEntityCreatedHeaders(req.res, 'Company', created.id);

@@ -2,6 +2,7 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import CompanyService from '../company/company.service';
 import { ICompany } from '@/shared/model/company.model';
+import { required } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
 import { Employee, IEmployee } from '@/shared/model/employee.model';
@@ -9,11 +10,19 @@ import EmployeeService from './employee.service';
 
 const validations: any = {
   employee: {
-    name: {},
-    phone: {},
-    identityNo: {},
+    name: {
+      required,
+    },
+    phone: {
+      required,
+    },
+    identityNo: {
+      required,
+    },
     employeeStatus: {},
-    notes: {},
+    notes: {
+      required,
+    },
   },
 };
 

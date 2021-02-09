@@ -19,13 +19,17 @@ export class BenefitController {
     constructor(private readonly benefitService: BenefitService) {}
 
     @Get('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN, RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'List all records',
         type: BenefitDTO,
     })
     async getAll(@Req() req: Request): Promise<BenefitDTO[]> {
+      console.log(req.user.id);
+      where: {
+        hospitalId: req.user.id
+      }
         const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
         const [results, count] = await this.benefitService.findAndCount({
             skip: +pageRequest.page * pageRequest.size,
@@ -37,7 +41,7 @@ export class BenefitController {
     }
 
     @Get('/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN, RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'The found record',
@@ -48,7 +52,7 @@ export class BenefitController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.HOSPITAL_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Create benefit' })
     @ApiResponse({
         status: 201,
@@ -63,7 +67,7 @@ export class BenefitController {
     }
 
     @Put('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.HOSPITAL_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Update benefit' })
     @ApiResponse({
         status: 200,
@@ -76,7 +80,7 @@ export class BenefitController {
     }
 
     @Delete('/:id')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.HOSPITAL_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Delete benefit' })
     @ApiResponse({
         status: 204,

@@ -1,6 +1,6 @@
 <template>
     <div id="footer" class="footer">
-        <p>This is your footer</p>
+        <p>جميع الحقوق محفوظة &copy; لشركة صحتي</p>
     </div>
 </template>
 
@@ -9,6 +9,6 @@
 
 <style scoped>
     .footer {
-        text-align: left;
+        text-align: center;
     }
 </style>

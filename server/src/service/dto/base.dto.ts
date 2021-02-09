@@ -11,4 +11,5 @@ export class BaseDTO {
     lastModifiedBy?: string;
 
     lastModifiedDate?: Date;
+    
 }

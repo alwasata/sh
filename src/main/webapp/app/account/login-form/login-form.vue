@@ -13,9 +13,9 @@
                                       placeholder='اسم المستخدم' type='text'>
                         </b-form-input>
                     </b-form-group>
-                    <b-form-group label='الرقم السري' label-for='pass'>
+                    <b-form-group label='كلمة المرور' label-for='pass'>
                         <b-form-input id='pass' v-model='password' name='pass'
-                                      placeholder='الرقم السري' type='password'>
+                                      placeholder='كلمة المرور' type='password'>
                         </b-form-input>
                     </b-form-group>
                     <b-form-checkbox id='rememberMe' name='rememberMe' v-model='rememberMe' checked>
@@ -28,7 +28,7 @@
                 <p></p>
                 <div>
                     <b-alert show variant="warning">
-                        <b-link :to="'/account/reset/request'" class='alert-link'>هل نسيت الرقم السري؟</b-link>
+                        <b-link :to="'/account/reset/request'" class='alert-link'>هل نسيت كلمة المرور؟</b-link>
                     </b-alert>
                 </div>
                 <div>

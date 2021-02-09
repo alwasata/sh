@@ -19,7 +19,7 @@ export class EmployeeController {
     constructor(private readonly employeeService: EmployeeService) {}
 
     @Get('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'List all records',
@@ -37,7 +37,7 @@ export class EmployeeController {
     }
 
     @Get('/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'The found record',
@@ -48,7 +48,7 @@ export class EmployeeController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Create employee' })
     @ApiResponse({
         status: 201,
@@ -57,13 +57,14 @@ export class EmployeeController {
     })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async post(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<EmployeeDTO> {
+       employeeDTO.createdBy =req.user.id;
         const created = await this.employeeService.save(employeeDTO);
         HeaderUtil.addEntityCreatedHeaders(req.res, 'Employee', created.id);
         return created;
     }
 
     @Put('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Update employee' })
     @ApiResponse({
         status: 200,
@@ -71,12 +72,13 @@ export class EmployeeController {
         type: EmployeeDTO,
     })
     async put(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<EmployeeDTO> {
+        employeeDTO.lastModifiedBy =req.user.id;
         HeaderUtil.addEntityCreatedHeaders(req.res, 'Employee', employeeDTO.id);
         return await this.employeeService.update(employeeDTO);
     }
 
     @Delete('/:id')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Delete employee' })
     @ApiResponse({
         status: 204,

@@ -25,61 +25,6 @@
                 </b-nav-item>
                 <b-nav-item-dropdown
                     right
-                    id='entity-menu'
-                    v-if='authenticated'
-                    active-class='active' class='pointer'>
-                    <span slot="button-content" class="navbar-dropdown-menu">
-                        <font-awesome-icon icon="th-list" />
-                        <span>العناصر</span>
-                    </span>
-                    <b-dropdown-item to="/attatchment">
-                        <font-awesome-icon icon="asterisk" />
-                        <span>Attatchment</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to='/benefit'>
-                        <font-awesome-icon icon='asterisk' />
-                        <span>المنفعات</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to='/benefit-request'>
-                        <font-awesome-icon icon='asterisk' />
-                        <span>طلب منفعة</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to='/card'>
-                        <font-awesome-icon icon='asterisk' />
-                        <span>البطاقات</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to='/card-transaction'>
-                        <font-awesome-icon icon='asterisk' />
-                        <span>حركات البطاقة</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to="/category">
-                        <font-awesome-icon icon="asterisk" />
-                        <span>الفئات</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to='/company'>
-                        <font-awesome-icon icon='asterisk' />
-                        <span>الشركات</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to='/employee'>
-                        <font-awesome-icon icon='asterisk' />
-                        <span>الموظفين</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to='/hospital'>
-                        <font-awesome-icon icon='asterisk' />
-                        <span>المستشفيات</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to="/invoice">
-                        <font-awesome-icon icon="asterisk" />
-                        <span>الفواتير</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item to="/invoice-benefits">
-                        <font-awesome-icon icon="asterisk" />
-                        <span>InvoiceBenefits</span>
-                    </b-dropdown-item>
-                    jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here
-                </b-nav-item-dropdown>
-                <b-nav-item-dropdown
-                    right
                     id="admin-menu"
                     v-if="hasAnyAuthority('ROLE_ADMIN') && authenticated"
                     :class="{'router-link-active': subIsActive('/admin')}"
@@ -117,7 +62,7 @@
                     </b-dropdown-item>
                     <b-dropdown-item to="/account/password" tag="b-dropdown-item" v-if="authenticated" active-class="active">
                         <font-awesome-icon icon="lock" />
-                        <span>الرقم السري</span>
+                        <span>كلمة المرور</span>
                     </b-dropdown-item>
                     <b-dropdown-item v-if="authenticated"  v-on:click="logout()" id="logout" active-class="active">
                         <font-awesome-icon icon="sign-out-alt" />
@@ -133,7 +78,8 @@
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
-             <b-button v-b-toggle.sidebar-1 >
+             <b-button v-b-toggle.sidebar-1  v-if='authenticated'
+                    active-class='active'>
                 <font-awesome-icon icon="bars" />
             </b-button>
         </b-collapse>
