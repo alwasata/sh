@@ -39,12 +39,12 @@ export default class JhiNavbar extends Vue {
   }
 
   public hasAnyAuthority(authorities: any): boolean {
-    console.log(authorities);
     this.accountService()
       .hasAnyAuthorityAndCheckAuth(authorities)
       .then(value => {
         this.hasAnyAuthorityValue = value;
       });
+    console.log(this.hasAnyAuthorityValue);
     return this.hasAnyAuthorityValue;
   }
 

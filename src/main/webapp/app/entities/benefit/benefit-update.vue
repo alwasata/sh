@@ -44,7 +44,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class='form-group'>
+                    <div class='form-group' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <label class='form-control-label' for='benefit-hospital'>المستشفى</label>
                         <select id='benefit-hospital' v-model='benefit.hospital' class='form-control' name='hospital'>
                             <option v-bind:value='null'></option>

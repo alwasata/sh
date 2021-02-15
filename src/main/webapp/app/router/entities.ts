@@ -200,25 +200,25 @@ export default [
     path: '/category',
     name: 'Category',
     component: Category,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/category/new',
     name: 'CategoryCreate',
     component: CategoryUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/category/:categoryId/edit',
     name: 'CategoryEdit',
     component: CategoryUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/category/:categoryId/view',
     name: 'CategoryView',
     component: CategoryDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
 
   {
@@ -275,7 +275,7 @@ export default [
     path: '/hospital',
     name: 'Hospital',
     component: Hospital,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/hospital/new',

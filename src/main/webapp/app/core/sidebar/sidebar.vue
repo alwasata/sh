@@ -31,7 +31,7 @@
                 <font-awesome-icon icon='th-list' />
             </h6>
             <ul class="nav flex-column">
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <router-link class='nav-link' to='/benefit'>
                             <font-awesome-icon icon='asterisk' />
                             <span>المنفعات</span>
@@ -61,7 +61,7 @@
                             <span>الفئات</span>
                         </router-link>
                     </li>
-                    <li class='nav-item' v-if="hasAnyAuthority('ROLE_ADMIN') && authenticated">
+                    <li class='nav-item' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <router-link class='nav-link' to='/company'>
                             <font-awesome-icon icon='asterisk' />
                             <span>الشركات</span>
@@ -74,7 +74,7 @@
                             <span>الموظفين</span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <router-link class='nav-link'  to='/hospital'>
                             <font-awesome-icon icon='asterisk' />
                             <span>المستشفيات</span>

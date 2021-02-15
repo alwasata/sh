@@ -36,6 +36,15 @@ export class CompanyService {
         return resultList;
     }
 
+    async getCompanyIdForUser(user_id : string): Promise<[CompanyDTO[], number]> {
+      const options = { relations: relationshipNames };
+      const resultList = await this.companyRepository.createQueryBuilder('company')
+      .innerJoinAndSelect('company.users', 'user')
+      .where('user.id = :id', { id: user_id })
+      .getRawOne();
+      return resultList.company_id;
+    }
+
     async save(companyDTO: CompanyDTO): Promise<CompanyDTO | undefined> {
         const entity = CompanyMapper.fromDTOtoEntity(companyDTO);
         const result = await this.companyRepository.save(entity);

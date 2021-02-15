@@ -7,6 +7,7 @@ import { required } from 'vuelidate/lib/validators';
 import AlertService from '@/shared/alert/alert.service';
 import { Employee, IEmployee } from '@/shared/model/employee.model';
 import EmployeeService from './employee.service';
+import AccountService from '@/account/account.service';
 
 const validations: any = {
   employee: {
@@ -35,6 +36,9 @@ export default class EmployeeUpdate extends Vue {
   public employee: IEmployee = new Employee();
 
   @Inject('companyService') private companyService: () => CompanyService;
+
+  @Inject('accountService') private accountService: () => AccountService;
+  private hasAnyAuthorityValue = false;
 
   public companies: ICompany[] = [];
   public isSaving = false;
@@ -100,5 +104,15 @@ export default class EmployeeUpdate extends Vue {
       .then(res => {
         this.companies = res.data;
       });
+  }
+
+  public hasAnyAuthority(authorities: any): boolean {
+    console.log(authorities);
+    this.accountService()
+      .hasAnyAuthorityAndCheckAuth(authorities)
+      .then(value => {
+        this.hasAnyAuthorityValue = value;
+      });
+    return this.hasAnyAuthorityValue;
   }
 }
