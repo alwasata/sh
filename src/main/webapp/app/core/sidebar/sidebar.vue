@@ -31,7 +31,7 @@
                 <font-awesome-icon icon='th-list' />
             </h6>
             <ul class="nav flex-column">
-                    <li class='nav-item' v-if="hasAnyAuthority('ROLE_ADMIN')">
+                    <li class='nav-item' >
                         <router-link class='nav-link' to='/benefit'>
                             <font-awesome-icon icon='asterisk' />
                             <span>المنفعات</span>

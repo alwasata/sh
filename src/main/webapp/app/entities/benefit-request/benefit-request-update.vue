@@ -61,7 +61,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class='form-group'>
+                    <div class='form-group' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <label class='form-control-label' for='benefit-request-hospital'>المستشفى</label>
                         <select id='benefit-request-hospital' v-model='benefitRequest.hospital' class='form-control'
                                 name='hospital'>

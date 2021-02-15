@@ -47,7 +47,6 @@ export class BenefitService {
       resultList[0].forEach(benefit => benefitDTO.push(BenefitMapper.fromEntityToDTO(benefit)));
       resultList[0] = benefitDTO;
     }
-    console.log(resultList);
     return resultList;
   }
 

@@ -8,7 +8,8 @@ import { AuthGuard, Roles, RolesGuard, RoleType } from '../../security';
 import { HeaderUtil } from '../../client/header-util';
 import { LoggingInterceptor } from '../../client/interceptors/logging.interceptor';
 import { HospitalService } from '../../service/hospital.service';
-
+import { BenefitRequestService } from '../../service/benefit-request.service';
+import { BenefitRequestDTO } from '../../service/dto/benefit-request.dto';
 @Controller('api/benefits')
 @UseGuards(AuthGuard, RolesGuard)
 @UseInterceptors(LoggingInterceptor)
@@ -19,7 +20,8 @@ export class BenefitController {
 
   constructor(
     private readonly benefitService: BenefitService,
-    private readonly hospitalService: HospitalService
+    private readonly hospitalService: HospitalService,
+    private readonly benefitRequestService: BenefitRequestService
     ) {}
 
     @Get('/')
@@ -75,6 +77,15 @@ export class BenefitController {
         benefitDTO.hospital = hospital_id;
       }
       const created = await this.benefitService.save(benefitDTO);
+      const benefitRequestDTO =   new BenefitRequestDTO();
+      benefitRequestDTO.nameAr = benefitDTO.nameAr;
+      benefitRequestDTO.nameEn = benefitDTO.nameEn;
+      benefitRequestDTO.pointsCost = benefitDTO.pointsCost;
+      benefitRequestDTO.cost = benefitDTO.cost;
+      benefitRequestDTO.hospital = benefitDTO.hospital;
+      benefitRequestDTO.category = benefitDTO.category;
+      benefitRequestDTO.benefit = created;
+      await this.benefitRequestService.save(benefitRequestDTO);
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Benefit', created.id);
       return created;
     }
