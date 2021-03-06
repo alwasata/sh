@@ -1,15 +1,16 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post as PostMethod, Put, UseGuards, Req, UseInterceptors } from '@nestjs/common';
-import { ApiBearerAuth, ApiUseTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Logger, Param, Post as PostMethod, Put, Req, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiUseTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { BenefitDTO } from '../../service/dto/benefit.dto';
 import { BenefitService } from '../../service/benefit.service';
-import { PageRequest, Page } from '../../domain/base/pagination.entity';
+import { Page, PageRequest } from '../../domain/base/pagination.entity';
 import { AuthGuard, Roles, RolesGuard, RoleType } from '../../security';
 import { HeaderUtil } from '../../client/header-util';
 import { LoggingInterceptor } from '../../client/interceptors/logging.interceptor';
 import { HospitalService } from '../../service/hospital.service';
 import { BenefitRequestService } from '../../service/benefit-request.service';
 import { BenefitRequestDTO } from '../../service/dto/benefit-request.dto';
+
 @Controller('api/benefits')
 @UseGuards(AuthGuard, RolesGuard)
 @UseInterceptors(LoggingInterceptor)
@@ -72,13 +73,12 @@ export class BenefitController {
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async post(@Req() req: Request, @Body() benefitDTO: BenefitDTO): Promise<BenefitDTO> {
 
-      if(req.user.authorities.includes('ROLE_HOSPITAL_ADMIN') == true) {
-        var hospital_id = await this.hospitalService.getHosbitalIdForUser(req.user.id);
-        benefitDTO.hospital = hospital_id;
+      if (req.user.authorities.includes('ROLE_HOSPITAL_ADMIN') === true) {
+        benefitDTO.hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
       }
       // benefitDTO.pointsCost = ;
       const created = await this.benefitService.save(benefitDTO);
-      const benefitRequestDTO =   new BenefitRequestDTO();
+      const benefitRequestDTO = new BenefitRequestDTO();
       benefitRequestDTO.nameAr = benefitDTO.nameAr;
       benefitRequestDTO.nameEn = benefitDTO.nameEn;
       // benefitRequestDTO.pointsCost = benefitDTO.cost*1.1;
