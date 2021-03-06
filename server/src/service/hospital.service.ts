@@ -35,11 +35,11 @@ export class HospitalService {
     }
     return resultList;
   }
-  async getHosbitalIdForUser(user_id : string): Promise<[HospitalDTO[], number]> {
+  async getHosbitalIdForUser(id : string): Promise<[HospitalDTO[]]> {
     const options = { relations: relationshipNames };
     const resultList = await this.hospitalRepository.createQueryBuilder('hospital')
     .innerJoinAndSelect('hospital.users', 'user')
-    .where('user.id = :id', { id: user_id })
+    .where('user.id = :id', { id: id })
     .getRawOne();
     return resultList.hospital_id;
   }

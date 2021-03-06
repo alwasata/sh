@@ -28,6 +28,8 @@ const CardUpdate = () => import('@/entities/card/card-update.vue');
 const CardDetails = () => import('@/entities/card/card-details.vue');
 // prettier-ignore
 const CardTransaction = () => import('@/entities/card-transaction/card-transaction.vue');
+// charge
+const CardCharge = () => import('@/entities/card/card-charge.vue');
 // prettier-ignore
 const CardTransactionUpdate = () => import('@/entities/card-transaction/card-transaction-update.vue');
 // prettier-ignore
@@ -60,6 +62,8 @@ const HospitalDetails = () => import('@/entities/hospital/hospital-details.vue')
 const Invoice = () => import('@/entities/invoice/invoice.vue');
 // prettier-ignore
 const InvoiceUpdate = () => import('@/entities/invoice/invoice-update.vue');
+// prettier-ignore
+const InvoiceReturn = () => import('@/entities/invoice/invoice-return.vue');
 // prettier-ignore
 const InvoiceDetails = () => import('@/entities/invoice/invoice-details.vue');
 // prettier-ignore
@@ -125,75 +129,81 @@ export default [
     path: '/benefit-request',
     name: 'BenefitRequest',
     component: BenefitRequest,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/benefit-request/new',
     name: 'BenefitRequestCreate',
     component: BenefitRequestUpdate,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/benefit-request/:benefitRequestId/edit',
     name: 'BenefitRequestEdit',
     component: BenefitRequestUpdate,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/benefit-request/:benefitRequestId/view',
     name: 'BenefitRequestView',
     component: BenefitRequestDetails,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
 
   {
     path: '/card',
     name: 'Card',
     component: Card,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card/new',
     name: 'CardCreate',
     component: CardUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card/:cardId/edit',
     name: 'CardEdit',
     component: CardUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card/:cardId/view',
     name: 'CardView',
     component: CardDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
+  },
+  {
+    path: '/card/:cardId/charge',
+    name: 'CardCharge',
+    component: CardCharge,
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
 
   {
     path: '/card-transaction',
     name: 'CardTransaction',
     component: CardTransaction,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card-transaction/new',
     name: 'CardTransactionCreate',
     component: CardTransactionUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card-transaction/:cardTransactionId/edit',
     name: 'CardTransactionEdit',
     component: CardTransactionUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card-transaction/:cardTransactionId/view',
     name: 'CardTransactionView',
     component: CardTransactionDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
 
   {
@@ -312,6 +322,12 @@ export default [
     path: '/invoice/:invoiceId/edit',
     name: 'InvoiceEdit',
     component: InvoiceUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/invoice/:invoiceId/return',
+    name: 'InvoiceReturn',
+    component: InvoiceReturn,
     meta: { authorities: [Authority.USER] },
   },
   {

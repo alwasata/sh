@@ -24,7 +24,7 @@ export class BenefitRequestController {
     ) {}
 
     @Get('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiResponse({
       status: 200,
       description: 'List all records',
@@ -48,7 +48,7 @@ export class BenefitRequestController {
     }
 
     @Get('/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiResponse({
       status: 200,
       description: 'The found record',
@@ -69,9 +69,9 @@ export class BenefitRequestController {
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async post(@Req() req: Request, @Body() benefitRequestDTO: BenefitRequestDTO): Promise<BenefitRequestDTO> {
       const value = process.env.POINT_COST;
-      benefitRequestDTO.pointsCost = (benefitRequestDTO.cost * value);
+      // benefitRequestDTO.pointsCost = (benefitRequestDTO.cost * value);
       benefitRequestDTO.benefitStatus = BenefitStatus.PENDING;
-      
+
       if(req.user.authorities.includes('ROLE_HOSPITAL_ADMIN') == true) {
         var hospital_id = await this.hospitalService.getHosbitalIdForUser(req.user.id);
         benefitRequestDTO.hospital = hospital_id;
@@ -99,15 +99,15 @@ export class BenefitRequestController {
     })
     async put(@Req() req: Request, @Body() benefitRequestDTO: BenefitRequestDTO): Promise<BenefitRequestDTO> {
       // you can't modify Benefit Request if its not in PENDING status
-      if (benefitRequestDTO.benefitStatus == BenefitStatus.PENDING) {
+      // if (benefitRequestDTO.benefitStatus == BenefitStatus.PENDING) {
         HeaderUtil.addEntityCreatedHeaders(req.res, 'BenefitRequest', benefitRequestDTO.id);
 
         const value = process.env.POINT_COST;
-        benefitRequestDTO.pointsCost = (benefitRequestDTO.cost * value);
-        benefitRequestDTO.benefitStatus = BenefitStatus.PENDING;
+        // benefitRequestDTO.pointsCost = (benefitRequestDTO.cost * value);
+        // benefitRequestDTO.benefitStatus = BenefitStatus.PENDING;
 
         return await this.benefitRequestService.update(benefitRequestDTO);
-      }
+      // }
       throw new HttpException("Benefit Request Can't be modified.", HttpStatus.FORBIDDEN);
     }
 

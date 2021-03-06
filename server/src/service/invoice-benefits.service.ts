@@ -16,9 +16,11 @@ export class InvoiceBenefitsService {
     constructor(@InjectRepository(InvoiceBenefitsRepository) private invoiceBenefitsRepository: InvoiceBenefitsRepository) {}
 
     async findById(id: string): Promise<InvoiceBenefitsDTO | undefined> {
-        const options = { relations: relationshipNames };
-        const result = await this.invoiceBenefitsRepository.findOne(id, options);
-        return InvoiceBenefitsMapper.fromEntityToDTO(result);
+        const result = await this.invoiceBenefitsRepository.createQueryBuilder('invoice_benefits')
+        .innerJoinAndSelect('invoice_benefits.benefit', 'benefit')
+        .where('invoiceId = :id', { id: id })
+        .getManyAndCount();
+        return result;
     }
 
     async findByfields(options: FindOneOptions<InvoiceBenefitsDTO>): Promise<InvoiceBenefitsDTO | undefined> {

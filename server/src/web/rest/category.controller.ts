@@ -48,7 +48,7 @@ export class CategoryController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.USER)
     @ApiOperation({ title: 'Create category' })
     @ApiResponse({
         status: 201,
@@ -63,7 +63,7 @@ export class CategoryController {
     }
 
     @Put('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.USER)
     @ApiOperation({ title: 'Update category' })
     @ApiResponse({
         status: 200,
@@ -76,7 +76,7 @@ export class CategoryController {
     }
 
     @Delete('/:id')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.USER)
     @ApiOperation({ title: 'Delete category' })
     @ApiResponse({
         status: 204,

@@ -56,4 +56,15 @@ export class CardTransactionService {
         }
         return;
     }
+
+    async findByCardNo(card_no : string): Promise<[CardTransactionDTO[], number]>  {
+
+        var resultList = await this.cardTransactionRepository.createQueryBuilder('card_transaction')
+        .innerJoinAndSelect('card_transaction.card', 'card')
+        .innerJoinAndSelect('card.employee', 'employee')
+        .innerJoinAndSelect('employee.company', 'company')
+        .where('card.card_no = :id', { id: card_no })
+        .getManyAndCount();
+      return resultList;
+    }
 }

@@ -19,7 +19,7 @@ const validations: any = {
       required,
     },
     nameEn: {},
-    pointsCost: {},
+    // pointsCost: {},
     cost: {},
   },
 };

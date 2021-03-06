@@ -76,11 +76,12 @@ export class BenefitController {
         var hospital_id = await this.hospitalService.getHosbitalIdForUser(req.user.id);
         benefitDTO.hospital = hospital_id;
       }
+      // benefitDTO.pointsCost = ;
       const created = await this.benefitService.save(benefitDTO);
       const benefitRequestDTO =   new BenefitRequestDTO();
       benefitRequestDTO.nameAr = benefitDTO.nameAr;
       benefitRequestDTO.nameEn = benefitDTO.nameEn;
-      benefitRequestDTO.pointsCost = benefitDTO.pointsCost;
+      // benefitRequestDTO.pointsCost = benefitDTO.cost*1.1;
       benefitRequestDTO.cost = benefitDTO.cost;
       benefitRequestDTO.hospital = benefitDTO.hospital;
       benefitRequestDTO.category = benefitDTO.category;
@@ -99,6 +100,7 @@ export class BenefitController {
       type: BenefitDTO,
     })
     async put(@Req() req: Request, @Body() benefitDTO: BenefitDTO): Promise<BenefitDTO> {
+      // benefitDTO.pointsCost = benefitDTO.cost*1.1;
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Benefit', benefitDTO.id);
       return await this.benefitService.update(benefitDTO);
     }

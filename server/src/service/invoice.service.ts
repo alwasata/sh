@@ -15,8 +15,14 @@ export class InvoiceService {
 
     async findById(id: string): Promise<InvoiceDTO | undefined> {
         const options = { relations: relationshipNames };
-        const result = await this.invoiceRepository.findOne(id, options);
-        return InvoiceMapper.fromEntityToDTO(result);
+        const result = await this.invoiceRepository.createQueryBuilder('invoice')
+        .innerJoinAndSelect('invoice.cardTransaction', 'cardTransaction')
+        .innerJoinAndSelect('cardTransaction.card', 'card')
+        .innerJoinAndSelect('card.employee', 'employee')
+        .innerJoinAndSelect('employee.company', 'company')
+        .where('invoice.id = :id', { id: id })
+        .getOneOrFail();
+        return result;
     }
 
     async findByfields(options: FindOneOptions<InvoiceDTO>): Promise<InvoiceDTO | undefined> {
@@ -26,12 +32,26 @@ export class InvoiceService {
 
     async findAndCount(options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
         options.relations = relationshipNames;
-        const resultList = await this.invoiceRepository.findAndCount(options);
+        // const resultList = await this.invoiceRepository.findAndCount(options);
+      const resultList = await this.invoiceRepository.createQueryBuilder('invoice')
+      .innerJoinAndSelect('invoice.cardTransaction', 'cardTransaction')
+      .innerJoinAndSelect('cardTransaction.card', 'card')
+      .innerJoinAndSelect('card.employee', 'employee')
+      .innerJoinAndSelect('employee.company', 'company')
+      // .where('company.id = :id', { id: company_id })
+      .getManyAndCount();
+
         const invoiceDTO: InvoiceDTO[] = [];
         if (resultList && resultList[0]) {
             resultList[0].forEach(invoice => invoiceDTO.push(InvoiceMapper.fromEntityToDTO(invoice)));
             resultList[0] = invoiceDTO;
         }
+        return resultList;
+    }
+
+    async count(): Promise<number> {
+        const resultList = await this.invoiceRepository.count();
+        console.log(resultList);
         return resultList;
     }
 

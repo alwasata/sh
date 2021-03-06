@@ -3,6 +3,7 @@ import { ICardTransaction } from '@/shared/model/card-transaction.model';
 export const enum InvoiceStatus {
   APPROVED = 'APPROVED',
   CANCELLED = 'CANCELLED',
+  RETURNED = 'RETURNED',
 }
 
 export interface IInvoice {

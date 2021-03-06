@@ -2,13 +2,13 @@ import axios from 'axios';
 
 import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
-import { ICard } from '@/shared/model/card.model';
+import { IInvoiceBenefits } from '@/shared/model/invoice-benefits.model';
 
-const baseApiUrl = 'api/cards';
+const baseApiUrl = 'api/invoice-benefits';
 
-export default class CardService {
-  public find(id: number): Promise<ICard> {
-    return new Promise<ICard>((resolve, reject) => {
+export default class InvoiceBenefitsService {
+  public find(id: number): Promise<IInvoiceBenefits> {
+    return new Promise<IInvoiceBenefits>((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/${id}`)
         .then(res => {
@@ -46,8 +46,8 @@ export default class CardService {
     });
   }
 
-  public create(entity: ICard): Promise<ICard> {
-    return new Promise<ICard>((resolve, reject) => {
+  public create(entity: IInvoiceBenefits): Promise<IInvoiceBenefits> {
+    return new Promise<IInvoiceBenefits>((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
         .then(res => {
@@ -59,8 +59,8 @@ export default class CardService {
     });
   }
 
-  public update(entity: ICard): Promise<ICard> {
-    return new Promise<ICard>((resolve, reject) => {
+  public update(entity: IInvoiceBenefits): Promise<IInvoiceBenefits> {
+    return new Promise<IInvoiceBenefits>((resolve, reject) => {
       axios
         .put(`${baseApiUrl}`, entity)
         .then(res => {
@@ -70,21 +70,5 @@ export default class CardService {
           reject(err);
         });
     });
-  }
-
-  public charge(entity: object): Promise<ICard> {
-    return new Promise<ICard>((resolve, reject) => {
-      axios
-        .put(`${baseApiUrl}/chargecard`, entity)
-        .then(res => {
-          console.log(res);
-          resolve(res.data);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-    console.log(entity);
-    return entity;
   }
 }
