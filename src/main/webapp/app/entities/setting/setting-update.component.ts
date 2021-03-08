@@ -8,10 +8,10 @@ import SettingService from './setting.service';
 
 const validations: any = {
   setting: {
-    nameAr: {
+    key: {
       required,
     },
-    nameEn: {},
+    value: {},
   },
 };
 
