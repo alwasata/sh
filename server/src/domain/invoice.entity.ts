@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Entity, Column, JoinColumn, OneToOne, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { BaseEntity } from './base/base.entity';
 
 import { CardTransaction } from './card-transaction.entity';
@@ -39,8 +39,8 @@ export class Invoice extends BaseEntity {
     @JoinColumn()
     cardTransaction: CardTransaction;
 
-    @ManyToOne(type => Hospital)
-    @JoinColumn()
-    hospital : Hospital;
+  @ManyToOne(type => Hospital)
+  @JoinColumn()
+  hospital: Hospital;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 }

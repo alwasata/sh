@@ -72,6 +72,12 @@ const InvoiceBenefits = () => import('@/entities/invoice-benefits/invoice-benefi
 const InvoiceBenefitsUpdate = () => import('@/entities/invoice-benefits/invoice-benefits-update.vue');
 // prettier-ignore
 const InvoiceBenefitsDetails = () => import('@/entities/invoice-benefits/invoice-benefits-details.vue');
+// prettier-ignore
+const Setting = () => import('@/entities/setting/setting.vue');
+// prettier-ignore
+const SettingUpdate = () => import('@/entities/setting/setting-update.vue');
+// prettier-ignore
+const SettingDetails = () => import('@/entities/setting/setting-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default [
@@ -360,6 +366,31 @@ export default [
     name: 'InvoiceBenefitsView',
     component: InvoiceBenefitsDetails,
     meta: { authorities: [Authority.USER] },
+  },
+
+  {
+    path: '/setting',
+    name: 'setting',
+    component: Setting,
+    meta: { authorities: [Authority.ADMIN] },
+  },
+  {
+    path: '/setting/new',
+    name: 'SettingCreate',
+    component: SettingUpdate,
+    meta: { authorities: [Authority.ADMIN] },
+  },
+  {
+    path: '/setting/:settingId/edit',
+    name: 'SettingEdit',
+    component: SettingUpdate,
+    meta: { authorities: [Authority.ADMIN] },
+  },
+  {
+    path: '/setting/:settingId/view',
+    name: 'SettingView',
+    component: SettingDetails,
+    meta: { authorities: [Authority.ADMIN] },
   },
   // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
 ];
