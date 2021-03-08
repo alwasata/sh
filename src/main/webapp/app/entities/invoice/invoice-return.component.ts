@@ -19,6 +19,8 @@ const validations: any = {
     invoiceStatus: {},
     totalPoints: {},
     notes: {},
+    createdBy: {},
+    hospital: {},
     mainInvoice: {},
   },
   invoiceBenefits: {
@@ -57,6 +59,7 @@ export default class InvoiceUpdate extends Vue {
   public invoiceNo = '';
   public returnTotal = 0;
   public returnTotalIvoicePrice = 0;
+  public invoiceId = 0;
   public invoiceDate = new Date().toISOString().slice(0, 10);
   public rows = [];
   public returnBenefits = [];
@@ -76,6 +79,7 @@ export default class InvoiceUpdate extends Vue {
     });
   }
   public retrieveInvoice(invoiceId): void {
+    this.invoiceId = invoiceId;
     this.invoiceService()
       .find(invoiceId)
       .then(res => {
@@ -132,6 +136,13 @@ export default class InvoiceUpdate extends Vue {
       });
   }
   public returnBenefit(row, index): void {
+    this.invoiceService()
+      .checkBenefitQuantity({ benefits: row, invoice: this.invoiceId })
+      .then(res => {
+        console.log(res);
+      });
+    // console.log('hi');
+    return;
     if (!this.returnBenefits.includes(row)) {
       console.log(row);
       this.returnTotal = this.returnTotal + row.points * row.returnQuantity;
@@ -163,8 +174,9 @@ export default class InvoiceUpdate extends Vue {
     this.invoice.invoiceStatus = 'RETURNED';
     this.invoice.invoiceDate = this.invoiceDate;
     this.invoice.payDate = this.invoiceDate;
-    this.invoice.mainInvoice = this.invoiceNo;
-    this.invoice.invoiceNo = 'RIN/' + new Date().getFullYear() + '/' + new Date().getMonth() + '/' + Math.floor(Math.random()) + 100;
+    this.invoice.mainInvoice = this.invoiceId;
+    this.invoice.invoiceNo =
+      'RIN/' + new Date().getFullYear() + '/' + new Date().getMonth() + '/' + Math.floor(1000 + Math.random() * 9000);
     console.log(this.invoice);
 
     var data = {

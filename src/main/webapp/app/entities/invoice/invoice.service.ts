@@ -112,4 +112,20 @@ export default class InvoiceService {
         });
     });
   }
+
+  public checkBenefitQuantity(data: any): Promise<IInvoice> {
+    console.log(data);
+    // return data;
+    return new Promise<IInvoice>((resolve, reject) => {
+      axios
+        .post(`${baseApiUrl}/checkbenefit`, data)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        });
+    });
+  }
 }

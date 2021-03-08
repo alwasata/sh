@@ -3,6 +3,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 import { BaseDTO } from './base.dto';
 
 import { CardTransactionDTO } from './card-transaction.dto';
+import { HospitalDTO } from './hospital.dto';
 import { InvoiceStatus } from '../../domain/enumeration/invoice-status';
 
 /**
@@ -32,6 +33,9 @@ export class InvoiceDTO extends BaseDTO {
 
     @ApiModelProperty({ type: CardTransactionDTO, description: 'cardTransaction relationship' })
     cardTransaction: CardTransactionDTO;
+
+    @ApiModelProperty({ type: HospitalDTO, description: 'Hospital relationship' })
+    hospital : HospitalDTO;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 }

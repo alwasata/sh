@@ -24,19 +24,22 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th v-on:click="changeOrder('id')"><span>ID</span>
+                    <th v-on:click="changeOrder('id')"><span>المستشفى</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('invoiceNo')"><span>Invoice No</span>
+                    <th v-on:click="changeOrder('invoiceNo')"><span>رقم الفاتورة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'invoiceNo'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('invoiceDate')"><span>Invoice Date</span>
+                    <th>
+                        <span>الفاتورة السابقة</span>
+                    </th>
+                    <th v-on:click="changeOrder('invoiceDate')"><span>تاريخ الفاتورة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'invoiceDate'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('payDate')"><span>Pay Date</span>
+                    <th v-on:click="changeOrder('payDate')"><span>تاريخ الدفع</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'payDate'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -62,10 +65,9 @@
                 <tbody>
                 <tr v-for="invoice in invoices"
                     :key="invoice.id">
-                    <td>
-                        <router-link :to="{name: 'InvoiceView', params: {invoiceId: invoice.id}}">{{invoice.id}}</router-link>
-                    </td>
+                    <td>{{invoice.hospital.nameAr}}</td>
                     <td>{{invoice.invoiceNo}}</td>
+                    <td>{{invoice.mainInvoice}}</td>
                     <td>{{invoice.invoiceDate}}</td>
                     <td>{{invoice.payDate}}</td>
                     <td>{{invoice.total}}</td>

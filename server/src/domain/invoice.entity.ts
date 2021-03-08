@@ -3,6 +3,7 @@ import { Entity, Column, JoinColumn, OneToOne, ManyToOne, OneToMany, ManyToMany,
 import { BaseEntity } from './base/base.entity';
 
 import { CardTransaction } from './card-transaction.entity';
+import { Hospital } from './hospital.entity';
 import { InvoiceStatus } from './enumeration/invoice-status';
 
 /**
@@ -38,5 +39,8 @@ export class Invoice extends BaseEntity {
     @JoinColumn()
     cardTransaction: CardTransaction;
 
+    @ManyToOne(type => Hospital)
+    @JoinColumn()
+    hospital : Hospital;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 }

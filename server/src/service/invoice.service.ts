@@ -30,17 +30,38 @@ export class InvoiceService {
         return InvoiceMapper.fromEntityToDTO(result);
     }
 
-    async findAndCount(options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
+    async findByInvoice(options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
+        options.relations = relationshipNames;
+        const resultList = await this.invoiceRepository.findAndCount(options);
+        // const invoiceDTO: InvoiceDTO[] = [];
+        // if (resultList && resultList[0]) {
+        //     resultList[0].forEach(invoice => invoiceDTO.push(InvoiceMapper.fromEntityToDTO(invoice)));
+        //     resultList[0] = invoiceDTO;
+        // }
+        return resultList;
+    }
+    async findAndCount(id : any, options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
         options.relations = relationshipNames;
         // const resultList = await this.invoiceRepository.findAndCount(options);
-      const resultList = await this.invoiceRepository.createQueryBuilder('invoice')
+      var resultList = {};
+      if(id == "all") {
+      resultList = await this.invoiceRepository.createQueryBuilder('invoice')
       .innerJoinAndSelect('invoice.cardTransaction', 'cardTransaction')
       .innerJoinAndSelect('cardTransaction.card', 'card')
       .innerJoinAndSelect('card.employee', 'employee')
       .innerJoinAndSelect('employee.company', 'company')
-      // .where('company.id = :id', { id: company_id })
+      .innerJoinAndSelect('invoice.hospital', 'hospital')
       .getManyAndCount();
-
+      } else {
+      resultList = await this.invoiceRepository.createQueryBuilder('invoice')
+      .innerJoinAndSelect('invoice.cardTransaction', 'cardTransaction')
+      .innerJoinAndSelect('cardTransaction.card', 'card')
+      .innerJoinAndSelect('card.employee', 'employee')
+      .innerJoinAndSelect('employee.company', 'company')
+      .innerJoinAndSelect('invoice.hospital', 'hospital')
+      .where('hospital.id = :id', { id: id })
+      .getManyAndCount();
+      }
         const invoiceDTO: InvoiceDTO[] = [];
         if (resultList && resultList[0]) {
             resultList[0].forEach(invoice => invoiceDTO.push(InvoiceMapper.fromEntityToDTO(invoice)));

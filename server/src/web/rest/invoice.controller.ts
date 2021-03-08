@@ -45,14 +45,21 @@ export class InvoiceController {
     })
     async getAll(@Req() req: Request): Promise<InvoiceDTO[]> {
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-      const [results, count] = await this.invoiceService.findAndCount({
+      var hospital = {};
+      if(req.user.authorities.includes('ROLE_ADMIN') == true) {
+        hospital = "all";
+      } else {
+        hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+      }
+
+      const [results, count] = await this.invoiceService.findAndCount(hospital,{
         skip: +pageRequest.page * pageRequest.size,
         take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
       });
-      // console.log(results);
       HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
       return results;
+      // console.log(results);
     }
 
     @Get('/:id')
@@ -123,7 +130,6 @@ export class InvoiceController {
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
         hospital = "all";
       } else {
-        // console.log(req.user.id);
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
       }
       const [benefit, count] = await this.benefitRequestService.findAndCount(hospital,{
@@ -175,10 +181,13 @@ export class InvoiceController {
       cardTransactionDTO.amount = data.cardTransaction.amount;
       cardTransactionDTO.card   = data.cardTransaction.card;
       cardTransactionDTO.action = data.cardTransaction.action;
+      cardTransactionDTO.createdBy = req.user.id;
       const created = await this.cardTransactionService.save(cardTransactionDTO);
+      var hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+      data.invoice.hospital = hospital;
+      data.invoice.createdBy = req.user.id;
       data.invoice.cardTransaction = created.id;
       const createdInvoice = await this.invoiceService.save(data.invoice);
-
       data.invoiceBenefit.forEach(element => {
         var invoiceBenefitDTO = new InvoiceBenefitsDTO();
         invoiceBenefitDTO.invoice  = createdInvoice;
@@ -190,5 +199,52 @@ export class InvoiceController {
         this.invoiceBenefitsService.save(invoiceBenefitDTO);
       });
       return createdInvoice;
+    }
+
+
+    @PostMethod('checkbenefit')
+    @Roles(RoleType.USER)
+    @ApiOperation({ title: 'Create invoice' })
+    @ApiResponse({
+      status: 201,
+      description: 'The record has been successfully created.',
+      type: InvoiceDTO,
+    })
+
+    @ApiResponse({ status: 403, description: 'Forbidden.' })
+    async checkBenefit(@Req() req: Request, @Body() data): Promise<InvoiceDTO> {
+      // console.log(data);
+      const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+      const results = await this.invoiceService.findByInvoice({
+        where : { mainInvoice : data.invoice},
+        // skip: +pageRequest.page * pageRequest.size,
+        // take: +pageRequest.size,
+        order: pageRequest.sort.asOrder(),
+      });
+      // console.log(data.benefits);
+      var count = 0;
+      for await (const element of results[0]) {
+        console.log(element.id);
+        // console.log(data.benefits)
+        const benefit = await this.invoiceBenefitsService.findAndCount({
+          where : {
+            // benefit : data.benefits.id,
+            invoice : "305928e3-ec51-4120-96b6-191a577366e5",
+          },
+          skip: +pageRequest.page * pageRequest.size,
+          take: +pageRequest.size,
+          order: pageRequest.sort.asOrder(),
+        });
+        count = count + benefit.quantity;
+        console.log(benefit);
+      }
+      // results[0].forEach(element => {
+      //   console.log(element);
+
+      //   // console.log(benefit);
+      //   // count = count + benefit.quantity;
+      // });
+      console.log(count);
+      return data;
     }
   }
