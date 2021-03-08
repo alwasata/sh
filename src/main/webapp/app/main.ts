@@ -33,6 +33,7 @@ import BenefitRequestService from '@/entities/benefit-request/benefit-request.se
 import CardService from '@/entities/card/card.service';
 import CardTransactionService from '@/entities/card-transaction/card-transaction.service';
 import CategoryService from '@/entities/category/category.service';
+import SettingService from '@/entities/setting/setting.service';
 import CompanyService from '@/entities/company/company.service';
 import EmployeeService from '@/entities/employee/employee.service';
 import HospitalService from '@/entities/hospital/hospital.service';
@@ -103,6 +104,7 @@ new Vue({
     cardService: () => new CardService(),
     cardTransactionService: () => new CardTransactionService(),
     categoryService: () => new CategoryService(),
+    settingService: () => new SettingService(),
     companyService: () => new CompanyService(),
     employeeService: () => new EmployeeService(),
     hospitalService: () => new HospitalService(),
