@@ -62,6 +62,7 @@ export default class InvoiceUpdate extends Vue {
   public invoiceId = 0;
   public invoiceDate = new Date().toISOString().slice(0, 10);
   public rows = [];
+  public checkQuantity = true;
   public returnBenefits = [];
 
   @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
@@ -83,9 +84,6 @@ export default class InvoiceUpdate extends Vue {
     this.invoiceService()
       .find(invoiceId)
       .then(res => {
-        // this.invoice = res;
-        console.log('hihi');
-        // console.log(res);
         this.employeeName = res.cardTransaction.card.employee.name;
         this.companyName = res.cardTransaction.card.employee.company.nameAr + ' | ' + res.cardTransaction.card.employee.company.nameEn;
         this.cardNumber = res.cardTransaction.card.cardNo;
@@ -99,10 +97,11 @@ export default class InvoiceUpdate extends Vue {
         this.invoiceBenefitsService()
           .find(res.id)
           .then(res => {
+            console.log('show here');
             console.log(res);
             res[0].forEach(element => {
               this.rows.push({
-                id: element.id,
+                id: element.benefit.id,
                 nameAr: element.benefit.nameAr,
                 quantity: element.quantity,
                 nameEn: element.benefit.nameEn,
@@ -119,7 +118,6 @@ export default class InvoiceUpdate extends Vue {
           .search(res.cardTransaction.card.cardNo)
           .then(res => {
             var points = 0;
-
             res.cardInfo[0].forEach(element => {
               if (element.action == 'PLUS') {
                 points = points + element.pointsAmount;
@@ -127,39 +125,42 @@ export default class InvoiceUpdate extends Vue {
                 points = points - element.pointsAmount;
               }
             });
-
             this.hosbitalName = res.benefit[0].hospital.nameAr;
             this.cardPoint = points;
-
-            console.log(res);
           });
       });
   }
+
   public returnBenefit(row, index): void {
     this.invoiceService()
       .checkBenefitQuantity({ benefits: row, invoice: this.invoiceId })
       .then(res => {
-        console.log(res);
-      });
-    // console.log('hi');
-    return;
-    if (!this.returnBenefits.includes(row)) {
-      console.log(row);
-      this.returnTotal = this.returnTotal + row.points * row.returnQuantity;
-      this.returnTotalIvoicePrice = this.returnTotalIvoicePrice + row.price * row.returnQuantity;
-      console.log(row.id);
+        this.checkQuantity = res;
 
-      this.returnBenefits.push({
-        id: row.id,
-        nameAr: row.nameAr,
-        returnQuantity: row.returnQuantity,
-        nameEn: row.nameEn,
-        points: row.points,
-        totalPoints: row.totalPoints * row.returnQuantity,
-        price: row.price,
-        totalPrice: row.price * row.returnQuantity,
+        if (row.returnQuantity == '') {
+          document.getElementById('error-quantity').innerHTML = 'يجب ادخال قيمة';
+          return;
+        }
+        if (this.checkQuantity == false) {
+          document.getElementById('error-quantity').innerHTML = 'تم ارجاع الكمية';
+          return;
+        }
+        if (!this.returnBenefits.includes(row)) {
+          this.returnTotal = this.returnTotal + row.points * row.returnQuantity;
+          this.returnTotalIvoicePrice = this.returnTotalIvoicePrice + row.price * row.returnQuantity;
+
+          this.returnBenefits.push({
+            id: row.id,
+            nameAr: row.nameAr,
+            quantity: row.returnQuantity,
+            nameEn: row.nameEn,
+            points: row.points,
+            totalPoints: row.totalPoints * row.returnQuantity,
+            price: row.price,
+            totalPrice: row.price * row.returnQuantity,
+          });
+        }
       });
-    }
   }
 
   public removeRow(row, indx) {
@@ -177,7 +178,6 @@ export default class InvoiceUpdate extends Vue {
     this.invoice.mainInvoice = this.invoiceId;
     this.invoice.invoiceNo =
       'RIN/' + new Date().getFullYear() + '/' + new Date().getMonth() + '/' + Math.floor(1000 + Math.random() * 9000);
-    console.log(this.invoice);
 
     var data = {
       invoiceBenefit: this.returnBenefits,
@@ -186,6 +186,7 @@ export default class InvoiceUpdate extends Vue {
         amount: this.totalIvoicePrice,
         pointsAmount: this.total,
         action: 'PLUS',
+        notes: ' اضافة في البطاقة بسبب فاتورة مرجعة رقم : ' + this.invoice.invoiceNo,
         card: this.cardId,
       },
     };
@@ -255,9 +256,6 @@ export default class InvoiceUpdate extends Vue {
 
         mywindow.print();
       });
-    console.log(this.rows);
-
-    console.log('click me');
   }
 
   public previousState(): void {

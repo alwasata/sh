@@ -4,25 +4,13 @@
             <form name='editForm' novalidate role='form' v-on:submit.prevent='save()'>
                 <h2 id='sahatiApp.setting.home.createOrEditLabel'>اضافة او تعديل الفئة</h2>
                 <div>
-                    <div v-if='setting.id' class='form-group'>
+                    <!-- <div v-if='setting.id' class='form-group'>
                         <label for='id'>ID</label>
                         <input id='id' v-model='setting.id' class='form-control' name='id'
                                readonly type='text' />
-                    </div>
+                    </div> -->
                     <div class='form-group'>
-                        <label class='form-control-label' for='setting-key'>الاسم بالعربية</label>
-                        <input id='setting-key' v-model='$v.setting.key.$model'
-                               :class="{'valid': !$v.setting.key.$invalid, 'invalid': $v.setting.key.$invalid }"
-                               class='form-control'
-                               name='key' required type='text' />
-                        <div v-if='$v.setting.key.$anyDirty && $v.setting.key.$invalid'>
-                            <small v-if='!$v.setting.key.required' class='form-text text-danger'>
-                                This field is required.
-                            </small>
-                        </div>
-                    </div>
-                    <div class='form-group'>
-                        <label class='form-control-label' for='setting-value'>الاسم بالانجليزية</label>
+                        <label class='form-control-label' for='setting-value'>القيمة</label>
                         <input id='setting-value' v-model='$v.setting.value.$model'
                                :class="{'valid': !$v.setting.value.$invalid, 'invalid': $v.setting.value.$invalid }"
                                class='form-control'

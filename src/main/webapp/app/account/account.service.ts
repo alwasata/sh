@@ -76,6 +76,9 @@ export default class AccountService {
     });
   }
 
+  public getAuthorities(): boolean {
+    return this.store.getters.account;
+  }
   public get authenticated(): boolean {
     return this.store.getters.authenticated;
   }

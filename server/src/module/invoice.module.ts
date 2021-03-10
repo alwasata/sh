@@ -8,10 +8,11 @@ import { CardTransactionModule } from './card-transaction.module';
 import { HospitalModule } from './hospital.module';
 import { BenefitModule } from './benefit.module';
 import { InvoiceBenefitsModule } from './invoice-benefits.module';
+import { SettingModule } from './setting.module';
 import { CardModule } from './card.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([InvoiceRepository]),CardModule , InvoiceBenefitsModule, BenefitModule, CardTransactionModule, BenefitRequestModule, HospitalModule],
+    imports: [TypeOrmModule.forFeature([InvoiceRepository]), SettingModule,CardModule , InvoiceBenefitsModule, BenefitModule, CardTransactionModule, BenefitRequestModule, HospitalModule],
     controllers: [InvoiceController],
     providers: [InvoiceService],
     exports: [InvoiceService],

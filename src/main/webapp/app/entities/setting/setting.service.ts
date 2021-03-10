@@ -33,6 +33,19 @@ export default class SettingService {
     });
   }
 
+  public getAll(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public delete(id: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios

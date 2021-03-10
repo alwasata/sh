@@ -44,8 +44,22 @@ export default class JhiNavbar extends Vue {
       .then(value => {
         this.hasAnyAuthorityValue = value;
       });
-    console.log(this.hasAnyAuthorityValue);
     return this.hasAnyAuthorityValue;
+  }
+
+  public hasRole(roles: any): boolean {
+    if (this.userAuthorities() == null) {
+      return false;
+    }
+    for (const element of roles) {
+      if (this.userAuthorities().authorities.includes(element)) {
+        return true;
+      }
+    }
+  }
+
+  public userAuthorities() {
+    return this.accountService().getAuthorities();
   }
 
   public get swaggerEnabled(): boolean {

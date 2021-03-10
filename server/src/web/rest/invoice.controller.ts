@@ -16,7 +16,8 @@ import { BenefitService } from '../../service/benefit.service';
 import { InvoiceBenefitsService} from '../../service/invoice-benefits.service';
 import { InvoiceBenefitsDTO } from '../../service/dto/invoice-benefits.dto';
 import { CardService } from '../../service/card.service';
-// import { CardService } from '../../service/card.service';
+import { SettingDTO } from '../../service/dto/setting.dto';
+import { SettingService } from '../../service/setting.service';
 
 @Controller('api/invoices')
 @UseGuards(AuthGuard, RolesGuard)
@@ -34,6 +35,7 @@ export class InvoiceController {
     private readonly benefitRequestService: BenefitRequestService,
     private readonly hospitalService: HospitalService,
     private readonly invoiceBenefitsService: InvoiceBenefitsService,
+    private readonly settingService: SettingService,
     ) {}
 
     @Get('/')
@@ -123,8 +125,6 @@ export class InvoiceController {
     })
     async search(@Req() req: Request, @Param('id') id: string): Promise<object> {
       var cardInfo = await this.cardTransactionService.findByCardNo(id);
-      // console.log(cardInfo);
-
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var hospital = "";
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
@@ -160,9 +160,19 @@ export class InvoiceController {
       description: 'The found record',
       type: BenefitDTO,
     })
-    async getBenefit(@Req() req: Request, @Param('id') id: string): Promise<BenefitDTO> {
+    async getBenefit(@Req() req: Request, @Param('id') id: string): Promise<object> {
       var resualt = await this.benefitService.findById(id);
-      return resualt;
+      const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+      var resualtSettings =  await this.settingService.findAndCount({
+        skip: +pageRequest.page * pageRequest.size,
+        take: +pageRequest.size,
+        order: pageRequest.sort.asOrder(),
+      });
+      var data = {
+        'benefit' : resualt,
+        'setting' : resualtSettings
+      };
+      return data;
     }
 
     @PostMethod('saveinvoice')
@@ -176,6 +186,7 @@ export class InvoiceController {
 
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async saveInvoice(@Req() req: Request, @Body() data): Promise<InvoiceDTO> {
+
       var cardTransactionDTO = new CardTransactionDTO ();
       cardTransactionDTO.pointsAmount = data.cardTransaction.pointsAmount;
       cardTransactionDTO.amount = data.cardTransaction.amount;
@@ -183,21 +194,26 @@ export class InvoiceController {
       cardTransactionDTO.action = data.cardTransaction.action;
       cardTransactionDTO.createdBy = req.user.id;
       const created = await this.cardTransactionService.save(cardTransactionDTO);
+
       var hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+
       data.invoice.hospital = hospital;
       data.invoice.createdBy = req.user.id;
       data.invoice.cardTransaction = created.id;
       const createdInvoice = await this.invoiceService.save(data.invoice);
-      data.invoiceBenefit.forEach(element => {
+
+      for await (const element of data.invoiceBenefit) {
+        const benefit = await this.benefitService.findById(element.id);
         var invoiceBenefitDTO = new InvoiceBenefitsDTO();
         invoiceBenefitDTO.invoice  = createdInvoice;
-        invoiceBenefitDTO.benefit  = element.id;
+        invoiceBenefitDTO.benefit  = benefit;
         invoiceBenefitDTO.quantity = element.quantity;
         invoiceBenefitDTO.cost   = element.price;
         invoiceBenefitDTO.total  = element.totalPrice;
         invoiceBenefitDTO.pointsCost  = element.points;
-        this.invoiceBenefitsService.save(invoiceBenefitDTO);
-      });
+        console.log(invoiceBenefitDTO);
+        await this.invoiceBenefitsService.save(invoiceBenefitDTO);
+      }
       return createdInvoice;
     }
 
@@ -212,39 +228,31 @@ export class InvoiceController {
     })
 
     @ApiResponse({ status: 403, description: 'Forbidden.' })
-    async checkBenefit(@Req() req: Request, @Body() data): Promise<InvoiceDTO> {
-      // console.log(data);
+    async checkBenefit(@Req() req: Request, @Body() data): Promise<any> {
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       const results = await this.invoiceService.findByInvoice({
         where : { mainInvoice : data.invoice},
-        // skip: +pageRequest.page * pageRequest.size,
-        // take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
       });
-      // console.log(data.benefits);
       var count = 0;
       for await (const element of results[0]) {
-        console.log(element.id);
-        // console.log(data.benefits)
-        const benefit = await this.invoiceBenefitsService.findAndCount({
+        const invoiceBenefit = await this.invoiceBenefitsService.findAndCount({
           where : {
-            // benefit : data.benefits.id,
-            invoice : "305928e3-ec51-4120-96b6-191a577366e5",
+            benefit : data.benefits.id,
+            invoice : element.id,
           },
           skip: +pageRequest.page * pageRequest.size,
           take: +pageRequest.size,
           order: pageRequest.sort.asOrder(),
         });
-        count = count + benefit.quantity;
-        console.log(benefit);
+        if(invoiceBenefit != []){
+          count = count + invoiceBenefit[0][0].quantity;
+        }
       }
-      // results[0].forEach(element => {
-      //   console.log(element);
-
-      //   // console.log(benefit);
-      //   // count = count + benefit.quantity;
-      // });
-      console.log(count);
-      return data;
+      var checkQuantity = true;
+      if(data.benefits.returnQuantity + count > data.benefits.quantity) {
+        checkQuantity = false
+      }
+      return checkQuantity;
     }
   }

@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
+import { ISetting } from '@/shared/model/setting.model';
 import { IInvoice } from '@/shared/model/invoice.model';
 import { IBenefit } from '@/shared/model/benefit.model';
 
@@ -99,8 +100,8 @@ export default class InvoiceService {
     });
   }
 
-  public getBeneit(id: string): Promise<IBenefit> {
-    return new Promise<IBenefit>((resolve, reject) => {
+  public getBeneit(id: string): Promise<object> {
+    return new Promise<object>((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/getbenefit/${id}`)
         .then(res => {
@@ -113,10 +114,10 @@ export default class InvoiceService {
     });
   }
 
-  public checkBenefitQuantity(data: any): Promise<IInvoice> {
+  public checkBenefitQuantity(data: any): Promise<any> {
     console.log(data);
     // return data;
-    return new Promise<IInvoice>((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
       axios
         .post(`${baseApiUrl}/checkbenefit`, data)
         .then(res => {

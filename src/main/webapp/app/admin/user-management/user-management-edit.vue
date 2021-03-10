@@ -85,9 +85,9 @@
                     </div>
                     <div class="form-check">
                         <label class="form-check-label" for="activated">
-                            <input class="form-check-input" :disabled="userAccount.id === null" type="checkbox" id="activated" name="activated" v-model="userAccount.activated">
-                            <span>Activated</span>
+                            <span> تفعيل </span>
                         </label>
+                            <input class="form-check-input" :disabled="userAccount.id === null" type="checkbox" id="activated" name="activated" v-model="userAccount.activated">
                     </div>
 
                     <div class="form-group">

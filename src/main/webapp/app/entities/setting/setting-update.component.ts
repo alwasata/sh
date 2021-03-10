@@ -8,10 +8,9 @@ import SettingService from './setting.service';
 
 const validations: any = {
   setting: {
-    key: {
+    value: {
       required,
     },
-    value: {},
   },
 };
 

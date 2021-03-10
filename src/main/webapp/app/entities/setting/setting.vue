@@ -1,14 +1,7 @@
 <template>
     <div>
         <h2 id='page-heading'>
-            <span id='setting-heading'>الفئات</span>
-            <router-link id='jh-create-entity' :to="{name: 'SettingCreate'}"
-                         class='btn btn-primary float-left jh-create-entity create-setting' tag='button'>
-                <font-awesome-icon icon='plus'></font-awesome-icon>
-                <span>
-                    اضافة فئة
-                </span>
-            </router-link>
+            <span id='setting-heading'>النقاط</span>
         </h2>
         <b-alert :show='dismissCountDown'
                  :variant='alertType'
@@ -25,10 +18,6 @@
             <table class='table table-striped'>
                 <thead>
                 <tr>
-                    <th v-on:click="changeOrder('id')"><span>ID</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
                     <th v-on:click="changeOrder('key')"><span>الاسم</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'key'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -37,18 +26,16 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'value'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
+                    <th>دينار</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for='setting in settings'
                     :key='setting.id'>
-                    <td>
-                        <router-link :to="{name: 'SettingView', params: {settingId: setting.id}}">{{ setting.id }}
-                        </router-link>
-                    </td>
-                    <td>{{ setting.key }}</td>
-                    <td>{{ setting.value }}</td>
+                    <td>النقط</td>
+                    <td>{{ setting.value }} نقطة</td>
+                    <td> 1 د.ل</td>
                     <td class='text-right'>
                         <div class='btn-group'>
                             <router-link :to="{name: 'SettingView', params: {settingId: setting.id}}"
@@ -61,13 +48,6 @@
                                 <font-awesome-icon icon='pencil-alt'></font-awesome-icon>
                                 <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
-                            <b-button v-b-modal.removeEntity
-                                      class='btn btn-sm'
-                                      variant='danger'
-                                      v-on:click='prepareRemove(setting)'>
-                                <font-awesome-icon icon='times'></font-awesome-icon>
-                                <span class='d-none d-md-inline'>حذف</span>
-                            </b-button>
                         </div>
                     </td>
                 </tr>
@@ -87,15 +67,6 @@
                 </button>
             </div>
         </b-modal>
-        <div v-show='settings && settings.length > 0'>
-            <div class='row justify-content-center'>
-                <jhi-item-count :itemsPerPage='itemsPerPage' :page='page' :total='queryCount'></jhi-item-count>
-            </div>
-            <div class='row justify-content-center'>
-                <b-pagination v-model='page' :change='loadPage(page)' :per-page='itemsPerPage' :total-rows='totalItems'
-                              size='md'></b-pagination>
-            </div>
-        </div>
     </div>
 </template>
 

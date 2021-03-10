@@ -7,15 +7,7 @@ import AlertService from '@/shared/alert/alert.service';
 import { IInvoice, Invoice, InvoiceStatus } from '@/shared/model/invoice.model';
 import { IEmployee, Employee } from '@/shared/model/employee.model';
 import InvoiceService from './invoice.service';
-// import { jsPDF } from "jspdf";
-// import 'jspdf-autotable'
-// import "jspdf/dist/polyfills.es.js";
-// import { PdfMakeWrapper } from 'pdfmake-wrapper';
-// import pdfFonts from "pdfmake/build/vfs_fonts";
-
-// import pdfMake from "pdfmake/build/pdfmake";
-// import pdfFonts from "pdfmake/build/vfs_fonts";
-// pdfMake.vfs = pdfFonts.pdfMake.vfs
+import SettingService from '../setting/setting.service';
 import pdfMake from 'pdfmake-arabic/build/pdfmake';
 import pdfFonts from 'pdfmake-arabic/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -164,9 +156,10 @@ export default class InvoiceUpdate extends Vue {
     this.invoiceService()
       .getBeneit(event.target.value)
       .then(res => {
-        this.benefitPoints = res.cost * 1.1;
-        this.oldBenefitPoints = res.cost * 1.1;
-        this.benefitPrice = res.cost;
+        console.log(res.benefit.cost);
+        this.benefitPoints = res.benefit.cost * 1.1;
+        this.oldBenefitPoints = res.benefit.cost * 1.1;
+        this.benefitPrice = res.benefit.cost;
       });
   }
 
@@ -190,7 +183,7 @@ export default class InvoiceUpdate extends Vue {
         if (this.total + this.benefitPoints * this.quantity < this.employeePoints) {
           var checkBenefit = false;
           this.rows.forEach(element => {
-            if (element.id.includes(res.id) == true) {
+            if (element.id.includes(res.benefit.id) == true) {
               checkBenefit = true;
             }
           });
@@ -199,14 +192,14 @@ export default class InvoiceUpdate extends Vue {
             this.total = this.total + this.benefitPoints * this.quantity;
             this.totalIvoicePrice = this.totalIvoicePrice + this.benefitPrice * this.quantity;
             this.rows.push({
-              id: res.id,
-              nameAr: res.nameAr,
+              id: res.benefit.id,
+              nameAr: res.benefit.nameAr,
               quantity: this.quantity,
-              nameEn: res.nameEn,
+              nameEn: res.benefit.nameEn,
               points: this.benefitPoints,
               totalPoints: this.benefitPoints * this.quantity,
-              price: res.cost,
-              totalPrice: this.quantity * res.cost,
+              price: res.benefit.cost,
+              totalPrice: this.quantity * res.benefit.cost,
             });
           }
         }
@@ -234,6 +227,7 @@ export default class InvoiceUpdate extends Vue {
         amount: this.totalIvoicePrice,
         pointsAmount: this.total,
         action: 'MINUS',
+        notes: 'خصم من البطاقة بسبب اصدار فاتورة رقم : ' + this.invoice.invoiceNo,
         card: this.cardId,
       },
     };

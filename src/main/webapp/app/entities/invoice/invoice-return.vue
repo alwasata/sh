@@ -75,7 +75,11 @@
                             <td>{{row.quantity}}</td>
                             <td>{{row.price}}</td>
                             <td>{{row.totalPrice}}</td>
-                            <td><input type="number" v-model="row.returnQuantity"></td>
+                            <td>
+                                <input type="number" v-model="row.returnQuantity">
+                                <br>
+                                <label  class="text-danger" id="error-quantity"></label>
+                            </td>
                             <td>
                                 <button class="btn btn-danger" @click="returnBenefit(row, index)">
                                     ارجاع
@@ -113,7 +117,7 @@
                         <tr v-for="(row,index) in returnBenefits">
                             <td>{{row.nameAr}}</td>
                             <td>{{row.nameEn}}</td>
-                            <td>{{row.returnQuantity}}</td>
+                            <td>{{row.quantity}}</td>
                             <td>{{row.price}}</td>
                             <td>{{row.totalPrice}}</td>
                             <td>
