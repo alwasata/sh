@@ -64,12 +64,12 @@
                             <span>البطاقات</span>
                         </router-link>
                     </li>
-                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN','ROLE_COMPANY_ADMIN'])">
+                    <!-- <li class='nav-item' v-if="hasRole(['ROLE_ADMIN','ROLE_COMPANY_ADMIN'])">
                         <router-link class='nav-link' to='/card-transaction'>
                             <font-awesome-icon icon='asterisk' />
                             <span>حركات البطاقة</span>
                         </router-link>
-                    </li>
+                    </li> -->
                     <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
                         <router-link class='nav-link' to='/category'>
                             <font-awesome-icon icon='asterisk' />
@@ -116,10 +116,10 @@
                         </router-link>
                     </li>
                     <li class="nav-item"></li>
-                    <router-link class='nav-link' to='/admin/docs'>
+                    <!-- <router-link class='nav-link' to='/admin/docs'>
                         <font-awesome-icon icon='book' />
                         <span>API</span>
-                    </router-link>
+                    </router-link> -->
                 </ul>
             </div>
           </div>

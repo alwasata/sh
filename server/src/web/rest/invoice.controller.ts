@@ -46,7 +46,6 @@ export class InvoiceController {
       type: InvoiceDTO,
     })
     async getAll(@Req() req: Request, @Param('search') search: string): Promise<InvoiceDTO[]> {
-      console.log(search);
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var hospital = {};
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
@@ -56,6 +55,32 @@ export class InvoiceController {
       }
 
       const [results, count] = await this.invoiceService.findAndCount(search,hospital,{
+        skip: +pageRequest.page * pageRequest.size,
+        take: +pageRequest.size,
+        order: pageRequest.sort.asOrder(),
+      });
+      HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
+      return results;
+      // console.log(results);
+    }
+
+    @Get('/getinvoicesbystatus:status')
+    @Roles(RoleType.USER)
+    @ApiResponse({
+      status: 200,
+      description: 'List all records',
+      type: InvoiceDTO,
+    })
+    async getAllByStatus(@Req() req: Request, @Param('status') status: string): Promise<InvoiceDTO[]> {
+      const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+      var hospital = {};
+      if(req.user.authorities.includes('ROLE_ADMIN') == true) {
+        hospital = "all";
+      } else {
+        hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+      }
+
+      const [results, count] = await this.invoiceService.findAndCount(status,hospital,{
         skip: +pageRequest.page * pageRequest.size,
         take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
@@ -113,6 +138,16 @@ export class InvoiceController {
       description: 'The record has been successfully deleted.',
     })
     async deleteById(@Req() req: Request, @Param('id') id: string): Promise<void> {
+      var invoice = await this.invoiceService.findByIdOne(id);
+      var cardTransaction = await this.cardTransactionService.findById(invoice.cardTransaction);
+      var cardTransactionDTO = new CardTransactionDTO();
+      cardTransactionDTO.createdBy = req.user;
+      cardTransactionDTO.card = cardTransaction.card;
+      cardTransactionDTO.amount = cardTransaction.amount;
+      cardTransactionDTO.pointsAmount = cardTransaction.pointsAmount;
+      cardTransactionDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها";
+      cardTransactionDTO.action = "PLUS";
+      await this.cardTransactionService.save(cardTransactionDTO);
       var invoiceDTO = new InvoiceDTO();
       invoiceDTO.id = id;
       invoiceDTO.invoiceStatus = "CANCELLED";

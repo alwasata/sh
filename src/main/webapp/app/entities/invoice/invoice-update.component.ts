@@ -219,7 +219,7 @@ export default class InvoiceUpdate extends Vue {
     this.invoice.invoiceStatus = InvoiceStatus.APPROVED;
     this.invoice.invoiceDate = this.invoiceDate;
     this.invoice.payDate = this.invoiceDate;
-    this.invoice.invoiceNo = 'IN/' + new Date().getFullYear() + '/' + new Date().getMonth() + '/' + Math.floor(1000 + Math.random() * 9000);
+    this.invoice.invoiceNo = 'IN-' + new Date().getFullYear() + '-' + new Date().getMonth() + '-' + Math.floor(1000 + Math.random() * 9000);
     var data = {
       invoiceBenefit: this.rows,
       invoice: this.invoice,

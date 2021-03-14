@@ -38,6 +38,7 @@ export default class Home extends Vue {
     }
   }
   public mounted(): void {
+    console.log('hi');
     this.invoices();
   }
   public invoices() {
@@ -52,7 +53,7 @@ export default class Home extends Vue {
         return (this.returnInvoice = result);
       });
     this.invoiceService()
-      .getInvoicesByStatus('CANCLED')
+      .getInvoicesByStatus('CANCELLED')
       .then(result => {
         return (this.cancleInvoice = result);
       });

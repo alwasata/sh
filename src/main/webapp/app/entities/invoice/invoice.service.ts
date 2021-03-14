@@ -38,7 +38,7 @@ export default class InvoiceService {
   public getInvoicesByStatus(status: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}`)
+        .get(`${baseApiUrl}/false`)
         .then(res => {
           var countInvoice = 0;
           for (var i = 0; i < res.data.length; i++) {
@@ -54,10 +54,10 @@ export default class InvoiceService {
     });
   }
 
-  public retrieve(paginationQuery?: any): Promise<any> {
+  public retrieve(search: string, paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(baseApiUrl + `/123?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(baseApiUrl + `/${search}?${buildPaginationQueryOpts(paginationQuery)}`)
         .then(res => {
           resolve(res);
         })

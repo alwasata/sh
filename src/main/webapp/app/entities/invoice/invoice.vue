@@ -16,7 +16,7 @@
             @dismiss-count-down="countDownChanged">
             {{alertMessage}}
         </b-alert>
-
+        <input type="text" v-model="search" v-on:input="searchInput()" >
         <br/>
         <div class="alert alert-warning" v-if="!isFetching && invoices && invoices.length === 0">
             <span>No invoices found</span>
@@ -111,7 +111,7 @@
                                 <span class='d-none d-md-inline'>ارجاع</span>
                             </router-link>
                         </div>
-                        <div class="btn-group" :id="'invoice-delete-' + invoice.id">
+                        <div v-if="invoice.invoiceStatus == 'APPROVED'"  class="btn-group" :id="'invoice-delete-' + invoice.id">
                            <b-button v-on:click="prepareRemove(invoice)"
                                    variant="danger"
                                    class="btn btn-sm"

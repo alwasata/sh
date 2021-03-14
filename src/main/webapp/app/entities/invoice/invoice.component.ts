@@ -20,21 +20,27 @@ export default class Invoice extends mixins(AlertMixin) {
   public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
+  public search = '';
 
   public invoices: IInvoice[] = [];
 
   public isFetching = false;
 
   public mounted(): void {
-    this.retrieveAllInvoices();
+    this.retrieveAllInvoices(this.search);
   }
 
   public clear(): void {
     this.page = 1;
-    this.retrieveAllInvoices();
+    this.retrieveAllInvoices(this.search);
+  }
+  public searchInput(): void {
+    this.page = 1;
+    this.retrieveAllInvoices(this.search);
   }
 
-  public retrieveAllInvoices(): void {
+  public retrieveAllInvoices(search): void {
+    search = search == '' ? 'false' : search;
     this.isFetching = true;
 
     const paginationQuery = {
@@ -43,7 +49,7 @@ export default class Invoice extends mixins(AlertMixin) {
       sort: this.sort(),
     };
     this.invoiceService()
-      .retrieve(paginationQuery)
+      .retrieve(search, paginationQuery)
       .then(
         res => {
           this.invoices = res.data;
@@ -70,14 +76,8 @@ export default class Invoice extends mixins(AlertMixin) {
     this.invoiceService()
       .delete(this.removeId)
       .then(() => {
-        document.getElementById(`invoice-state-${this.removeId}`).textContent = '';
-        document.getElementById(`invoice-state-${this.removeId}`).innerHTML = " <span class='btn btn-danger btn-sm'>تم الغائها</span>";
-        document.getElementById(`invoice-delete-${this.removeId}`).innerHTML = '';
-        const message = 'A Invoice is deleted with identifier ' + this.removeId;
-        this.alertService().showAlert(message, 'danger');
-        this.getAlertFromStore();
         this.removeId = null;
-        this.retrieveAllInvoices();
+        this.retrieveAllInvoices(this.search);
         this.closeDialog();
       });
   }
@@ -98,7 +98,7 @@ export default class Invoice extends mixins(AlertMixin) {
   }
 
   public transition(): void {
-    this.retrieveAllInvoices();
+    this.retrieveAllInvoices(this.search);
   }
 
   public changeOrder(propOrder): void {

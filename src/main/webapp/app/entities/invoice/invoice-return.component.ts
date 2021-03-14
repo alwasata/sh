@@ -176,7 +176,7 @@ export default class InvoiceUpdate extends Vue {
     this.invoice.payDate = this.invoiceDate;
     this.invoice.mainInvoice = this.invoiceId;
     this.invoice.invoiceNo =
-      'RIN/' + new Date().getFullYear() + '/' + new Date().getMonth() + '/' + Math.floor(1000 + Math.random() * 9000);
+      'RIN-' + new Date().getFullYear() + '-' + new Date().getMonth() + '-' + Math.floor(1000 + Math.random() * 9000);
     this.invoice.notes = `فاتورة مرجعة من الفاتورة رقم ${this.invoice.invoiceNo}`;
 
     var data = {
