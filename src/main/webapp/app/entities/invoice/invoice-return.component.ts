@@ -81,9 +81,11 @@ export default class InvoiceUpdate extends Vue {
   }
   public retrieveInvoice(invoiceId): void {
     this.invoiceId = invoiceId;
+    console.log(invoiceId);
     this.invoiceService()
       .find(invoiceId)
       .then(res => {
+        console.log(res);
         this.employeeName = res.cardTransaction.card.employee.name;
         this.companyName = res.cardTransaction.card.employee.company.nameAr + ' | ' + res.cardTransaction.card.employee.company.nameEn;
         this.cardNumber = res.cardTransaction.card.cardNo;

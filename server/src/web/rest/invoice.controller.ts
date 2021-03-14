@@ -90,7 +90,7 @@ export class InvoiceController {
       // console.log(results);
     }
 
-    @Get('/:id')
+    @Get('/find/:id')
     @Roles(RoleType.USER)
     @ApiResponse({
       status: 200,

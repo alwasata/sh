@@ -3,7 +3,7 @@
 
     <div class="row justify-content-center">
         <div class="col-8">
-                <h2 id='sahatiApp.invoice.home.createOrEditLabel'>اضافة او تعديل Invoice</h2>
+                <h2 id='sahatiApp.invoice.home.createOrEditLabel'>ارجاع الفاتورة</h2>
 
             <!-- <form action="" v-on:submit.prevent="retrieveInvoice()">
                 <div class="form-group">

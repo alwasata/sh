@@ -12,21 +12,9 @@ export default class InvoiceService {
   public find(id: number): Promise<IInvoice> {
     return new Promise<IInvoice>((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}/${id}`)
+        .get(`${baseApiUrl}/find/${id}`)
         .then(res => {
-          resolve(res.data);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  }
-
-  public getinvoices(id: number): Promise<IInvoice> {
-    return new Promise<IInvoice>((resolve, reject) => {
-      axios
-        .get(`${baseApiUrl}/${id}`)
-        .then(res => {
+          console.log(res);
           resolve(res.data);
         })
         .catch(err => {
