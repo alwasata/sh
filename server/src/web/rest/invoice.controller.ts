@@ -38,14 +38,15 @@ export class InvoiceController {
     private readonly settingService: SettingService,
     ) {}
 
-    @Get('/')
+    @Get('/:search')
     @Roles(RoleType.USER)
     @ApiResponse({
       status: 200,
       description: 'List all records',
       type: InvoiceDTO,
     })
-    async getAll(@Req() req: Request): Promise<InvoiceDTO[]> {
+    async getAll(@Req() req: Request, @Param('search') search: string): Promise<InvoiceDTO[]> {
+      console.log(search);
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var hospital = {};
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
@@ -54,7 +55,7 @@ export class InvoiceController {
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
       }
 
-      const [results, count] = await this.invoiceService.findAndCount(hospital,{
+      const [results, count] = await this.invoiceService.findAndCount(search,hospital,{
         skip: +pageRequest.page * pageRequest.size,
         take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
@@ -105,15 +106,21 @@ export class InvoiceController {
     }
 
     @Delete('/:id')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.USER)
     @ApiOperation({ title: 'Delete invoice' })
     @ApiResponse({
       status: 204,
       description: 'The record has been successfully deleted.',
     })
     async deleteById(@Req() req: Request, @Param('id') id: string): Promise<void> {
-      HeaderUtil.addEntityDeletedHeaders(req.res, 'Invoice', id);
-      return await this.invoiceService.deleteById(id);
+      var invoiceDTO = new InvoiceDTO();
+      invoiceDTO.id = id;
+      invoiceDTO.invoiceStatus = "CANCELLED";
+      HeaderUtil.addEntityCreatedHeaders(req.res, 'Invoice', invoiceDTO.id);
+      return await this.invoiceService.update(invoiceDTO);
+      // console.log(id)
+      // // HeaderUtil.addEntityDeletedHeaders(req.res, 'Invoice', id);
+      // // return id;
     }
 
     @Get('search/:id')

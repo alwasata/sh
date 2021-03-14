@@ -4,9 +4,10 @@ import { CardController } from '../web/rest/card.controller';
 import { CardRepository } from '../repository/card.repository';
 import { CardService } from '../service/card.service';
 import { CardTransactionModule } from './card-transaction.module';
+import { SettingModule } from './setting.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([CardRepository]), CardTransactionModule],
+    imports: [TypeOrmModule.forFeature([CardRepository]), CardTransactionModule, SettingModule],
     controllers: [CardController],
     providers: [CardService],
     exports: [CardService],

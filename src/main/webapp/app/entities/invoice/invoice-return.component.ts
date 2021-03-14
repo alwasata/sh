@@ -136,7 +136,6 @@ export default class InvoiceUpdate extends Vue {
       .checkBenefitQuantity({ benefits: row, invoice: this.invoiceId })
       .then(res => {
         this.checkQuantity = res;
-
         if (row.returnQuantity == '') {
           document.getElementById('error-quantity').innerHTML = 'يجب ادخال قيمة';
           return;
@@ -178,6 +177,7 @@ export default class InvoiceUpdate extends Vue {
     this.invoice.mainInvoice = this.invoiceId;
     this.invoice.invoiceNo =
       'RIN/' + new Date().getFullYear() + '/' + new Date().getMonth() + '/' + Math.floor(1000 + Math.random() * 9000);
+    this.invoice.notes = `فاتورة مرجعة من الفاتورة رقم ${this.invoice.invoiceNo}`;
 
     var data = {
       invoiceBenefit: this.returnBenefits,

@@ -156,9 +156,9 @@ export default class InvoiceUpdate extends Vue {
     this.invoiceService()
       .getBeneit(event.target.value)
       .then(res => {
-        console.log(res.benefit.cost);
-        this.benefitPoints = res.benefit.cost * 1.1;
-        this.oldBenefitPoints = res.benefit.cost * 1.1;
+        console.log(res);
+        this.benefitPoints = res.benefit.cost * res.setting[0][0].value;
+        this.oldBenefitPoints = res.benefit.cost * res.setting[0][0].value;
         this.benefitPrice = res.benefit.cost;
       });
   }

@@ -36,6 +36,46 @@ export class CardTransactionController {
         return results;
     }
 
+    @Get('gettransactionbyid/:id')
+    @Roles(RoleType.USER)
+    @ApiResponse({
+        status: 200,
+        description: 'List all records',
+        type: CardTransactionDTO,
+    })
+    async getAllById(@Req() req: Request, @Param('id') id: string): Promise<CardTransactionDTO[]> {
+      console.log("hi");
+      console.log(id);
+        const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+        const [results, count] = await this.cardTransactionService.findAndCount({
+            where: {card :  id},
+            skip: +pageRequest.page * pageRequest.size,
+            take: +pageRequest.size,
+            order: pageRequest.sort.asOrder(),
+        });
+        HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
+        return results;
+    }
+
+    @Get('getwhere/:id')
+    @Roles(RoleType.USER)
+    @ApiResponse({
+        status: 200,
+        description: 'List all records',
+        type: CardTransactionDTO,
+    })
+    async getWhere(@Req() req: Request, @Param('id') id: string): Promise<CardTransactionDTO[]> {
+        const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+        const [results, count] = await this.cardTransactionService.findAndCount({
+            where: {card :  id},
+            skip: +pageRequest.page * pageRequest.size,
+            take: +pageRequest.size,
+            order: pageRequest.sort.asOrder(),
+        });
+        HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
+        return results;
+    }
+
     @Get('/:id')
     @Roles(RoleType.USER)
     @ApiResponse({

@@ -22,10 +22,42 @@ export default class InvoiceService {
     });
   }
 
+  public getinvoices(id: number): Promise<IInvoice> {
+    return new Promise<IInvoice>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public getInvoicesByStatus(status: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}`)
+        .then(res => {
+          var countInvoice = 0;
+          for (var i = 0; i < res.data.length; i++) {
+            if (res.data[i].invoiceStatus == status) {
+              countInvoice++;
+            }
+          }
+          resolve(countInvoice);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public retrieve(paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(baseApiUrl + `/123?${buildPaginationQueryOpts(paginationQuery)}`)
         .then(res => {
           resolve(res);
         })

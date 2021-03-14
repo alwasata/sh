@@ -24,10 +24,6 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th v-on:click="changeOrder('id')"><span>رقم المنفعة</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
                     <th v-on:click="changeOrder('nameAr')"><span>الاسم بالعربية</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'nameAr'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -58,12 +54,9 @@
                 <tbody>
                 <tr v-for="benefit in benefits"
                     :key="benefit.id">
-                    <td>
-                        <router-link :to="{name: 'BenefitView', params: {benefitId: benefit.id}}">{{benefit.id}}</router-link>
-                    </td>
                     <td>{{benefit.nameAr}}</td>
                     <td>{{benefit.nameEn}}</td>
-                    <td>{{benefit.cost*1.1}}</td>
+                    <td>{{ (benefit.cost*points).toFixed(3)}}</td>
                     <td>{{benefit.cost}}</td>
                     <td>
                         <div v-if='benefit.category'>

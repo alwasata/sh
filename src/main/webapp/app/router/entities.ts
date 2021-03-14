@@ -26,6 +26,7 @@ const Card = () => import('@/entities/card/card.vue');
 const CardUpdate = () => import('@/entities/card/card-update.vue');
 // prettier-ignore
 const CardDetails = () => import('@/entities/card/card-details.vue');
+const CardTransactionById = () => import('@/entities/card/card-transactions.vue');
 // prettier-ignore
 const CardTransaction = () => import('@/entities/card-transaction/card-transaction.vue');
 // charge
@@ -172,6 +173,12 @@ export default [
     path: '/card/:cardId/edit',
     name: 'CardEdit',
     component: CardUpdate,
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
+  },
+  {
+    path: '/card/:cardId/transactions',
+    name: 'CardTransactions',
+    component: CardTransactionById,
     meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {

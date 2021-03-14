@@ -6,12 +6,14 @@ import { ICard } from '@/shared/model/card.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
 
 import CardService from './card.service';
+import CardTransactionService from '../card-transaction/card-transaction.service';
 
 @Component({
   mixins: [Vue2Filters.mixin],
 })
 export default class Card extends mixins(AlertMixin) {
   @Inject('cardService') private cardService: () => CardService;
+  @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
   private removeId: number = null;
   public itemsPerPage = 20;
   public queryCount: number = null;
@@ -19,6 +21,7 @@ export default class Card extends mixins(AlertMixin) {
   public previousPage = 1;
   public propOrder = 'id';
   public reverse = false;
+  public cardNo = '';
   public totalItems = 0;
 
   public cards: ICard[] = [];
@@ -36,12 +39,12 @@ export default class Card extends mixins(AlertMixin) {
 
   public retrieveAllCards(): void {
     this.isFetching = true;
-
     const paginationQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
+
     this.cardService()
       .retrieve(paginationQuery)
       .then(
@@ -59,6 +62,7 @@ export default class Card extends mixins(AlertMixin) {
 
   public prepareRemove(instance: ICard): void {
     this.removeId = instance.id;
+    this.cardNo = instance.cardNo;
     if (<any>this.$refs.removeEntity) {
       (<any>this.$refs.removeEntity).show();
     }
@@ -68,10 +72,17 @@ export default class Card extends mixins(AlertMixin) {
     this.cardService()
       .delete(this.removeId)
       .then(() => {
-        const message = 'A Card is deleted with identifier ' + this.removeId;
+        const message = 'تم حذف البطاقة رقم : ' + this.cardNo;
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
-        this.removeId = null;
+        this.cardNo = '';
+        this.retrieveAllCards();
+        this.closeDialog();
+      })
+      .catch(err => {
+        const message = 'لا يمكن حذف هذه البطاقة رقم ' + this.cardNo + ' تحتوي على حركات بدلا من حذفها يمكنك تعطيل البطاقة';
+        this.alertService().showAlert(message, 'danger');
+        this.getAlertFromStore();
         this.retrieveAllCards();
         this.closeDialog();
       });

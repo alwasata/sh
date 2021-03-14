@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2 id='page-heading'>
-            <span id='setting-heading'>النقاط</span>
+            <span id='setting-heading'>الوحدة</span>
         </h2>
         <b-alert :show='dismissCountDown'
                  :variant='alertType'

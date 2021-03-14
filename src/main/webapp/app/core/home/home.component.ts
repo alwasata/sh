@@ -3,16 +3,25 @@ import { Inject, Vue } from 'vue-property-decorator';
 import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
 import axios from 'axios';
+import InvoiceService from '../../entities/invoice/invoice.service';
+import { count } from 'console';
 @Component
 export default class Home extends Vue {
   @Inject('loginService')
   private loginService: () => LoginService;
   @Inject('accountService') private accountService: () => AccountService;
+  @Inject('invoiceService') private invoiceService: () => InvoiceService;
 
+  // Vue.component(VueChart.name, VueChart);
   public authenticationError = null;
   public login = null;
   public password = null;
   public rememberMe: boolean = null;
+  public returnInvoice = 0;
+  public cancleInvoice = 0;
+  public activebenefits = 0;
+  public deactivebenefits = 0;
+  public countInvoice = 0;
 
   public openLogin(): void {
     this.loginService().openLogin((<any>this).$root);
@@ -28,6 +37,27 @@ export default class Home extends Vue {
       }
     }
   }
+  public mounted(): void {
+    this.invoices();
+  }
+  public invoices() {
+    this.invoiceService()
+      .getInvoicesByStatus('APPROVED')
+      .then(result => {
+        return (this.countInvoice = result);
+      });
+    this.invoiceService()
+      .getInvoicesByStatus('RETURNED')
+      .then(result => {
+        return (this.returnInvoice = result);
+      });
+    this.invoiceService()
+      .getInvoicesByStatus('CANCLED')
+      .then(result => {
+        return (this.cancleInvoice = result);
+      });
+  }
+
   public userAuthorities() {
     return this.accountService().getAuthorities();
   }

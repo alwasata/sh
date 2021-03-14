@@ -25,9 +25,10 @@ export class Invoice extends BaseEntity {
 
     @Column({ type: 'float', name: 'totalPoints', nullable: true })
     totalPoints: number;
-
-    @Column({ name: 'mainInvoice', nullable: true })
-    mainInvoice: string;
+    
+    @OneToOne(type => Invoice)
+    @JoinColumn()
+    mainInvoice: Invoice;
 
     @Column({ type: 'simple-enum', name: 'invoice_status', enum: InvoiceStatus })
     invoiceStatus: InvoiceStatus;

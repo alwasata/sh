@@ -20,10 +20,36 @@ export default class CardTransactionService {
     });
   }
 
+  public getwhere(id: number): Promise<ICardTransaction> {
+    return new Promise<ICardTransaction>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/getwhere/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public retrieve(paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
         .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+  public getCardTransactionById(cardId: any, paginationQuery?: any): Promise<any> {
+    console.log(cardId);
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl + `/gettransactionbyid/${cardId}?${buildPaginationQueryOpts(paginationQuery)}`)
         .then(res => {
           resolve(res);
         })

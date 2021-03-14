@@ -2,17 +2,20 @@ import { mixins } from 'vue-class-component';
 
 import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
-import { IInvoice } from '@/shared/model/invoice.model';
+import { ICardTransaction } from '@/shared/model/card-transaction.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
 
-import InvoiceService from './invoice.service';
+import CardTransactionService from '../card-transaction/card-transaction.service';
+import CardService from './card.service';
+import { ICard } from '@/shared/model/card.model';
 
 @Component({
   mixins: [Vue2Filters.mixin],
 })
-export default class Invoice extends mixins(AlertMixin) {
-  @Inject('invoiceService') private invoiceService: () => InvoiceService;
-  private removeId: number = null;
+export default class CardTransaction extends mixins(AlertMixin) {
+  @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
+  @Inject('cardService') private cardService: () => CardService;
+
   public itemsPerPage = 20;
   public queryCount: number = null;
   public page = 1;
@@ -21,32 +24,44 @@ export default class Invoice extends mixins(AlertMixin) {
   public reverse = false;
   public totalItems = 0;
 
-  public invoices: IInvoice[] = [];
+  public cardTransactions: ICardTransaction[] = [];
+  public card: ICard[] = [];
+  public cardId = '';
 
   public isFetching = false;
 
-  public mounted(): void {
-    this.retrieveAllInvoices();
+  public mounted(): void {}
+
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.cardId) {
+        vm.retrieveCard(to.params.cardId);
+      }
+    });
   }
 
-  public clear(): void {
-    this.page = 1;
-    this.retrieveAllInvoices();
+  public retrieveCard(cardId): void {
+    this.cardService()
+      .find(cardId)
+      .then(res => {
+        this.card = res.card;
+        this.cardId = res.card.id;
+        this.retrieveAllCardTransactions(this.cardId);
+      });
   }
 
-  public retrieveAllInvoices(): void {
+  public retrieveAllCardTransactions(cardId): void {
     this.isFetching = true;
-
     const paginationQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
-    this.invoiceService()
-      .retrieve(paginationQuery)
+    this.cardTransactionService()
+      .getCardTransactionById(cardId, paginationQuery)
       .then(
         res => {
-          this.invoices = res.data;
+          this.cardTransactions = res.data;
           this.totalItems = Number(res.headers['x-total-count']);
           this.queryCount = this.totalItems;
           this.isFetching = false;
@@ -55,30 +70,6 @@ export default class Invoice extends mixins(AlertMixin) {
           this.isFetching = false;
         }
       );
-  }
-
-  public prepareRemove(instance: IInvoice): void {
-    console.log(instance);
-    this.removeId = instance.id;
-    console.log(this.removeId);
-    if (<any>this.$refs.removeEntity) {
-      (<any>this.$refs.removeEntity).show();
-    }
-  }
-
-  public removeInvoice(): void {
-    this.invoiceService()
-      .delete(this.removeId)
-      .then(() => {
-        document.getElementById(`invoice-state-${this.removeId}`).textContent = '';
-        document.getElementById(`invoice-state-${this.removeId}`).append = " <span class='btn btn-danger btn-sm'>تم الغائها</span>";
-        const message = 'A Invoice is deleted with identifier ' + this.removeId;
-        this.alertService().showAlert(message, 'danger');
-        this.getAlertFromStore();
-        this.removeId = null;
-        this.retrieveAllInvoices();
-        this.closeDialog();
-      });
   }
 
   public sort(): Array<any> {
@@ -97,7 +88,7 @@ export default class Invoice extends mixins(AlertMixin) {
   }
 
   public transition(): void {
-    this.retrieveAllInvoices();
+    this.retrieveAllCardTransactions(this.cardId);
   }
 
   public changeOrder(propOrder): void {

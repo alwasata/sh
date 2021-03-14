@@ -124,7 +124,7 @@
                             <!-- <td></td>
                             <td></td> -->
                             <td></td>
-                            <td> مجموع النقاط : {{total}}</td>
+                            <td> مجموع النقاط : {{total.toFixed(3)}}</td>
                             <td></td>
                             <td> اجمالي السعر : {{totalIvoicePrice}}</td>
                             <td>

@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="card">
-                <h2 class='jh-entity-heading'><span>Card</span> {{ card.id }}</h2>
+                <h2 class='jh-entity-heading'><span>بيانات البطاقة</span> </h2>
                 <dl class="row jh-entity-details">
                     <dt>
                         <span>رقم البطاقة</span>
@@ -17,10 +17,21 @@
                         <span>{{card.expiryDate}}</span>
                     </dd>
                     <dt>
-                        <span>مفعل</span>
+                        <span>البطاقة</span>
                     </dt>
                     <dd>
-                        <span>{{card.isActive}}</span>
+                        <span v-if="card.isActive == true">
+                            <span class="text-success">مفعلة</span>
+                        </span>
+                        <span v-if="card.isActive == false">
+                           <span class="text-danger">معطلة</span>
+                        </span>
+                    </dd>
+                    <dt>
+                        <span>النقاط</span>
+                    </dt>
+                    <dd>
+                        <span>{{ points }} نقطة</span>
                     </dd>
                     <dt>
                         <span>موظف</span>

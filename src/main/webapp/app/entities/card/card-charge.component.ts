@@ -53,6 +53,7 @@ export default class CardUpdate extends Vue {
       .find(cardId)
       .then(res => {
         this.card = res;
+        console.log(res);
       });
   }
 

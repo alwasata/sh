@@ -1,11 +1,11 @@
 <template>
     <div>
         <h2 id="page-heading">
-            <span id='invoice-heading'>Invoices</span>
+            <span id='invoice-heading'>الفواتير</span>
             <router-link :to="{name: 'InvoiceCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-invoice">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
-                    اضافة Invoice
+                    اضافة فاتورة
                 </span>
             </router-link>
         </h2>
@@ -16,6 +16,7 @@
             @dismiss-count-down="countDownChanged">
             {{alertMessage}}
         </b-alert>
+
         <br/>
         <div class="alert alert-warning" v-if="!isFetching && invoices && invoices.length === 0">
             <span>No invoices found</span>
@@ -33,7 +34,15 @@
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
                     <th>
-                        <span>الفاتورة السابقة</span>
+                        <span>نوع الفاتورة</span>
+                    </th>
+                    <th v-on:click="changeOrder('invoiceStatus')"><span>حالة الفاتورة</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'invoiceStatus'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('notes')"><span>الملاحظات</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
+                                            :reverse='reverse'></jhi-sort-indicator>
                     </th>
                     <th v-on:click="changeOrder('invoiceDate')"><span>تاريخ الفاتورة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'invoiceDate'"
@@ -45,14 +54,6 @@
                     </th>
                     <th v-on:click="changeOrder('total')"><span>المجموع</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'total'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
-                    <th v-on:click="changeOrder('invoiceStatus')"><span>Invoice حالة</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'invoiceStatus'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
-                    <th v-on:click="changeOrder('notes')"><span>الملاحظات</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
                     <th v-on:click="changeOrder('cardTransaction.id')"><span> رقم البطاقة</span>
@@ -67,12 +68,29 @@
                     :key="invoice.id">
                     <td>{{invoice.hospital.nameAr}}</td>
                     <td>{{invoice.invoiceNo}}</td>
-                    <td>{{invoice.mainInvoice}}</td>
+                    <td>
+                        <span v-if="invoice.mainInvoice">
+                             فاتورة مرجعة من {{ invoice.mainInvoice.invoiceNo }}
+                        </span>
+                        <span v-else>
+                            فاتورة صادرة
+                        </span>
+                    </td>
+                    <td :id="'invoice-state-' + invoice.id">
+                        <span v-if="invoice.invoiceStatus == 'APPROVED'" class="btn btn-success btn-sm">
+                            صادرة
+                        </span>
+                        <span v-if="invoice.invoiceStatus == 'CANCELLED'" class="btn btn-danger btn-sm">
+                            تم الغائها
+                        </span>
+                        <span v-if="invoice.invoiceStatus == 'RETURNED'" class="btn btn-warning btn-sm">
+                            مرتجع
+                        </span>
+                    </td>
+                    <td>{{invoice.notes}}</td>
                     <td>{{invoice.invoiceDate}}</td>
                     <td>{{invoice.payDate}}</td>
                     <td>{{invoice.total}}</td>
-                    <td>{{ invoice.invoiceStatus }}</td>
-                    <td>{{invoice.notes}}</td>
                     <td>
                         <div v-if='invoice.cardTransaction'>
                             <router-link
@@ -94,10 +112,13 @@
                             </router-link>
                         </div>
                         <div class="btn-group">
-                            <router-link v-if="invoice.invoiceStatus == 'APPROVED'" :to="{name: 'InvoiceReturn', params: {invoiceId: invoice.id}}"  tag="button" class="btn btn-danger btn-sm edit">
-                                <font-awesome-icon icon="trash"></font-awesome-icon>
+                           <b-button v-on:click="prepareRemove(invoice)"
+                                   variant="danger"
+                                   class="btn btn-sm"
+                                   v-b-modal.removeEntity>
+                                <font-awesome-icon icon="times"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>الغاء</span>
-                            </router-link>
+                            </b-button>
                         </div>
                         </div>
                     </td>
@@ -112,8 +133,8 @@
             </div>
             <div slot='modal-footer'>
                 <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>الغاء</button>
-                <button id='jhi-confirm-delete-invoice' class='btn btn-primary' type='button'
-                        v-on:click='removeInvoice()'> حذف
+                <button id='jhi-confirm-delete-invoiceBenefits' class='btn btn-primary' type='button'
+                        v-on:click='removeInvoice()'>حذف
                 </button>
             </div>
         </b-modal>

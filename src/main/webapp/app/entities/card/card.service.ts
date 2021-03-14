@@ -7,8 +7,8 @@ import { ICard } from '@/shared/model/card.model';
 const baseApiUrl = 'api/cards';
 
 export default class CardService {
-  public find(id: number): Promise<ICard> {
-    return new Promise<ICard>((resolve, reject) => {
+  public find(id: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/${id}`)
         .then(res => {
@@ -41,6 +41,7 @@ export default class CardService {
           resolve(res);
         })
         .catch(err => {
+          console.log(err);
           reject(err);
         });
     });
@@ -84,7 +85,5 @@ export default class CardService {
           reject(err);
         });
     });
-    console.log(entity);
-    return entity;
   }
 }

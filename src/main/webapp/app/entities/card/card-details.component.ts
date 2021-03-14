@@ -7,6 +7,7 @@ import CardService from './card.service';
 export default class CardDetails extends Vue {
   @Inject('cardService') private cardService: () => CardService;
   public card: ICard = {};
+  public points = '';
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -20,7 +21,8 @@ export default class CardDetails extends Vue {
     this.cardService()
       .find(cardId)
       .then(res => {
-        this.card = res;
+        this.card = res.card;
+        this.points = res.points;
       });
   }
 

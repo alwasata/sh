@@ -2,16 +2,10 @@
     <div class='row justify-content-center'>
         <div class='col-8'>
             <div v-if='setting'>
-                <h2 class='jh-entity-heading'><span>الفئة</span> {{ setting.id }}</h2>
+                <h2 class='jh-entity-heading'><span>الوحدة</span> </h2>
                 <dl class='row jh-entity-details'>
                     <dt>
-                        <span>الاسم بالعربية</span>
-                    </dt>
-                    <dd>
-                        <span>{{ setting.key }}</span>
-                    </dd>
-                    <dt>
-                        <span>الاسم بالانجليزية</span>
+                        <span>القيمة</span>
                     </dt>
                     <dd>
                         <span>{{ setting.value }}</span>

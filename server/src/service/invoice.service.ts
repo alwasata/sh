@@ -33,33 +33,34 @@ export class InvoiceService {
     async findByInvoice(options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
         options.relations = relationshipNames;
         const resultList = await this.invoiceRepository.findAndCount(options);
-        // const invoiceDTO: InvoiceDTO[] = [];
-        // if (resultList && resultList[0]) {
-        //     resultList[0].forEach(invoice => invoiceDTO.push(InvoiceMapper.fromEntityToDTO(invoice)));
-        //     resultList[0] = invoiceDTO;
-        // }
         return resultList;
     }
-    async findAndCount(id : any, options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
-        options.relations = relationshipNames;
-        // const resultList = await this.invoiceRepository.findAndCount(options);
+    async findAndCount(search : any, id : any, options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
+      options.relations = relationshipNames;
       var resultList = {};
       if(id == "all") {
       resultList = await this.invoiceRepository.createQueryBuilder('invoice')
+      .leftJoinAndSelect('invoice.mainInvoice', 'mainInvoice')
+      .leftJoinAndSelect('invoice.createdBy', 'createdBy')
       .innerJoinAndSelect('invoice.cardTransaction', 'cardTransaction')
       .innerJoinAndSelect('cardTransaction.card', 'card')
       .innerJoinAndSelect('card.employee', 'employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('invoice.hospital', 'hospital')
+      .skip(options.skip)
+      .take(options.take)
       .getManyAndCount();
       } else {
       resultList = await this.invoiceRepository.createQueryBuilder('invoice')
+      .leftJoinAndSelect('invoice.mainInvoice', 'mainInvoice')
       .innerJoinAndSelect('invoice.cardTransaction', 'cardTransaction')
       .innerJoinAndSelect('cardTransaction.card', 'card')
       .innerJoinAndSelect('card.employee', 'employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('invoice.hospital', 'hospital')
       .where('hospital.id = :id', { id: id })
+      .skip(options.skip)
+      .take(options.take)
       .getManyAndCount();
       }
         const invoiceDTO: InvoiceDTO[] = [];

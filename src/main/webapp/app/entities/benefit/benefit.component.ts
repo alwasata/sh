@@ -6,12 +6,15 @@ import { IBenefit } from '@/shared/model/benefit.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
 
 import BenefitService from './benefit.service';
+import SettingService from '../setting/setting.service';
 
 @Component({
   mixins: [Vue2Filters.mixin],
 })
 export default class Benefit extends mixins(AlertMixin) {
   @Inject('benefitService') private benefitService: () => BenefitService;
+  @Inject('settingService') private settingService: () => SettingService;
+
   private removeId: number = null;
   public itemsPerPage = 20;
   public queryCount: number = null;
@@ -20,6 +23,7 @@ export default class Benefit extends mixins(AlertMixin) {
   public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
+  public points = 0;
 
   public benefits: IBenefit[] = [];
 
@@ -42,6 +46,17 @@ export default class Benefit extends mixins(AlertMixin) {
       size: this.itemsPerPage,
       sort: this.sort(),
     };
+
+    this.settingService()
+      .retrieve(paginationQuery)
+      .then(
+        res => {
+          this.points = res.data[0].value;
+        },
+        err => {
+          this.isFetching = false;
+        }
+      );
     this.benefitService()
       .retrieve(paginationQuery)
       .then(

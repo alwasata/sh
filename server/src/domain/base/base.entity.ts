@@ -1,12 +1,13 @@
-import { ObjectIdColumn, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn,Column } from 'typeorm';
+import { ObjectIdColumn, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn,Column, ManyToOne } from 'typeorm';
+import { User } from '../user.entity';
 
 export abstract class BaseEntity {
     @ObjectIdColumn()
     @PrimaryGeneratedColumn('uuid')
     id?: string;
 
-    @Column({ nullable: true })
-    createdBy?: string;
+    @ManyToOne(type => User)
+    createdBy?: User;
     @CreateDateColumn({ nullable: true })
     createdDate?: Date;
     @Column({ nullable: true })

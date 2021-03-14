@@ -24,13 +24,11 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th v-on:click="changeOrder('id')"><span>ID</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
+                    <th v-on:click="changeOrder('employee.name')"><span>الموظف</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'employee.name'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('cardNo')"><span>رقم البطاقة</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'cardNo'"
-                                            :reverse='reverse'></jhi-sort-indicator>
+                    <th><span>رقم البطاقة</span>
                     </th>
                     <th v-on:click="changeOrder('expiryDate')"><span>تاريخ الانتهاء</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'expiryDate'"
@@ -40,10 +38,6 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'isActive'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('employee.name')"><span>موظف</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'employee.name'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
                     <th></th>
                 </tr>
                 </thead>
@@ -51,23 +45,25 @@
                 <tr v-for="card in cards"
                     :key="card.id">
                     <td>
-                        <router-link :to="{name: 'CardView', params: {cardId: card.id}}">{{card.id}}</router-link>
-                    </td>
-                    <td>{{card.cardNo}}</td>
-                    <td>{{card.expiryDate}}</td>
-                    <td>{{card.isActive}}</td>
-                    <td>
                         <div v-if='card.employee'>
                             <router-link :to="{name: 'EmployeeView', params: {employeeId: card.employee.id}}">
                                 {{ card.employee.name }}
                             </router-link>
                         </div>
                     </td>
+                    <td>{{card.cardNo}}</td>
+                    <td>{{card.expiryDate}}</td>
+                    <td>
+                        {{ card.isActive == true ? "مفعل" : "معطل" }}
                     <td class="text-right">
                         <div class="btn-group">
                             <router-link :to="{name: 'CardCharge', params: {cardId: card.id}}"  tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="plus"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>شحن</span>
+                            </router-link>
+                            <router-link :to="{name: 'CardTransactions', params: {cardId: card.id}}"  tag="button" class="btn btn-success btn-sm edit">
+                                <font-awesome-icon icon="bars"></font-awesome-icon>
+                                <span class='d-none d-md-inline'>حركات البطاقة</span>
                             </router-link>
                             <router-link :to="{name: 'CardView', params: {cardId: card.id}}" tag="button" class="btn btn-info btn-sm details">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>

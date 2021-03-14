@@ -1,22 +1,29 @@
 <template>
     <div>
+            <!-- <vue-chart
+  style="width: 800px; height: 600px;"
+  :data="chartData"
+  :options="{scales: {yAxes: [{ticks: {beginAtZero: true}}]}}"
+  :update-config="{duration: 2000, easing: 'easeOutBounce'}"
+  type="bar"
+/> -->
         <div class="row" v-if="authenticated">
         <div class="card text-white bg-primary mb-3 ml-3 col-md-3" style="max-width: 18rem;" v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
             <div class="card-header">الفواتير</div>
             <div class="card-body">
-                <h5 class="card-title">الفواتير الصادرة : 34</h5>
+                <h5 class="card-title">الفواتير الصادرة :  {{ this.countInvoice }}</h5>
             </div>
         </div>
         <div class="card text-white bg-danger mb-3 ml-3 col-md-3" style="max-width: 18rem;" v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
             <div class="card-header">الفواتير الملغية</div>
             <div class="card-body">
-                <h5 class="card-title">فواتير تم الغائها : 0</h5>
+                <h5 class="card-title">فواتير تم الغائها : {{cancleInvoice}}</h5>
             </div>
         </div>
         <div class="card text-white bg-secondary mb-3 ml-3 col-md-3" style="max-width: 18rem;" v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
             <div class="card-header">الفواتير المرجعة</div>
             <div class="card-body">
-                <h5 class="card-title">فواتير مرجعة : 0</h5>
+                <h5 class="card-title">فواتير مرجعة : {{returnInvoice}}</h5>
             </div>
         </div>
         <div class="card text-white bg-success mb-3 ml-3 col-md-3" style="max-width: 18rem;" v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
@@ -67,6 +74,7 @@
 
 <script lang="ts" src="./home.component.ts">
 </script>
+
 <style lang="css" scoped>
 
 @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
