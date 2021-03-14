@@ -41,6 +41,10 @@ export class InvoiceService {
     const resultList = await this.invoiceRepository.findAndCount(options);
     return resultList;
   }
+  async getAll(): Promise<[InvoiceDTO[], number]> {
+    const resultList = await this.invoiceRepository.findAndCount();
+    return resultList;
+  }
   async findAndCount(search : string, id : any, options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
     options.relations = relationshipNames;
     search = search == "false" ? "" : search;

@@ -38,7 +38,6 @@ export default class Home extends Vue {
     }
   }
   public mounted(): void {
-    console.log('hi');
     this.invoices();
   }
   public invoices() {

@@ -64,14 +64,14 @@ export class InvoiceController {
       // console.log(results);
     }
 
-    @Get('/getinvoicesbystatus:status')
+    @Get('/getinvoices/staus')
     @Roles(RoleType.USER)
     @ApiResponse({
       status: 200,
       description: 'List all records',
       type: InvoiceDTO,
     })
-    async getAllByStatus(@Req() req: Request, @Param('status') status: string): Promise<InvoiceDTO[]> {
+    async getAllByStatus(@Req() req: Request): Promise<InvoiceDTO[]> {
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var hospital = {};
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
@@ -79,15 +79,9 @@ export class InvoiceController {
       } else {
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
       }
-
-      const [results, count] = await this.invoiceService.findAndCount(status,hospital,{
-        skip: +pageRequest.page * pageRequest.size,
-        take: +pageRequest.size,
-        order: pageRequest.sort.asOrder(),
-      });
+      const [results, count] = await this.invoiceService.getAll();
       HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
       return results;
-      // console.log(results);
     }
 
     @Get('/find/:id')

@@ -14,7 +14,6 @@ export default class InvoiceService {
       axios
         .get(`${baseApiUrl}/find/${id}`)
         .then(res => {
-          console.log(res);
           resolve(res.data);
         })
         .catch(err => {
@@ -26,8 +25,9 @@ export default class InvoiceService {
   public getInvoicesByStatus(status: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}/false`)
+        .get(`${baseApiUrl}/getinvoices/staus`)
         .then(res => {
+          console.log('hi');
           var countInvoice = 0;
           for (var i = 0; i < res.data.length; i++) {
             if (res.data[i].invoiceStatus == status) {

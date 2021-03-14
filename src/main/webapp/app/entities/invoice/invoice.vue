@@ -16,7 +16,9 @@
             @dismiss-count-down="countDownChanged">
             {{alertMessage}}
         </b-alert>
-        <input type="text" v-model="search" v-on:input="searchInput()" >
+        <div class="col col-md-6">
+        <input type="text" v-model="search" class="form-control" v-on:input="searchInput()" placeholder="ابحث عن طريق رقم الفاتورة او اسم الموظف" >
+        </div>
         <br/>
         <div class="alert alert-warning" v-if="!isFetching && invoices && invoices.length === 0">
             <span>No invoices found</span>

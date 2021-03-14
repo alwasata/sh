@@ -134,6 +134,10 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public returnBenefit(row, index): void {
+    document.getElementById('save-invoice').disabled = true;
+    if (this.rows != []) {
+      document.getElementById('save-invoice').disabled = false;
+    }
     this.invoiceService()
       .checkBenefitQuantity({ benefits: row, invoice: this.invoiceId })
       .then(res => {
@@ -165,6 +169,10 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public removeRow(row, indx) {
+    document.getElementById('save-invoice').disabled = true;
+    if (this.rows.length == 0) {
+      document.getElementById('save-invoice').disabled = false;
+    }
     this.returnTotal = this.returnTotal - row.points;
     this.returnTotalIvoicePrice = this.returnTotalIvoicePrice - row.price;
     this.returnBenefits.splice(indx, 1);
@@ -257,6 +265,7 @@ export default class InvoiceUpdate extends Vue {
         mywindow.focus(); // necessary for IE >= 10*/
 
         mywindow.print();
+        location.reload();
       });
   }
 

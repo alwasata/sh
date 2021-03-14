@@ -1,70 +1,79 @@
+
 <template>
+
     <div class="row justify-content-center">
         <div class="col-8">
-            <div v-if="invoice">
-                <h2 class='jh-entity-heading'><span>Invoice</span> {{ invoice.id }}</h2>
-                <dl class="row jh-entity-details">
-                    <dt>
-                        <span>Invoice No</span>
-                    </dt>
-                    <dd>
-                        <span>{{invoice.invoiceNo}}</span>
-                    </dd>
-                    <dt>
-                        <span>Invoice Date</span>
-                    </dt>
-                    <dd>
-                        <span>{{invoice.invoiceDate}}</span>
-                    </dd>
-                    <dt>
-                        <span>Pay Date</span>
-                    </dt>
-                    <dd>
-                        <span>{{invoice.payDate}}</span>
-                    </dd>
-                    <dt>
-                        <span>المجموع</span>
-                    </dt>
-                    <dd>
-                        <span>{{invoice.total}}</span>
-                    </dd>
-                    <dt>
-                        <span>Invoice حالة</span>
-                    </dt>
-                    <dd>
-                        <span>{{ invoice.invoiceStatus }}</span>
-                    </dd>
-                    <dt>
-                        <span>الملاحظات</span>
-                    </dt>
-                    <dd>
-                        <span>{{invoice.notes}}</span>
-                    </dd>
-                    <dt>
-                        <span>بطاقةTransaction</span>
-                    </dt>
-                    <dd>
-                        <div v-if='invoice.cardTransaction'>
-                            <router-link
-                                :to="{name: 'CardTransactionView', params: {cardTransactionId: invoice.cardTransaction.id}}">
-                                {{ invoice.cardTransaction.id }}
-                            </router-link>
-                        </div>
-                    </dd>
-                </dl>
-                <button type='submit'
-                        v-on:click.prevent='previousState()'
-                        class='btn btn-info'>
-                    <font-awesome-icon icon='arrow-left'></font-awesome-icon>&nbsp;<span> Back</span>
-                </button>
-                <router-link v-if='invoice.id' :to="{name: 'InvoiceEdit', params: {invoiceId: invoice.id}}" tag='button'
-                             class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
-                </router-link>
+                <h2 id='sahatiApp.invoice.home.createOrEditLabel'></h2>
+            <hr>
+            <h4>- بيانات الموظف </h4>
+            <br>
+            <div class="row">
+                <div class="col col-md-6 col-sm-12 col-xs-12 form-group">
+                    <label for=""> اسم الموظف</label>
+                    <input type="text" disabled class="form-control" v-model="employeeName" name="employeeName">
+                </div>
+                <div class="col col-md-6 col-sm-12 col-xs-12">
+                    <label for=""> اسم الشركة</label>
+                    <input type="text" disabled class="form-control" v-model="companyName" name="companyName">
+                </div>
             </div>
+            <div class="row">
+                <div class="col col-md-4 col-sm-12 col-xs-12 form-group">
+                    <label for=""> رقم البطاقة</label>
+                    <input type="text" disabled class="form-control" v-model="cardNumber" name="cardNo">
+                </div>
+                <div class="col col-md-4 col-sm-12 col-xs-12">
+                    <label for=""> النقاط</label>
+                    <input type="text" disabled class="form-control" v-model="cardPoint" name="cardPoint">
+                </div>
+                <div class="col col-md-4 col-sm-12 col-xs-12">
+                    <label for=""> انتهاء صلاحية البطاقة </label>
+                    <input type="text" disabled class="form-control" v-model="exbireDate" name="exbireDate">
+                </div>
+            </div>
+            <hr>
+            <h4>- بيانات الفانورة رقم : {{ invoiceNo }}</h4>
+            <div class="row">
+               <table class="table" id="main-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">اسم المنفعةبالعربية</th>
+                            <th scope="col">اسم المنفعة بالانجليزية</th>
+                            <th scope="col">الكمية</th>
+                            <th scope="col">السعر </th>
+                            <th scope="col">مجموع السعر </th>
+                        </tr>
+                    </thead>
+                    <tbody id="fill-table">
+                        <tr v-for="(row,index) in rows">
+                            <td>{{row.nameAr}}</td>
+                            <td>{{row.nameEn}}</td>
+                            <td>{{row.quantity}}</td>
+                            <td>{{row.price}}</td>
+                            <td>{{row.totalPrice}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td> مجموع النقاط : {{total}}</td>
+                            <td></td>
+                            <td> اجمالي السعر : {{totalIvoicePrice}}</td>
+                            <td>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col col-md-4 col-sm-12 col-xs-12 form-group">
+                    <label for=""> تاريخ الفاتورة</label>
+                    <input type="date"  class="form-control" v-model="invoiceDate" name="invoiceDate">
+                </div>
+            </div>
+            </div>
+        <div>
         </div>
-    </div>
+        </div>
 </template>
-
-<script lang="ts" src="./invoice-details.component.ts">
+<script lang="ts" src="./invoice-return.component.ts">
 </script>

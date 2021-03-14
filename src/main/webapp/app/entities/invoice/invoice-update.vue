@@ -133,7 +133,7 @@
                     </tbody>
                 </table>
             <div class="row">
-                <button class="btn btn-primary" @click="saveInvoice">اصدار الفاتورة</button>
+                <button id="save-invoice" class="btn btn-primary" disabled @click="saveInvoice">اصدار الفاتورة</button>
             </div>
             </div>
         <div>
