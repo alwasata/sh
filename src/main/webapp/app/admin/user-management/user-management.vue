@@ -57,11 +57,11 @@
                         <td>
                             <button class='btn btn-danger btn-sm deactivated' v-on:click='setActive(user, true)'
                                     v-if='!user.activated'
-                            >Deactivated
+                            >الحساب معطل
                             </button>
                             <button class='btn btn-success btn-sm' v-on:click='setActive(user, false)'
                                     v-if='user.activated'
-                                    :disabled='username === user.login'>Activated
+                                    :disabled='username === user.login'>الحساب مفعل
                             </button>
                         </td>
 

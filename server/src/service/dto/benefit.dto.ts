@@ -17,8 +17,8 @@ export class BenefitDTO extends BaseDTO {
     @ApiModelProperty({ description: 'nameEn field', required: false })
     nameEn: string;
 
-    @ApiModelProperty({ description: 'pointsCost field', required: false })
-    pointsCost: number;
+    // @ApiModelProperty({ description: 'pointsCost field', required: false })
+    // pointsCost: number;
 
     @ApiModelProperty({ description: 'cost field', required: false })
     cost: number;

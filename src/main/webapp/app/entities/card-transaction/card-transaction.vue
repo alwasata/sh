@@ -2,12 +2,12 @@
     <div>
         <h2 id="page-heading">
             <span id='card-transaction-heading'>تتبع حركة البطاقة</span>
-            <!-- <router-link :to="{name: 'CardTransactionCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-card-transaction">
+            <router-link :to="{name: 'CardTransactionCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-card-transaction">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
                     اضافة بطاقةTransaction
                 </span>
-            </router-link> -->
+            </router-link>
         </h2>
         <b-alert :show="dismissCountDown"
             dismissible

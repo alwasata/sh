@@ -5,7 +5,7 @@
       <jhi-navbar></jhi-navbar>
       <sidebar></sidebar>
     </div>
-    <div class="container-fluid">
+    <div v-if="authenticated" class="container-fluid">
       <div class="card jh-card">
         <router-view></router-view>
       </div>
@@ -13,7 +13,17 @@
         <span id='login-title' slot='modal-title'>تسجيل الدخول</span>
         <login-form></login-form>
       </b-modal>
+      <jhi-footer></jhi-footer>
+    </div>
 
+    <div  v-if="!authenticated">
+      <div>
+        <router-view></router-view>
+      </div>
+      <b-modal id="login-page" hide-footer lazy>
+        <span id='login-title' slot='modal-title'>تسجيل الدخول</span>
+        <login-form></login-form>
+      </b-modal>
       <jhi-footer></jhi-footer>
     </div>
   </div>
@@ -21,3 +31,4 @@
 
 <script lang="ts" src="./app.component.ts">
 </script>
+

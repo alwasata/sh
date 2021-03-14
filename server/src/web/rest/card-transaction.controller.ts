@@ -48,7 +48,7 @@ export class CardTransactionController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.ADMIN,RoleType.USER)
     @ApiOperation({ title: 'Create cardTransaction' })
     @ApiResponse({
         status: 201,

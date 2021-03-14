@@ -28,6 +28,8 @@ const CardUpdate = () => import('@/entities/card/card-update.vue');
 const CardDetails = () => import('@/entities/card/card-details.vue');
 // prettier-ignore
 const CardTransaction = () => import('@/entities/card-transaction/card-transaction.vue');
+// charge
+const CardCharge = () => import('@/entities/card/card-charge.vue');
 // prettier-ignore
 const CardTransactionUpdate = () => import('@/entities/card-transaction/card-transaction-update.vue');
 // prettier-ignore
@@ -61,6 +63,8 @@ const Invoice = () => import('@/entities/invoice/invoice.vue');
 // prettier-ignore
 const InvoiceUpdate = () => import('@/entities/invoice/invoice-update.vue');
 // prettier-ignore
+const InvoiceReturn = () => import('@/entities/invoice/invoice-return.vue');
+// prettier-ignore
 const InvoiceDetails = () => import('@/entities/invoice/invoice-details.vue');
 // prettier-ignore
 const InvoiceBenefits = () => import('@/entities/invoice-benefits/invoice-benefits.vue');
@@ -68,6 +72,12 @@ const InvoiceBenefits = () => import('@/entities/invoice-benefits/invoice-benefi
 const InvoiceBenefitsUpdate = () => import('@/entities/invoice-benefits/invoice-benefits-update.vue');
 // prettier-ignore
 const InvoiceBenefitsDetails = () => import('@/entities/invoice-benefits/invoice-benefits-details.vue');
+// prettier-ignore
+const Setting = () => import('@/entities/setting/setting.vue');
+// prettier-ignore
+const SettingUpdate = () => import('@/entities/setting/setting-update.vue');
+// prettier-ignore
+const SettingDetails = () => import('@/entities/setting/setting-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default [
@@ -100,200 +110,206 @@ export default [
     path: '/benefit',
     name: 'Benefit',
     component: Benefit,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/benefit/new',
     name: 'BenefitCreate',
     component: BenefitUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/benefit/:benefitId/edit',
     name: 'BenefitEdit',
     component: BenefitUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/benefit/:benefitId/view',
     name: 'BenefitView',
     component: BenefitDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
 
   {
     path: '/benefit-request',
     name: 'BenefitRequest',
     component: BenefitRequest,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/benefit-request/new',
     name: 'BenefitRequestCreate',
     component: BenefitRequestUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/benefit-request/:benefitRequestId/edit',
     name: 'BenefitRequestEdit',
     component: BenefitRequestUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/benefit-request/:benefitRequestId/view',
     name: 'BenefitRequestView',
     component: BenefitRequestDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
 
   {
     path: '/card',
     name: 'Card',
     component: Card,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card/new',
     name: 'CardCreate',
     component: CardUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card/:cardId/edit',
     name: 'CardEdit',
     component: CardUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card/:cardId/view',
     name: 'CardView',
     component: CardDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
+  },
+  {
+    path: '/card/:cardId/charge',
+    name: 'CardCharge',
+    component: CardCharge,
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
 
   {
     path: '/card-transaction',
     name: 'CardTransaction',
     component: CardTransaction,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card-transaction/new',
     name: 'CardTransactionCreate',
     component: CardTransactionUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card-transaction/:cardTransactionId/edit',
     name: 'CardTransactionEdit',
     component: CardTransactionUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/card-transaction/:cardTransactionId/view',
     name: 'CardTransactionView',
     component: CardTransactionDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
 
   {
     path: '/category',
     name: 'Category',
     component: Category,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/category/new',
     name: 'CategoryCreate',
     component: CategoryUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/category/:categoryId/edit',
     name: 'CategoryEdit',
     component: CategoryUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/category/:categoryId/view',
     name: 'CategoryView',
     component: CategoryDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
 
   {
     path: '/company',
     name: 'Company',
     component: Company,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/company/new',
     name: 'CompanyCreate',
     component: CompanyUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/company/:companyId/edit',
     name: 'CompanyEdit',
     component: CompanyUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/company/:companyId/view',
     name: 'CompanyView',
     component: CompanyDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
 
   {
     path: '/employee',
     name: 'Employee',
     component: Employee,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/employee/new',
     name: 'EmployeeCreate',
     component: EmployeeUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/employee/:employeeId/edit',
     name: 'EmployeeEdit',
     component: EmployeeUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
   {
     path: '/employee/:employeeId/view',
     name: 'EmployeeView',
     component: EmployeeDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
 
   {
     path: '/hospital',
     name: 'Hospital',
     component: Hospital,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/hospital/new',
     name: 'HospitalCreate',
     component: HospitalUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/hospital/:hospitalId/edit',
     name: 'HospitalEdit',
     component: HospitalUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/hospital/:hospitalId/view',
     name: 'HospitalView',
     component: HospitalDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN] },
   },
 
   {
@@ -312,6 +328,12 @@ export default [
     path: '/invoice/:invoiceId/edit',
     name: 'InvoiceEdit',
     component: InvoiceUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/invoice/:invoiceId/return',
+    name: 'InvoiceReturn',
+    component: InvoiceReturn,
     meta: { authorities: [Authority.USER] },
   },
   {
@@ -344,6 +366,31 @@ export default [
     name: 'InvoiceBenefitsView',
     component: InvoiceBenefitsDetails,
     meta: { authorities: [Authority.USER] },
+  },
+
+  {
+    path: '/setting',
+    name: 'setting',
+    component: Setting,
+    meta: { authorities: [Authority.ADMIN] },
+  },
+  {
+    path: '/setting/new',
+    name: 'SettingCreate',
+    component: SettingUpdate,
+    meta: { authorities: [Authority.ADMIN] },
+  },
+  {
+    path: '/setting/:settingId/edit',
+    name: 'SettingEdit',
+    component: SettingUpdate,
+    meta: { authorities: [Authority.ADMIN] },
+  },
+  {
+    path: '/setting/:settingId/view',
+    name: 'SettingView',
+    component: SettingDetails,
+    meta: { authorities: [Authority.ADMIN] },
   },
   // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
 ];

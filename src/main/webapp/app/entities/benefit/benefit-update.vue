@@ -24,11 +24,11 @@
                         <input type="text" class="form-control" name="nameEn" id="benefit-nameEn"
                             :class="{'valid': !$v.benefit.nameEn.$invalid, 'invalid': $v.benefit.nameEn.$invalid }" v-model="$v.benefit.nameEn.$model" />
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class='form-control-label' for='benefit-pointsCost'>النقاط</label>
                         <input type="number" class="form-control" name="pointsCost" id="benefit-pointsCost"
                             :class="{'valid': !$v.benefit.pointsCost.$invalid, 'invalid': $v.benefit.pointsCost.$invalid }" v-model.number="$v.benefit.pointsCost.$model" />
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-cost'>المبلغ المالي</label>
                         <input type="number" class="form-control" name="cost" id="benefit-cost"
@@ -44,7 +44,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class='form-group'>
+                    <div class='form-group' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <label class='form-control-label' for='benefit-hospital'>المستشفى</label>
                         <select id='benefit-hospital' v-model='benefit.hospital' class='form-control' name='hospital'>
                             <option v-bind:value='null'></option>

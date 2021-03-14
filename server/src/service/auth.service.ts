@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { UserLoginDTO } from '../service/dto/user-login.dto';
@@ -6,6 +6,7 @@ import { Payload } from '../security/payload.interface';
 import { AuthorityRepository } from '../repository/authority.repository';
 import { UserService } from '../service/user.service';
 import { UserDTO } from './dto/user.dto';
+import { Authority } from '../domain/authority.entity';
 
 @Injectable()
 export class AuthService {
@@ -46,26 +47,31 @@ export class AuthService {
 
     async findUserWithAuthById(userId: string): Promise<UserDTO | undefined> {
         const userDTO: UserDTO = await this.userService.findByfields({ where: { id: userId } });
-        return userDTO;
+      return userDTO;
     }
 
-    async getAccount(userId: string): Promise<UserDTO | undefined> {
-        const userDTO: UserDTO = await this.findUserWithAuthById(userId);
-        if (!userDTO) {
-            return;
-        }
-        return userDTO;
+  async getAccount(userId: string): Promise<UserDTO | undefined> {
+    const userDTO: UserDTO = await this.findUserWithAuthById(userId);
+    if (!userDTO) {
+      return;
     }
+    return userDTO;
+  }
 
-    async changePassword(userLogin: string, currentClearTextPassword: string, newPassword: string): Promise<void> {
-        const userFind: UserDTO = await this.userService.findByfields({ where: { login: userLogin } });
-        if (!userFind) {
-            throw new HttpException('Invalid login name!', HttpStatus.BAD_REQUEST);
-        }
-        if (userFind.password !== currentClearTextPassword) {
-            throw new HttpException('Invalid password!', HttpStatus.BAD_REQUEST);
-        }
-        userFind.password = newPassword;
+  async getAuthorities(): Promise<Authority[] | undefined> {
+    const result = await this.authorityRepository.find();
+    return result;
+  }
+
+  async changePassword(userLogin: string, currentClearTextPassword: string, newPassword: string): Promise<void> {
+    const userFind: UserDTO = await this.userService.findByfields({ where: { login: userLogin } });
+    if (!userFind) {
+      throw new HttpException('Invalid login name!', HttpStatus.BAD_REQUEST);
+    }
+    if (userFind.password !== currentClearTextPassword) {
+      throw new HttpException('Invalid password!', HttpStatus.BAD_REQUEST);
+    }
+    userFind.password = newPassword;
         await this.userService.save(userFind);
         return;
     }

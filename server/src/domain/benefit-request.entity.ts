@@ -18,8 +18,8 @@ export class BenefitRequest extends BaseEntity {
     @Column({ name: 'name_en', nullable: true })
     nameEn: string;
 
-    @Column({ type: 'float', name: 'points_cost', nullable: true })
-    pointsCost: number;
+    // @Column({ type: 'float', name: 'points_cost', nullable: true })
+    // pointsCost: number;
 
     @Column({ type: 'float', name: 'cost', nullable: true })
     cost: number;

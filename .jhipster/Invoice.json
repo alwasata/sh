@@ -20,7 +20,7 @@
     {
       "fieldName": "invoiceStatus",
       "fieldType": "InvoiceStatus",
-      "fieldValues": "APPROVED,CANCELLED"
+      "fieldValues": "APPROVED,CANCELLED,RETURNED"
     },
     {
       "fieldName": "notes",

@@ -63,7 +63,7 @@
                     </td>
                     <td>{{benefit.nameAr}}</td>
                     <td>{{benefit.nameEn}}</td>
-                    <td>{{benefit.pointsCost}}</td>
+                    <td>{{benefit.cost*1.1}}</td>
                     <td>{{benefit.cost}}</td>
                     <td>
                         <div v-if='benefit.category'>

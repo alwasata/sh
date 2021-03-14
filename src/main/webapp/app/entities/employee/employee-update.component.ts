@@ -2,18 +2,28 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import CompanyService from '../company/company.service';
 import { ICompany } from '@/shared/model/company.model';
+import { required } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
 import { Employee, IEmployee } from '@/shared/model/employee.model';
 import EmployeeService from './employee.service';
+import AccountService from '@/account/account.service';
 
 const validations: any = {
   employee: {
-    name: {},
-    phone: {},
-    identityNo: {},
+    name: {
+      required,
+    },
+    phone: {
+      required,
+    },
+    identityNo: {
+      required,
+    },
     employeeStatus: {},
-    notes: {},
+    notes: {
+      required,
+    },
   },
 };
 
@@ -26,6 +36,9 @@ export default class EmployeeUpdate extends Vue {
   public employee: IEmployee = new Employee();
 
   @Inject('companyService') private companyService: () => CompanyService;
+
+  @Inject('accountService') private accountService: () => AccountService;
+  private hasAnyAuthorityValue = false;
 
   public companies: ICompany[] = [];
   public isSaving = false;
@@ -91,5 +104,15 @@ export default class EmployeeUpdate extends Vue {
       .then(res => {
         this.companies = res.data;
       });
+  }
+
+  public hasAnyAuthority(authorities: any): boolean {
+    console.log(authorities);
+    this.accountService()
+      .hasAnyAuthorityAndCheckAuth(authorities)
+      .then(value => {
+        this.hasAnyAuthorityValue = value;
+      });
+    return this.hasAnyAuthorityValue;
   }
 }

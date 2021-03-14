@@ -36,10 +36,10 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'nameEn'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('pointsCost')"><span>النقاط</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'pointsCost'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
+                    <!-- <th v-on:click="changeOrder('pointsCost')"><span>النقاط</span> -->
+                        <!-- <jhi-sort-indicator :current-order='propOrder' :field-name="'pointsCost'" -->
+                                            <!-- :reverse='reverse'></jhi-sort-indicator> -->
+                    <!-- </th> -->
                     <th v-on:click="changeOrder('cost')"><span>القيمة المالية</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'cost'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -75,7 +75,7 @@
                     </td>
                     <td>{{benefitRequest.nameAr}}</td>
                     <td>{{benefitRequest.nameEn}}</td>
-                    <td>{{benefitRequest.pointsCost}}</td>
+                    <!-- <td>{{benefitRequest.pointsCost}}</td> -->
                     <td>{{benefitRequest.cost}}</td>
                     <td>{{ benefitRequest.benefitStatus }}</td>
                     <td>{{benefitRequest.notes}}</td>

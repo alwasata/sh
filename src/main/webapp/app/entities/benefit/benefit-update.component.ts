@@ -11,6 +11,7 @@ import { IHospital } from '@/shared/model/hospital.model';
 import AlertService from '@/shared/alert/alert.service';
 import { Benefit, IBenefit } from '@/shared/model/benefit.model';
 import BenefitService from './benefit.service';
+import AccountService from '@/account/account.service';
 
 const validations: any = {
   benefit: {
@@ -18,7 +19,7 @@ const validations: any = {
       required,
     },
     nameEn: {},
-    pointsCost: {},
+    // pointsCost: {},
     cost: {},
   },
 };
@@ -32,6 +33,9 @@ export default class BenefitUpdate extends Vue {
   public benefit: IBenefit = new Benefit();
 
   @Inject('categoryService') private categoryService: () => CategoryService;
+
+  @Inject('accountService') private accountService: () => AccountService;
+  private hasAnyAuthorityValue = false;
 
   public categories: ICategory[] = [];
 
@@ -106,5 +110,15 @@ export default class BenefitUpdate extends Vue {
       .then(res => {
         this.hospitals = res.data;
       });
+  }
+
+  public hasAnyAuthority(authorities: any): boolean {
+    console.log(authorities);
+    this.accountService()
+      .hasAnyAuthorityAndCheckAuth(authorities)
+      .then(value => {
+        this.hasAnyAuthorityValue = value;
+      });
+    return this.hasAnyAuthorityValue;
   }
 }

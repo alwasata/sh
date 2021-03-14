@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Entity, Column, JoinColumn, OneToOne, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { BaseEntity } from './base/base.entity';
 
 import { CardTransaction } from './card-transaction.entity';
+import { Hospital } from './hospital.entity';
 import { InvoiceStatus } from './enumeration/invoice-status';
 
 /**
@@ -22,6 +23,12 @@ export class Invoice extends BaseEntity {
     @Column({ type: 'float', name: 'total', nullable: true })
     total: number;
 
+    @Column({ type: 'float', name: 'totalPoints', nullable: true })
+    totalPoints: number;
+
+    @Column({ name: 'mainInvoice', nullable: true })
+    mainInvoice: string;
+
     @Column({ type: 'simple-enum', name: 'invoice_status', enum: InvoiceStatus })
     invoiceStatus: InvoiceStatus;
 
@@ -32,5 +39,8 @@ export class Invoice extends BaseEntity {
     @JoinColumn()
     cardTransaction: CardTransaction;
 
+  @ManyToOne(type => Hospital)
+  @JoinColumn()
+  hospital: Hospital;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 }

@@ -20,7 +20,7 @@ enum TransactionAction {
 	PLUS, MINUS
 }
 enum InvoiceStatus {
-	APPROVED, CANCELLED
+	APPROVED, CANCELLED, RETURNED
 }
 entity Attatchment {
 	name String
@@ -44,7 +44,7 @@ entity Card {
 
 entity Company {
 	nameAr String required
-  	nameEn String 
+  	nameEn String
     email String
     phone String
     address String
@@ -52,7 +52,7 @@ entity Company {
 
 entity Hospital {
 	nameAr String required
-  	nameEn String 
+  	nameEn String
     email String
     phone String
     address String
@@ -60,19 +60,19 @@ entity Hospital {
 
 entity Category {
 	nameAr String required
-  	nameEn String 
+  	nameEn String
 }
 
 entity Benefit {
 	nameAr String required
-  	nameEn String 
+  	nameEn String
     pointsCost Float
     cost Float
 }
 
 entity BenefitRequest {
 	nameAr String required
-  	nameEn String 
+  	nameEn String
     pointsCost Float
     cost Float
     benefitStatus BenefitStatus
@@ -111,16 +111,16 @@ relationship ManyToOne{
     Card{employee(name)} to Employee
 
 	Employee{company(nameAr)} to Company
-    
+
 	Benefit{category(nameAr)} to Category
 	Benefit{hospital(nameAr)} to Hospital
-    
+
     BenefitRequest{category(nameAr)} to Category
 	BenefitRequest{hospital(nameAr)} to Hospital
     BenefitRequest{benefit(nameAr)} to Benefit
 
 	CardTransaction{card(cardNo)} to Card
-    
+
 	InvoiceBenefits{benefit(nameAr)} to Benefit
     InvoiceBenefits{invoice(invoiceNo)} to Invoice
 

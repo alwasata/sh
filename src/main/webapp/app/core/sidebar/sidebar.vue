@@ -37,87 +37,97 @@
             <hr>
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
                 <span>العناصر</span>
-                <font-awesome-icon icon='th-list' />
+                <font-awesome-icon icon='th-list'/>
             </h6>
             <ul class="nav flex-column">
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
+                        <router-link class='nav-link' to='/setting'>
+                            <font-awesome-icon icon='asterisk' />
+                            <span>النقاط</span>
+                        </router-link>
+                    </li>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
                         <router-link class='nav-link' to='/benefit'>
                             <font-awesome-icon icon='asterisk' />
                             <span>المنفعات</span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
                         <router-link class='nav-link' to='/benefit-request'>
                             <font-awesome-icon icon='asterisk' />
                             <span>طلب منفعة</span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN','ROLE_COMPANY_ADMIN'])">
                         <router-link class='nav-link' to='/card'>
                             <font-awesome-icon icon='asterisk' />
                             <span>البطاقات</span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN','ROLE_COMPANY_ADMIN'])">
                         <router-link class='nav-link' to='/card-transaction'>
                             <font-awesome-icon icon='asterisk' />
                             <span>حركات البطاقة</span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
                         <router-link class='nav-link' to='/category'>
                             <font-awesome-icon icon='asterisk' />
-                            <span>الفئات</span>
+
+                            <span>الفئات </span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
                         <router-link class='nav-link' to='/company'>
                             <font-awesome-icon icon='asterisk' />
                             <span>الشركات</span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
+
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
                         <router-link class='nav-link' to='/employee'>
                             <font-awesome-icon icon='asterisk' />
                             <span>الموظفين</span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
-                        <router-link class='nav-link' to='/hospital'>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
+                        <router-link class='nav-link'  to='/hospital'>
                             <font-awesome-icon icon='asterisk' />
                             <span>المستشفيات</span>
                         </router-link>
                     </li>
-                    <li class='nav-item'>
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
                         <router-link class='nav-link' to='/invoice'>
                             <font-awesome-icon icon='asterisk' />
                             <span>الفواتير</span>
                         </router-link>
                     </li>
             </ul>
-            <hr>
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
-                <span>المسؤولين</span>
-                <font-awesome-icon icon="cogs" />
-            </h6>
-            <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                    <router-link class='nav-link' to="/admin/user-management">
-                        <font-awesome-icon icon="user" />
-                        <span>ادارة المسؤلين </span>
+            <div v-if="hasRole(['ROLE_ADMIN'])">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>المسؤولين</span>
+                    <font-awesome-icon icon="cogs" />
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <router-link class='nav-link' to="/admin/user-management">
+                            <font-awesome-icon icon="user" />
+                            <span>ادارة المسؤلين </span>
+                        </router-link>
+                    </li>
+                    <li class="nav-item"></li>
+                    <router-link class='nav-link' to='/admin/docs'>
+                        <font-awesome-icon icon='book' />
+                        <span>API</span>
                     </router-link>
-                </li>
-                <li class="nav-item"></li>
-                <router-link class='nav-link' to='/admin/docs'>
-                    <font-awesome-icon icon='book' />
-                    <span>API</span>
-                </router-link>
-            </ul>
+                </ul>
+            </div>
           </div>
         </b-sidebar>
     </div>
 </template>
-
+<script lang="ts" src="./sidebar.component.ts">
+</script>
 <style scoped>
     a {
         color: #333;

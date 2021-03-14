@@ -3,5 +3,6 @@
  */
 export enum InvoiceStatus {
     APPROVED = 'APPROVED',
-    CANCELLED = 'CANCELLED'
+    CANCELLED = 'CANCELLED',
+    RETURNED  = 'RETURNED'
 }

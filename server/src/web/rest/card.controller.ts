@@ -7,6 +7,8 @@ import { PageRequest, Page } from '../../domain/base/pagination.entity';
 import { AuthGuard, Roles, RolesGuard, RoleType } from '../../security';
 import { HeaderUtil } from '../../client/header-util';
 import { LoggingInterceptor } from '../../client/interceptors/logging.interceptor';
+import { CardTransactionService } from '../../service/card-transaction.service';
+import { CardTransactionDTO } from '../../service/dto/card-transaction.dto';
 
 @Controller('api/cards')
 @UseGuards(AuthGuard, RolesGuard)
@@ -16,7 +18,10 @@ import { LoggingInterceptor } from '../../client/interceptors/logging.intercepto
 export class CardController {
     logger = new Logger('CardController');
 
-    constructor(private readonly cardService: CardService) {}
+    constructor(
+      private readonly cardService: CardService,
+      private readonly cardTransactionService: CardTransactionService
+      ) {}
 
     @Get('/')
     @Roles(RoleType.USER)
@@ -48,7 +53,7 @@ export class CardController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.USER)
     @ApiOperation({ title: 'Create card' })
     @ApiResponse({
         status: 201,
@@ -86,4 +91,39 @@ export class CardController {
         HeaderUtil.addEntityDeletedHeaders(req.res, 'Card', id);
         return await this.cardService.deleteById(id);
     }
+
+    // @PostMethod('chargecard')
+    // @Roles(RoleType.ADMIN)
+    // @ApiOperation({ title: 'save charge' })
+    // @ApiResponse({
+    //     status: 204,
+    //     description: 'The record has been successfully deleted.',
+    //     type: CardDTO,
+    // })
+    // async chargeCard(@Req() req: Request, @Body() cardDTO: CardDTO): Promise<CardDTO> {
+    //     // HeaderUtil.addEntityDeletedHeaders(req.res, 'Card', id);
+    //     return cardDTO;
+    // }
+
+    @Put('chargecard')
+    @Roles(RoleType.USER)
+    @ApiOperation({ title: 'Create card' })
+    @ApiResponse({
+        status: 201,
+        description: 'The record has been successfully created.',
+        type: CardDTO,
+    })
+    @ApiResponse({ status: 403, description: 'Forbidden.' })
+    async chargeCard(@Req() req: Request, @Body() data: object): Promise<CardDTO> {
+      var cardTransactionDTO = new CardTransactionDTO ();
+      cardTransactionDTO.amount = data.points / 1.1;
+      cardTransactionDTO.pointsAmount = data.points;
+      cardTransactionDTO.card = data.card.id;
+      cardTransactionDTO.action = "PLUS";
+      cardTransactionDTO.notes = "اضافة نقاط الى البطاقة";
+      cardTransactionDTO.createdBy = req.user.id;
+      const created = await this.cardTransactionService.save(cardTransactionDTO);
+      return data.card;
+    }
+
 }

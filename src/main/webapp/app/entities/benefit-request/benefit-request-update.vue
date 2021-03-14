@@ -6,12 +6,12 @@
                 <div>
                     <div class="form-group" v-if="benefitRequest.id">
                         <label for='id'>ID</label>
-                        <input type="text" class="form-control" id="id" name="id"
+                        <input disabled type="text" class="form-control" id="id" name="id"
                                v-model="benefitRequest.id" readonly />
                     </div>
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-request-nameAr'>الاسم بالعربية</label>
-                        <input type="text" class="form-control" name="nameAr" id="benefit-request-nameAr"
+                        <input disabled type="text" class="form-control" name="nameAr" id="benefit-request-nameAr"
                             :class="{'valid': !$v.benefitRequest.nameAr.$invalid, 'invalid': $v.benefitRequest.nameAr.$invalid }" v-model="$v.benefitRequest.nameAr.$model"  required/>
                         <div v-if="$v.benefitRequest.nameAr.$anyDirty && $v.benefitRequest.nameAr.$invalid">
                             <small v-if='!$v.benefitRequest.nameAr.required' class='form-text text-danger'>
@@ -21,17 +21,17 @@
                     </div>
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-request-nameEn'>الاسم بالانجليزية</label>
-                        <input type="text" class="form-control" name="nameEn" id="benefit-request-nameEn"
+                        <input disabled type="text" class="form-control" name="nameEn" id="benefit-request-nameEn"
                             :class="{'valid': !$v.benefitRequest.nameEn.$invalid, 'invalid': $v.benefitRequest.nameEn.$invalid }" v-model="$v.benefitRequest.nameEn.$model" />
                     </div>
                     <!-- <div class="form-group">
                         <label class='form-control-label' for='benefit-request-pointsCost'>النقاط</label>
-                        <input type="number" class="form-control" name="pointsCost" id="benefit-request-pointsCost"
+                        <input disabled type="number" class="form-control" name="pointsCost" id="benefit-request-pointsCost"
                             :class="{'valid': !$v.benefitRequest.pointsCost.$invalid, 'invalid': $v.benefitRequest.pointsCost.$invalid }" v-model.number="$v.benefitRequest.pointsCost.$model" />
                     </div> -->
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-request-cost'>القيمة المالية</label>
-                        <input type="number" class="form-control" name="cost" id="benefit-request-cost"
+                        <input disabled type="number" class="form-control" name="cost" id="benefit-request-cost"
                             :class="{'valid': !$v.benefitRequest.cost.$invalid, 'invalid': $v.benefitRequest.cost.$invalid }" v-model.number="$v.benefitRequest.cost.$model" />
                     </div>
                     <div class="form-group">
@@ -44,15 +44,15 @@
                             <option value='REFUSED'>REFUSED</option>
                             <option value='CANCELLED'>CANCELLED</option>
                         </select>
-                    </div> -->
+                    </div>
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-request-notes'>الملاحظات</label>
-                        <input type="text" class="form-control" name="notes" id="benefit-request-notes"
+                        <input disabled type="text" class="form-control" name="notes" id="benefit-request-notes"
                             :class="{'valid': !$v.benefitRequest.notes.$invalid, 'invalid': $v.benefitRequest.notes.$invalid }" v-model="$v.benefitRequest.notes.$model" />
                     </div>
                     <div class='form-group'>
                         <label class='form-control-label' for='benefit-request-category'>الفئة</label>
-                        <select id='benefit-request-category' v-model='benefitRequest.category' class='form-control'
+                        <select disabled id='benefit-request-category' v-model='benefitRequest.category' class='form-control'
                                 name='category'>
                             <option v-bind:value='null'></option>
                             <option v-for='categoryOption in categories' :key='categoryOption.id'
@@ -61,9 +61,9 @@
                             </option>
                         </select>
                     </div>
-                    <div class='form-group'>
+                    <div class='form-group' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <label class='form-control-label' for='benefit-request-hospital'>المستشفى</label>
-                        <select id='benefit-request-hospital' v-model='benefitRequest.hospital' class='form-control'
+                        <select disabled id='benefit-request-hospital' v-model='benefitRequest.hospital' class='form-control'
                                 name='hospital'>
                             <option v-bind:value='null'></option>
                             <option v-for='hospitalOption in hospitals' :key='hospitalOption.id'

@@ -24,19 +24,22 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th v-on:click="changeOrder('id')"><span>ID</span>
+                    <th v-on:click="changeOrder('id')"><span>المستشفى</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('invoiceNo')"><span>Invoice No</span>
+                    <th v-on:click="changeOrder('invoiceNo')"><span>رقم الفاتورة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'invoiceNo'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('invoiceDate')"><span>Invoice Date</span>
+                    <th>
+                        <span>الفاتورة السابقة</span>
+                    </th>
+                    <th v-on:click="changeOrder('invoiceDate')"><span>تاريخ الفاتورة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'invoiceDate'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('payDate')"><span>Pay Date</span>
+                    <th v-on:click="changeOrder('payDate')"><span>تاريخ الدفع</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'payDate'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -52,7 +55,7 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('cardTransaction.id')"><span>بطاقةTransaction</span>
+                    <th v-on:click="changeOrder('cardTransaction.id')"><span> رقم البطاقة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'cardTransaction.id'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -62,10 +65,9 @@
                 <tbody>
                 <tr v-for="invoice in invoices"
                     :key="invoice.id">
-                    <td>
-                        <router-link :to="{name: 'InvoiceView', params: {invoiceId: invoice.id}}">{{invoice.id}}</router-link>
-                    </td>
+                    <td>{{invoice.hospital.nameAr}}</td>
                     <td>{{invoice.invoiceNo}}</td>
+                    <td>{{invoice.mainInvoice}}</td>
                     <td>{{invoice.invoiceDate}}</td>
                     <td>{{invoice.payDate}}</td>
                     <td>{{invoice.total}}</td>
@@ -75,7 +77,7 @@
                         <div v-if='invoice.cardTransaction'>
                             <router-link
                                 :to="{name: 'CardTransactionView', params: {cardTransactionId: invoice.cardTransaction.id}}">
-                                {{ invoice.cardTransaction.id }}
+                                {{ invoice.cardTransaction.card.cardNo }}
                             </router-link>
                         </div>
                     </td>
@@ -85,17 +87,18 @@
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>عرض</span>
                             </router-link>
-                            <router-link :to="{name: 'InvoiceEdit', params: {invoiceId: invoice.id}}"  tag="button" class="btn btn-primary btn-sm edit">
+                        <div class="btn-group">
+                            <router-link v-if="invoice.invoiceStatus == 'APPROVED'" :to="{name: 'InvoiceReturn', params: {invoiceId: invoice.id}}"  tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>تعديل</span>
+                                <span class='d-none d-md-inline'>ارجاع</span>
                             </router-link>
-                            <b-button v-on:click="prepareRemove(invoice)"
-                                   variant="danger"
-                                   class="btn btn-sm"
-                                   v-b-modal.removeEntity>
-                                <font-awesome-icon icon="times"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>حذف</span>
-                            </b-button>
+                        </div>
+                        <div class="btn-group">
+                            <router-link v-if="invoice.invoiceStatus == 'APPROVED'" :to="{name: 'InvoiceReturn', params: {invoiceId: invoice.id}}"  tag="button" class="btn btn-danger btn-sm edit">
+                                <font-awesome-icon icon="trash"></font-awesome-icon>
+                                <span class='d-none d-md-inline'>الغاء</span>
+                            </router-link>
+                        </div>
                         </div>
                     </td>
                 </tr>
@@ -110,7 +113,7 @@
             <div slot='modal-footer'>
                 <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>الغاء</button>
                 <button id='jhi-confirm-delete-invoice' class='btn btn-primary' type='button'
-                        v-on:click='removeInvoice()'>حذف
+                        v-on:click='removeInvoice()'> حذف
                 </button>
             </div>
         </b-modal>

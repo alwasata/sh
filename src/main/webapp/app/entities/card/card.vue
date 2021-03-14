@@ -65,6 +65,10 @@
                     </td>
                     <td class="text-right">
                         <div class="btn-group">
+                            <router-link :to="{name: 'CardCharge', params: {cardId: card.id}}"  tag="button" class="btn btn-primary btn-sm edit">
+                                <font-awesome-icon icon="plus"></font-awesome-icon>
+                                <span class='d-none d-md-inline'>شحن</span>
+                            </router-link>
                             <router-link :to="{name: 'CardView', params: {cardId: card.id}}" tag="button" class="btn btn-info btn-sm details">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>عرض</span>

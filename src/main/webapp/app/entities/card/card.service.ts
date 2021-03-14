@@ -71,4 +71,20 @@ export default class CardService {
         });
     });
   }
+
+  public charge(entity: object): Promise<ICard> {
+    return new Promise<ICard>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}/chargecard`, entity)
+        .then(res => {
+          console.log(res);
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+    console.log(entity);
+    return entity;
+  }
 }

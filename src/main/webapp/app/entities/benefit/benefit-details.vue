@@ -20,7 +20,7 @@
                         <span>النقاط</span>
                     </dt>
                     <dd>
-                        <span>{{benefit.pointsCost}}</span>
+                        <span>{{benefit.cost*1.1}}</span>
                     </dd>
                     <dt>
                         <span>القيمة المالية</span>

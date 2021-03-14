@@ -13,7 +13,7 @@ export interface IBenefitRequest {
   id?: number;
   nameAr?: string;
   nameEn?: string;
-  pointsCost?: number;
+  // pointsCost?: number;
   cost?: number;
   benefitStatus?: BenefitStatus;
   notes?: string;
@@ -27,7 +27,7 @@ export class BenefitRequest implements IBenefitRequest {
     public id?: number,
     public nameAr?: string,
     public nameEn?: string,
-    public pointsCost?: number,
+    // public pointsCost?: number,
     public cost?: number,
     public benefitStatus?: BenefitStatus,
     public notes?: string,

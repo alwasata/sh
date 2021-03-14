@@ -5,7 +5,7 @@ export interface IBenefit {
   id?: number;
   nameAr?: string;
   nameEn?: string;
-  pointsCost?: number;
+  // pointsCost?: number;
   cost?: number;
   category?: ICategory;
   hospital?: IHospital;
@@ -16,7 +16,7 @@ export class Benefit implements IBenefit {
     public id?: number,
     public nameAr?: string,
     public nameEn?: string,
-    public pointsCost?: number,
+    // public pointsCost?: number,
     public cost?: number,
     public category?: ICategory,
     public hospital?: IHospital

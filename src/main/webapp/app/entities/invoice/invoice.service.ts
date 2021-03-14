@@ -2,7 +2,9 @@ import axios from 'axios';
 
 import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
+import { ISetting } from '@/shared/model/setting.model';
 import { IInvoice } from '@/shared/model/invoice.model';
+import { IBenefit } from '@/shared/model/benefit.model';
 
 const baseApiUrl = 'api/invoices';
 
@@ -67,6 +69,62 @@ export default class InvoiceService {
           resolve(res.data);
         })
         .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public search(id: string): Promise<IInvoice> {
+    return new Promise<IInvoice>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/search/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public saveInvoice(data: object): Promise<IInvoice> {
+    return new Promise<IInvoice>((resolve, reject) => {
+      axios
+        .post(`${baseApiUrl}/saveinvoice`, data)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public getBeneit(id: string): Promise<object> {
+    return new Promise<object>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/getbenefit/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        });
+    });
+  }
+
+  public checkBenefitQuantity(data: any): Promise<any> {
+    console.log(data);
+    // return data;
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .post(`${baseApiUrl}/checkbenefit`, data)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.log(err);
           reject(err);
         });
     });
