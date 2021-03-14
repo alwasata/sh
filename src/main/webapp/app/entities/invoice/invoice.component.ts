@@ -71,7 +71,8 @@ export default class Invoice extends mixins(AlertMixin) {
       .delete(this.removeId)
       .then(() => {
         document.getElementById(`invoice-state-${this.removeId}`).textContent = '';
-        document.getElementById(`invoice-state-${this.removeId}`).append = " <span class='btn btn-danger btn-sm'>تم الغائها</span>";
+        document.getElementById(`invoice-state-${this.removeId}`).innerHTML = " <span class='btn btn-danger btn-sm'>تم الغائها</span>";
+        document.getElementById(`invoice-delete-${this.removeId}`).innerHTML = '';
         const message = 'A Invoice is deleted with identifier ' + this.removeId;
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();

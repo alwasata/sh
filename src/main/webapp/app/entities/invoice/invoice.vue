@@ -111,7 +111,7 @@
                                 <span class='d-none d-md-inline'>ارجاع</span>
                             </router-link>
                         </div>
-                        <div class="btn-group">
+                        <div class="btn-group" :id="'invoice-delete-' + invoice.id">
                            <b-button v-on:click="prepareRemove(invoice)"
                                    variant="danger"
                                    class="btn btn-sm"
