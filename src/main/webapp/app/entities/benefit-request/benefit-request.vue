@@ -2,12 +2,12 @@
     <div>
         <h2 id="page-heading">
             <span id='benefit-request-heading'>طلب منفعة</span>
-            <router-link :to="{name: 'BenefitRequestCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-benefit-request">
+            <!-- <router-link :to="{name: 'BenefitRequestCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-benefit-request">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
                     اضافة طلب منفعة
                 </span>
-            </router-link>
+            </router-link> -->
         </h2>
         <b-alert :show="dismissCountDown"
             dismissible

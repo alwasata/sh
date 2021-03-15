@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="benefitRequest">
-                <h2 class='jh-entity-heading'><span>طلب منفعة</span> {{ benefitRequest.id }}</h2>
+                <h2 class='jh-entity-heading'><span>طلب منفعة</span></h2>
                 <dl class="row jh-entity-details">
                     <dt>
                         <span>الاسم بالعربية</span>
