@@ -70,10 +70,13 @@
                     <input type="date"  class="form-control" v-model="invoiceDate" name="invoiceDate">
                 </div>
             </div>
+                <div class="col col-md-4 col-sm-12 col-xs-12 form-group">
+                    <button @click="printInvoice()" class="btn btn-primary"> طباعة</button>
+                </div>
             </div>
         <div>
         </div>
         </div>
 </template>
-<script lang="ts" src="./invoice-return.component.ts">
+<script lang="ts" src="./invoice-details.component.ts">
 </script>

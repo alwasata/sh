@@ -72,10 +72,10 @@
                         <font-awesome-icon icon="sign-in-alt" />
                         <span> تسجيل الدخول</span>
                     </b-dropdown-item>
-                    <b-dropdown-item to="/register" tag="b-dropdown-item" id="register" v-if="!authenticated" active-class="active">
+                    <!-- <b-dropdown-item to="/register" tag="b-dropdown-item" id="register" v-if="!authenticated" active-class="active">
                         <font-awesome-icon icon="user-plus" />
                         <span>تسجيل حساب جديد</span>
-                    </b-dropdown-item>
+                    </b-dropdown-item> -->
                 </b-nav-item-dropdown>
             </b-navbar-nav>
              <b-button v-b-toggle.sidebar-1  v-if='authenticated'

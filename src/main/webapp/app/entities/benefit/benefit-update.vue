@@ -5,9 +5,9 @@
                 <h2 id='sahatiApp.benefit.home.createOrEditLabel'>اضافة منفعة</h2>
                 <div>
                     <div class="form-group" v-if="benefit.id">
-                        <label for='id'>ID</label>
-                        <input type="text" class="form-control" id="id" name="id"
-                               v-model="benefit.id" readonly />
+                        <!-- <label for='id'>ID</label> -->
+                        <input type="hidden" class="form-control" id="id" name="id"
+                               v-model="benefit.id" readonly  />
                     </div>
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-nameAr'>الاسم بالعربية</label>

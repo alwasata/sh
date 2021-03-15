@@ -26,7 +26,7 @@
                     </div>
                 </b-form>
                 <p></p>
-                <div>
+                <!-- <div>
                     <b-alert show variant="warning">
                         <b-link :to="'/account/reset/request'" class='alert-link'>هل نسيت كلمة المرور؟</b-link>
                     </b-alert>
@@ -36,7 +36,7 @@
                         <span>لا يوجد لديك حساب ؟</span>
                         <b-link :to="'/register'" class='alert-link'>تسجيل حساب جديد</b-link>
                     </b-alert>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
