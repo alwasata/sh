@@ -36,7 +36,7 @@ export default class InvoiceUpdate extends Vue {
 
   public cardNo = '';
   public employeeName = '';
-  public employeePoints = '';
+  public employeePoints = 0.0;
   public companyName = '';
   public cardPoint = 0;
   public exbireDate = '';
@@ -167,7 +167,7 @@ export default class InvoiceUpdate extends Vue {
     if (this.benefitPoints > this.oldBenefitPoints) {
       this.benefitPoints = this.oldBenefitPoints;
     }
-    if (this.benefitPoints == '') {
+    if (!this.benefitPoints) {
       document.getElementById('addBenefit').disabled = true;
     } else {
       document.getElementById('addBenefit').disabled = false;
@@ -223,7 +223,7 @@ export default class InvoiceUpdate extends Vue {
   public saveInvoice() {
     document.getElementById('save-invoice').disabled = true;
     this.invoice.total = this.totalIvoicePrice;
-    this.invoice.totalInvoicePoints = this.total;
+    // this.invoice.totalInvoicePoints = this.total;
     this.invoice.invoiceStatus = InvoiceStatus.APPROVED;
     this.invoice.invoiceDate = this.invoiceDate;
     this.invoice.payDate = this.invoiceDate;
@@ -317,7 +317,7 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public changeQuantity(): void {
-    if (this.quantity == '' || this.quantity == 0) {
+    if (!this.quantity || this.quantity == 0) {
       document.getElementById('addBenefit').disabled = true;
     } else {
       document.getElementById('addBenefit').disabled = false;

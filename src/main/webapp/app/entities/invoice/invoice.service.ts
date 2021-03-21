@@ -94,8 +94,8 @@ export default class InvoiceService {
     });
   }
 
-  public search(id: string): Promise<IInvoice> {
-    return new Promise<IInvoice>((resolve, reject) => {
+  public search(id: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/search/${id}`)
         .then(res => {
@@ -120,8 +120,8 @@ export default class InvoiceService {
     });
   }
 
-  public getBeneit(id: string): Promise<object> {
-    return new Promise<object>((resolve, reject) => {
+  public getBeneit(id: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/getbenefit/${id}`)
         .then(res => {

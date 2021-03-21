@@ -157,9 +157,9 @@ export class InvoiceController {
     @ApiResponse({
       status: 200,
       description: 'The found record',
-      type: [InvoiceDTO, CardTransactionDTO],
+      // type: [InvoiceDTO, CardTransactionDTO],
     })
-    async search(@Req() req: Request, @Param('id') id: string): Promise<object> {
+    async search(@Req() req: Request, @Param('id') id: string): Promise<any> {
       var cardInfo = await this.cardTransactionService.findByCardNo(id);
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var hospital = "";
@@ -177,9 +177,8 @@ export class InvoiceController {
       HeaderUtil.addPaginationHeaders(req.res, new Page(benefit, count, pageRequest));
       // console.log(cardInfo);
       var data = {}
-      if(cardInfo[0] == 0) {
+      if(cardInfo[0] == []) {
         data = "";
-        console.log("hi");
       } else {
         data = {
           "benefit"  : benefit,
@@ -196,7 +195,7 @@ export class InvoiceController {
       description: 'The found record',
       type: BenefitDTO,
     })
-    async getBenefit(@Req() req: Request, @Param('id') id: string): Promise<object> {
+    async getBenefit(@Req() req: Request, @Param('id') id: string): Promise<any> {
       var resualt = await this.benefitService.findById(id);
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var resualtSettings =  await this.settingService.findAndCount({
