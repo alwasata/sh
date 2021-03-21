@@ -1,4 +1,5 @@
 import { ICardTransaction } from '@/shared/model/card-transaction.model';
+import { Double } from 'typeorm';
 
 export const enum InvoiceStatus {
   APPROVED = 'APPROVED',
@@ -12,6 +13,8 @@ export interface IInvoice {
   invoiceDate?: Date;
   payDate?: Date;
   total?: number;
+  totalPoints?: Double;
+  mainInvoice?: Double;
   invoiceStatus?: InvoiceStatus;
   notes?: string;
   cardTransaction?: ICardTransaction;

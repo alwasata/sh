@@ -102,7 +102,7 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public search(): void {
-    document.getElementById('benifit-info').style = 'display:none;';
+    (document.getElementById('benifit-info') as HTMLStyleElement).style.cssText = 'display:none;';
     document.getElementById('benefit').innerHTML = '';
     document.getElementById('card-error').textContent = '';
     this.invoiceService()
@@ -121,7 +121,7 @@ export default class InvoiceUpdate extends Vue {
         var points = 0;
         var pointsPlus = 0;
         var pointsMinus = 0;
-        document.getElementById('benifit-info').style = 'display:block;';
+        document.getElementById('benifit-info').style.cssText = 'display:block;';
 
         res.cardInfo[0].forEach(element => {
           console.log(points);
@@ -152,7 +152,7 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public getBeneit(event): void {
-    document.getElementById('addBenefit').disabled = false;
+    (document.getElementById('addBenefit') as HTMLButtonElement).disabled = false;
     this.invoiceService()
       .getBeneit(event.target.value)
       .then(res => {
@@ -168,18 +168,18 @@ export default class InvoiceUpdate extends Vue {
       this.benefitPoints = this.oldBenefitPoints;
     }
     if (!this.benefitPoints) {
-      document.getElementById('addBenefit').disabled = true;
+      (document.getElementById('addBenefit') as HTMLButtonElement).disabled = true;
     } else {
-      document.getElementById('addBenefit').disabled = false;
+      (document.getElementById('addBenefit') as HTMLButtonElement).disabled = false;
     }
   }
 
   public addBenefit(): void {
-    document.getElementById('save-invoice').disabled = true;
+    (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     if (this.rows != []) {
-      document.getElementById('save-invoice').disabled = false;
+      (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
     }
-    var e = document.getElementById('benefit');
+    var e = document.getElementById('benefit') as HTMLSelectElement;
     var value = e.options[e.selectedIndex].value;
     this.invoiceService()
       .getBeneit(value)
@@ -211,9 +211,9 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public removeRow(row, indx) {
-    document.getElementById('save-invoice').disabled = true;
+    (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     if (this.rows.length == 0) {
-      document.getElementById('save-invoice').disabled = false;
+      (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
     }
     this.total = this.total - row.totalPoints;
     this.totalIvoicePrice = this.totalIvoicePrice - row.totalPrice;
@@ -221,12 +221,12 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public saveInvoice() {
-    document.getElementById('save-invoice').disabled = true;
+    (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     this.invoice.total = this.totalIvoicePrice;
     // this.invoice.totalInvoicePoints = this.total;
     this.invoice.invoiceStatus = InvoiceStatus.APPROVED;
-    this.invoice.invoiceDate = this.invoiceDate;
-    this.invoice.payDate = this.invoiceDate;
+    this.invoice.invoiceDate = new Date(this.invoiceDate);
+    this.invoice.payDate = new Date(this.invoiceDate);
     this.invoice.invoiceNo = 'IN-' + new Date().getFullYear() + '-' + new Date().getMonth() + '-' + Math.floor(1000 + Math.random() * 9000);
     var data = {
       invoiceBenefit: this.rows,
@@ -318,9 +318,9 @@ export default class InvoiceUpdate extends Vue {
 
   public changeQuantity(): void {
     if (!this.quantity || this.quantity == 0) {
-      document.getElementById('addBenefit').disabled = true;
+      (document.getElementById('addBenefit') as HTMLButtonElement).disabled = true;
     } else {
-      document.getElementById('addBenefit').disabled = false;
+      (document.getElementById('addBenefit') as HTMLButtonElement).disabled = false;
     }
     console.log(this.quantity);
   }

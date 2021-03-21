@@ -9,8 +9,8 @@ import { IBenefit } from '@/shared/model/benefit.model';
 const baseApiUrl = 'api/invoices';
 
 export default class InvoiceService {
-  public find(id: number): Promise<IInvoice> {
-    return new Promise<IInvoice>((resolve, reject) => {
+  public find(id: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/find/${id}`)
         .then(res => {
@@ -27,7 +27,6 @@ export default class InvoiceService {
       axios
         .get(`${baseApiUrl}/getinvoices/staus`)
         .then(res => {
-          console.log('hi');
           var countInvoice = 0;
           for (var i = 0; i < res.data.length; i++) {
             if (res.data[i].invoiceStatus == status) {

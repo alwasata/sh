@@ -99,7 +99,7 @@ export default class CardTransactionUpdate extends Vue {
         this.cards = res.data;
       });
     this.invoiceService()
-      .retrieve()
+      .retrieve('false')
       .then(res => {
         this.invoices = res.data;
       });

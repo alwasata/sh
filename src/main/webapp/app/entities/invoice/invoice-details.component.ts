@@ -45,7 +45,7 @@ export default class InvoiceUpdate extends Vue {
   public employeeName = '';
   public companyName = '';
   public cardPoint = 0;
-  public exbireDate = '';
+  public exbireDate = new Date();
   public cardNumber = '';
   public benefit = '';
   public benefitPoints = 0;
@@ -54,7 +54,7 @@ export default class InvoiceUpdate extends Vue {
   public total = 0;
   public totalIvoicePrice = 0;
   public quantity = 1;
-  public cardId = '';
+  public cardId = 0;
   public hosbitalName = '';
   public invoiceNo = '';
   public returnTotal = 0;

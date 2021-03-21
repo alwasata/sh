@@ -98,7 +98,7 @@ export default class InvoiceBenefitsUpdate extends Vue {
         this.benefits = res.data;
       });
     this.invoiceService()
-      .retrieve()
+      .retrieve('false')
       .then(res => {
         this.invoices = res.data;
       });

@@ -26,17 +26,29 @@ export default class Home extends Vue {
   public openLogin(): void {
     this.loginService().openLogin((<any>this).$root);
   }
+  public get authenticated(): boolean {
+    return this.$store.getters.authenticated;
+  }
+
+  public userAuthorities() {
+    return this.accountService().getAuthorities();
+  }
 
   public hasRole(roles: any): boolean {
     if (this.userAuthorities() == null) {
       return false;
     }
     for (const element of roles) {
-      if (this.userAuthorities().authorities.includes(element)) {
+      if (this.$store.getters.account.authorities.includes(element)) {
         return true;
       }
     }
   }
+
+  // public  userAuthorities(): any {
+  //   return this.$store.getters.account.authorities;
+  // }
+
   public mounted(): void {
     this.invoices();
   }
@@ -56,14 +68,6 @@ export default class Home extends Vue {
       .then(result => {
         return (this.cancleInvoice = result);
       });
-  }
-
-  public userAuthorities() {
-    return this.accountService().getAuthorities();
-  }
-
-  public get authenticated(): boolean {
-    return this.$store.getters.authenticated;
   }
 
   public get username(): string {

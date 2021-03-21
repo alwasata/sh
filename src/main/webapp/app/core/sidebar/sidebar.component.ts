@@ -52,7 +52,7 @@ export default class JhiNavbar extends Vue {
       return false;
     }
     for (const element of roles) {
-      if (this.userAuthorities().authorities.includes(element)) {
+      if (this.$store.getters.account.authorities.includes(element)) {
         return true;
       }
     }

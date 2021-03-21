@@ -134,9 +134,9 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public returnBenefit(row, index): void {
-    document.getElementById('save-invoice').disabled = true;
+    (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     if (this.rows != []) {
-      document.getElementById('save-invoice').disabled = false;
+      (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
     }
     this.invoiceService()
       .checkBenefitQuantity({ benefits: row, invoice: this.invoiceId })
@@ -169,9 +169,9 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public removeRow(row, indx) {
-    document.getElementById('save-invoice').disabled = true;
+    (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     if (this.rows.length == 0) {
-      document.getElementById('save-invoice').disabled = false;
+      (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
     }
     this.returnTotal = this.returnTotal - row.points;
     this.returnTotalIvoicePrice = this.returnTotalIvoicePrice - row.price;
@@ -181,9 +181,9 @@ export default class InvoiceUpdate extends Vue {
   public saveInvoice() {
     this.invoice.total = this.returnTotalIvoicePrice;
     this.invoice.totalPoints = this.returnTotal;
-    this.invoice.invoiceStatus = 'RETURNED';
-    this.invoice.invoiceDate = this.invoiceDate;
-    this.invoice.payDate = this.invoiceDate;
+    this.invoice.invoiceStatus = InvoiceStatus.RETURNED;
+    this.invoice.invoiceDate = new Date(this.invoiceDate);
+    this.invoice.payDate = new Date(this.invoiceDate);
     this.invoice.mainInvoice = this.invoiceId;
     this.invoice.invoiceNo =
       'RIN-' + new Date().getFullYear() + '-' + new Date().getMonth() + '-' + Math.floor(1000 + Math.random() * 9000);
