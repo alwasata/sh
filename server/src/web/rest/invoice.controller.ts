@@ -18,6 +18,8 @@ import { InvoiceBenefitsDTO } from '../../service/dto/invoice-benefits.dto';
 import { CardService } from '../../service/card.service';
 import { SettingDTO } from '../../service/dto/setting.dto';
 import { SettingService } from '../../service/setting.service';
+import { TransactionAction } from '../../domain/enumeration/transaction-action';
+import { InvoiceStatus } from '../../domain/enumeration/invoice-status';
 
 @Controller('api/invoices')
 @UseGuards(AuthGuard, RolesGuard)
@@ -131,20 +133,20 @@ export class InvoiceController {
       status: 204,
       description: 'The record has been successfully deleted.',
     })
-    async deleteById(@Req() req: Request, @Param('id') id: string): Promise<void> {
+    async deleteById(@Req() req: Request, @Param('id') id: string): Promise<InvoiceDTO> {
       var invoice = await this.invoiceService.findByIdOne(id);
-      var cardTransaction = await this.cardTransactionService.findById(invoice.cardTransaction);
+      var cardTransaction = await this.cardTransactionService.findById(invoice.cardTransaction.id);
       var cardTransactionDTO = new CardTransactionDTO();
-      cardTransactionDTO.createdBy = req.user;
+      cardTransactionDTO.createdBy = req.user.id;
       cardTransactionDTO.card = cardTransaction.card;
       cardTransactionDTO.amount = cardTransaction.amount;
       cardTransactionDTO.pointsAmount = cardTransaction.pointsAmount;
       cardTransactionDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها";
-      cardTransactionDTO.action = "PLUS";
+      cardTransactionDTO.action = TransactionAction.PLUS;
       await this.cardTransactionService.save(cardTransactionDTO);
       var invoiceDTO = new InvoiceDTO();
       invoiceDTO.id = id;
-      invoiceDTO.invoiceStatus = "CANCELLED";
+      invoiceDTO.invoiceStatus = InvoiceStatus.CANCELLED;
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Invoice', invoiceDTO.id);
       return await this.invoiceService.update(invoiceDTO);
       // console.log(id)
