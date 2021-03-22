@@ -13,7 +13,7 @@ export class InvoiceService {
 
   constructor(@InjectRepository(InvoiceRepository) private invoiceRepository: InvoiceRepository) {}
 
-  async findById(id: string): Promise<InvoiceDTO | undefined> {
+  async findById(id: string): Promise<InvoiceDTO[] | any> {
     const options = { relations: relationshipNames };
     const result = await this.invoiceRepository.createQueryBuilder('invoice')
     .innerJoinAndSelect('invoice.cardTransaction', 'cardTransaction')
@@ -25,27 +25,21 @@ export class InvoiceService {
     return result;
   }
 
-  async findByIdOne(id: string): Promise<InvoiceDTO | undefined> {
-    const options = { relations: relationshipNames };
-    const result = await this.invoiceRepository.findOne(id, options);
-    return InvoiceMapper.fromEntityToDTO(result);
-  }
-
   async findByfields(options: FindOneOptions<InvoiceDTO>): Promise<InvoiceDTO | undefined> {
     const result = await this.invoiceRepository.findOne(options);
     return InvoiceMapper.fromEntityToDTO(result);
   }
 
-  async findByInvoice(options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
+  async findByInvoice(options: FindManyOptions<InvoiceDTO>): Promise<InvoiceDTO[] | any> {
     options.relations = relationshipNames;
     const resultList = await this.invoiceRepository.findAndCount(options);
     return resultList;
   }
-  async getAll(): Promise<[InvoiceDTO[], number]> {
+  async getAll(): Promise<InvoiceDTO[] | any> {
     const resultList = await this.invoiceRepository.findAndCount();
     return resultList;
   }
-  async findAndCount(search : string, id : any, options: FindManyOptions<InvoiceDTO>): Promise<[InvoiceDTO[], number]> {
+  async findAndCount(search : string, id : any, options: FindManyOptions<InvoiceDTO>): Promise<InvoiceDTO[] | any> {
     options.relations = relationshipNames;
     search = search == "false" ? "" : search;
     var resultList = {};

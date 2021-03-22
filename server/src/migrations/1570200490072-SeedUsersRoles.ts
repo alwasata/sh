@@ -17,7 +17,7 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
     imageUrl: '',
     activated: true,
     langKey: 'en',
-        createdBy: 'system',
+        createdBy: null,
         lastModifiedBy: 'system',
     };
 
@@ -30,7 +30,7 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
         imageUrl: '',
         activated: true,
         langKey: 'en',
-        createdBy: 'system',
+        createdBy: null,
         lastModifiedBy: 'system',
     };
 
@@ -43,7 +43,7 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
         imageUrl: '',
         activated: true,
         langKey: 'en',
-        createdBy: 'system',
+        createdBy: null,
         lastModifiedBy: 'system',
     };
 
@@ -56,7 +56,7 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
         imageUrl: '',
         activated: true,
         langKey: 'en',
-        createdBy: 'system',
+        createdBy: null,
         lastModifiedBy: 'system',
     };
 

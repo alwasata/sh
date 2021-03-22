@@ -10,8 +10,8 @@ export const enum InvoiceStatus {
 export interface IInvoice {
   id?: number;
   invoiceNo?: string;
-  invoiceDate?: Date;
-  payDate?: Date;
+  invoiceDate?: string;
+  payDate?: string;
   total?: number;
   totalPoints?: Double;
   mainInvoice?: Double;
@@ -24,9 +24,11 @@ export class Invoice implements IInvoice {
   constructor(
     public id?: number,
     public invoiceNo?: string,
-    public invoiceDate?: Date,
-    public payDate?: Date,
+    public invoiceDate?: string,
+    public payDate?: string,
     public total?: number,
+    public totalPoints?: Double,
+    public mainInvoice?: Double,
     public invoiceStatus?: InvoiceStatus,
     public notes?: string,
     public cardTransaction?: ICardTransaction

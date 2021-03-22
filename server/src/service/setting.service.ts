@@ -25,7 +25,7 @@ export class SettingService {
     return SettingMapper.fromEntityToDTO(result);
   }
 
-  async findAndCount(options: FindManyOptions<SettingDTO>): Promise<[SettingDTO[], number]> {
+  async findAndCount(options: FindManyOptions<SettingDTO>): Promise<any> {
     options.relations = relationshipNames;
     const resultList = await this.settingRepository.findAndCount(options);
     const settingDTO: SettingDTO[] = [];

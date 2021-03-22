@@ -41,7 +41,7 @@ export class HospitalService {
     .innerJoinAndSelect('hospital.users', 'user')
     .where('user.id = :id', { id: id })
     .getRawOne();
-    return resultList.hospital_id;
+    return resultList;
   }
 
   async save(hospitalDTO: HospitalDTO): Promise<HospitalDTO | undefined> {

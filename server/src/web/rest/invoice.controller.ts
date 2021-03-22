@@ -49,11 +49,12 @@ export class InvoiceController {
     })
     async getAll(@Req() req: Request, @Param('search') search: string): Promise<InvoiceDTO[]> {
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-      var hospital = {};
+      var hospital;
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
         hospital = "all";
       } else {
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+        hospital = hospital["hospital_id"];
       }
 
       const [results, count] = await this.invoiceService.findAndCount(search,hospital,{
@@ -75,11 +76,12 @@ export class InvoiceController {
     })
     async getAllByStatus(@Req() req: Request): Promise<InvoiceDTO[]> {
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-      var hospital = {};
+      var hospital;
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
         hospital = "all";
       } else {
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+        hospital = hospital["hospital_id"];
       }
       const [results, count] = await this.invoiceService.getAll();
       HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
@@ -134,7 +136,7 @@ export class InvoiceController {
       description: 'The record has been successfully deleted.',
     })
     async deleteById(@Req() req: Request, @Param('id') id: string): Promise<InvoiceDTO> {
-      var invoice = await this.invoiceService.findByIdOne(id);
+      var invoice = await this.invoiceService.findById(id);
       var cardTransaction = await this.cardTransactionService.findById(invoice.cardTransaction.id);
       var cardTransactionDTO = new CardTransactionDTO();
       cardTransactionDTO.createdBy = req.user.id;
@@ -147,11 +149,9 @@ export class InvoiceController {
       var invoiceDTO = new InvoiceDTO();
       invoiceDTO.id = id;
       invoiceDTO.invoiceStatus = InvoiceStatus.CANCELLED;
+      invoiceDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها";
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Invoice', invoiceDTO.id);
       return await this.invoiceService.update(invoiceDTO);
-      // console.log(id)
-      // // HeaderUtil.addEntityDeletedHeaders(req.res, 'Invoice', id);
-      // // return id;
     }
 
     @Get('search/:id')
@@ -164,11 +164,12 @@ export class InvoiceController {
     async search(@Req() req: Request, @Param('id') id: string): Promise<any> {
       var cardInfo = await this.cardTransactionService.findByCardNo(id);
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-      var hospital = "";
+      var hospital;
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
         hospital = "all";
       } else {
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+        hospital = hospital["hospital_id"];
       }
       const [benefit, count] = await this.benefitRequestService.findAndCount(hospital,{
         where : { benefitStatus : "APPROVED" },
@@ -177,7 +178,6 @@ export class InvoiceController {
         order: pageRequest.sort.asOrder(),
       });
       HeaderUtil.addPaginationHeaders(req.res, new Page(benefit, count, pageRequest));
-      // console.log(cardInfo);
       var data = {}
       if(cardInfo[0] == []) {
         data = "";
@@ -232,7 +232,8 @@ export class InvoiceController {
       cardTransactionDTO.createdBy = req.user.id;
       const created = await this.cardTransactionService.save(cardTransactionDTO);
 
-      var hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+      var hospital_id = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+      var hospital = await this.hospitalService.findById(hospital_id["hospital_id"]);
 
       data.invoice.hospital = hospital;
       data.invoice.createdBy = req.user.id;

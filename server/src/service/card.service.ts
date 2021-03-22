@@ -25,7 +25,7 @@ export class CardService {
         return CardMapper.fromEntityToDTO(result);
     }
 
-    async findAndCount(options: FindManyOptions<CardDTO>): Promise<[CardDTO[], number]> {
+    async findAndCount(options: FindManyOptions<CardDTO>): Promise<CardDTO[] | any> {
         options.relations = relationshipNames;
         const resultList = await this.cardRepository.findAndCount(options);
         const cardDTO: CardDTO[] = [];

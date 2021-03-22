@@ -14,7 +14,7 @@ export class CompanyService {
 
     constructor(@InjectRepository(CompanyRepository) private companyRepository: CompanyRepository) {}
 
-    async findById(id: string): Promise<CompanyDTO | undefined> {
+    async findById(id: any): Promise<CompanyDTO | undefined> {
         const options = { relations: relationshipNames };
         const result = await this.companyRepository.findOne(id, options);
         return CompanyMapper.fromEntityToDTO(result);
@@ -42,7 +42,8 @@ export class CompanyService {
       .innerJoinAndSelect('company.users', 'user')
       .where('user.id = :id', { id: user_id })
       .getRawOne();
-      return resultList.company_id;
+      console.log(resultList);
+      return resultList;
     }
 
     async save(companyDTO: CompanyDTO): Promise<CompanyDTO | undefined> {

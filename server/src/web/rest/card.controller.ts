@@ -10,6 +10,7 @@ import { LoggingInterceptor } from '../../client/interceptors/logging.intercepto
 import { CardTransactionService } from '../../service/card-transaction.service';
 import { CardTransactionDTO } from '../../service/dto/card-transaction.dto';
 import { SettingService } from '../../service/setting.service';
+import { TransactionAction } from '../../domain/enumeration/transaction-action';
 
 @Controller('api/cards')
 @UseGuards(AuthGuard, RolesGuard)
@@ -131,7 +132,7 @@ export class CardController {
       type: CardDTO,
     })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
-    async chargeCard(@Req() req: Request, @Body() data: object): Promise<CardDTO> {
+    async chargeCard(@Req() req: Request, @Body() data: any): Promise<CardDTO> {
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var resualtSettings =  await this.settingService.findAndCount({
         skip: +pageRequest.page * pageRequest.size,
@@ -142,7 +143,7 @@ export class CardController {
       cardTransactionDTO.amount = data.points / resualtSettings[0][0].value;
       cardTransactionDTO.pointsAmount = data.points;
       cardTransactionDTO.card = data.card.id;
-      cardTransactionDTO.action = "PLUS";
+      cardTransactionDTO.action = TransactionAction.PLUS;
       cardTransactionDTO.notes = "اضافة نقاط الى البطاقة ( شحن البطاقة )";
       cardTransactionDTO.createdBy = req.user.id;
       const created = await this.cardTransactionService.save(cardTransactionDTO);

@@ -84,7 +84,7 @@
                         </router-link>
                     </li>
 
-                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
+                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN', 'ROLE_COMPANY_ADMIN'])">
                         <router-link class='nav-link' to='/employee'>
                             <font-awesome-icon icon='asterisk' />
                             <span>الموظفين</span>

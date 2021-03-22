@@ -57,7 +57,7 @@ export class CardTransactionService {
         return;
     }
 
-    async findByCardNo(card_no : string): Promise<[CardTransactionDTO[], number]>  {
+    async findByCardNo(card_no : string): Promise<CardTransactionDTO[] | any>  {
 
         var resultList = await this.cardTransactionRepository.createQueryBuilder('card_transaction')
         .innerJoinAndSelect('card_transaction.card', 'card')

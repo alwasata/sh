@@ -15,7 +15,7 @@ export class InvoiceBenefitsService {
 
     constructor(@InjectRepository(InvoiceBenefitsRepository) private invoiceBenefitsRepository: InvoiceBenefitsRepository) {}
 
-    async findById(id: string): Promise<InvoiceBenefitsDTO | undefined> {
+    async findById(id: string): Promise<any> {
         const result = await this.invoiceBenefitsRepository.createQueryBuilder('invoice_benefits')
         .innerJoinAndSelect('invoice_benefits.benefit', 'benefit')
         .where('invoiceId = :id', { id: id })
@@ -28,7 +28,7 @@ export class InvoiceBenefitsService {
         return InvoiceBenefitsMapper.fromEntityToDTO(result);
     }
 
-    async findAndCount(options: FindManyOptions<InvoiceBenefitsDTO>): Promise<[InvoiceBenefitsDTO[], number]> {
+    async findAndCount(options: FindManyOptions<InvoiceBenefitsDTO>): Promise<any> {
         options.relations = relationshipNames;
         const resultList = await this.invoiceBenefitsRepository.findAndCount(options);
         const invoiceBenefitsDTO: InvoiceBenefitsDTO[] = [];

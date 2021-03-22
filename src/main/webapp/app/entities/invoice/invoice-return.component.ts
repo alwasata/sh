@@ -182,8 +182,8 @@ export default class InvoiceUpdate extends Vue {
     this.invoice.total = this.returnTotalIvoicePrice;
     this.invoice.totalPoints = this.returnTotal;
     this.invoice.invoiceStatus = InvoiceStatus.RETURNED;
-    this.invoice.invoiceDate = new Date(this.invoiceDate);
-    this.invoice.payDate = new Date(this.invoiceDate);
+    this.invoice.invoiceDate = this.invoiceDate;
+    this.invoice.payDate = this.invoiceDate;
     this.invoice.mainInvoice = this.invoiceId;
     this.invoice.invoiceNo =
       'RIN-' + new Date().getFullYear() + '-' + new Date().getMonth() + '-' + Math.floor(1000 + Math.random() * 9000);

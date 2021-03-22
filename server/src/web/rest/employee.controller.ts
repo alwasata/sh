@@ -29,13 +29,13 @@ export class EmployeeController {
       type: EmployeeDTO,
     })
     async getAll(@Req() req: Request): Promise<EmployeeDTO[]> {
-      var company = "";
+      var company;
       if(req.user.authorities.includes('ROLE_ADMIN') == true) {
         company = "all";
       } else {
         company = await this.companyService.getCompanyIdForUser(req.user.id);
+        company = company["company_id"];
       }
-      console.log(company);
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       const [results, count] = await this.employeeService.findAndCount(company,{
         skip: +pageRequest.page * pageRequest.size,
@@ -69,7 +69,8 @@ export class EmployeeController {
     async post(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<EmployeeDTO> {
       employeeDTO.createdBy =req.user.id;
       if(req.user.authorities.includes('ROLE_COMPANY_ADMIN') == true) {
-        var company_id = await this.companyService.getCompanyIdForUser(req.user.id);
+        var company = await this.companyService.getCompanyIdForUser(req.user.id);
+        var company_id = await this.companyService.findById(company["company_id"]);
         employeeDTO.company = company_id;
       }
       const created = await this.employeeService.save(employeeDTO);

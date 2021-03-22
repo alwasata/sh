@@ -25,10 +25,10 @@ export class EmployeeService {
     return EmployeeMapper.fromEntityToDTO(result);
   }
 
-  async findAndCount(company_id : string,options: FindManyOptions<EmployeeDTO>): Promise<[EmployeeDTO[], number]> {
+  async findAndCount(company_id : any,options: FindManyOptions<EmployeeDTO>): Promise<[EmployeeDTO[], number]> {
     options.relations = relationshipNames;
     var resultList = [][0];
-    
+
     if(company_id == "all") {
       resultList = await this.employeeRepository.findAndCount(options);
     } else {
@@ -37,7 +37,7 @@ export class EmployeeService {
       .where('company.id = :id', { id: company_id })
       .getManyAndCount();
     }
-    console.log(resultList);
+    
     const employeeDTO: EmployeeDTO[] = [];
     if (resultList && resultList[0]) {
       resultList[0].forEach(employee => employeeDTO.push(EmployeeMapper.fromEntityToDTO(employee)));
