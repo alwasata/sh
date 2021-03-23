@@ -146,12 +146,12 @@ var InvoiceController = /** @class */ (function () {
                         console.log(cardInfo);
                         pageRequest = new pagination_entity_1.PageRequest(req.query.page, req.query.size, req.query.sort);
                         hospital = "";
-                        if (!(req.user.authorities.includes('ROLE_ADMIN') == true)) return [3 /*break*/, 2];
+                        if (!(req.user["authorities"].includes('ROLE_ADMIN') == true)) return [3 /*break*/, 2];
                         hospital = "all";
                         return [3 /*break*/, 4];
                     case 2:
-                        console.log(req.user.id);
-                        return [4 /*yield*/, this.hospitalService.getHosbitalIdForUser(req.user.id)];
+                        console.log(req.user["id"]);
+                        return [4 /*yield*/, this.hospitalService.getHosbitalIdForUser(req.user["id"])];
                     case 3:
                         hospital = _b.sent();
                         _b.label = 4;

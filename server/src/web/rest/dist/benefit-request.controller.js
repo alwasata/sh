@@ -68,10 +68,10 @@ var BenefitRequestController = /** @class */ (function () {
                     case 0:
                         pageRequest = new pagination_entity_1.PageRequest(req.query.page, req.query.size, req.query.sort);
                         hospital = "";
-                        if (!(req.user.authorities.includes('ROLE_ADMIN') == true)) return [3 /*break*/, 1];
+                        if (!(req.user["authorities"].includes('ROLE_ADMIN') == true)) return [3 /*break*/, 1];
                         hospital = "all";
                         return [3 /*break*/, 3];
-                    case 1: return [4 /*yield*/, this.hospitalService.getHosbitalIdForUser(req.user.id)];
+                    case 1: return [4 /*yield*/, this.hospitalService.getHosbitalIdForUser(req.user["id"])];
                     case 2:
                         hospital = _b.sent();
                         _b.label = 3;
@@ -107,8 +107,8 @@ var BenefitRequestController = /** @class */ (function () {
                         value = process.env.POINT_COST;
                         // benefitRequestDTO.pointsCost = (benefitRequestDTO.cost * value);
                         benefitRequestDTO.benefitStatus = benefit_status_1.BenefitStatus.PENDING;
-                        if (!(req.user.authorities.includes('ROLE_HOSPITAL_ADMIN') == true)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.hospitalService.getHosbitalIdForUser(req.user.id)];
+                        if (!(req.user["authorities"].includes('ROLE_HOSPITAL_ADMIN') == true)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.hospitalService.getHosbitalIdForUser(req.user["id"])];
                     case 1:
                         hospital_id = _a.sent();
                         benefitRequestDTO.hospital = hospital_id;

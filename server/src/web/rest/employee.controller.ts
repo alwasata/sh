@@ -30,10 +30,10 @@ export class EmployeeController {
     })
     async getAll(@Req() req: Request): Promise<EmployeeDTO[]> {
       var company;
-      if(req.user.authorities.includes('ROLE_ADMIN') == true) {
+      if(req.user["authorities"].includes('ROLE_ADMIN') == true) {
         company = "all";
       } else {
-        company = await this.companyService.getCompanyIdForUser(req.user.id);
+        company = await this.companyService.getCompanyIdForUser(req.user["id"]);
         company = company["company_id"];
       }
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
@@ -67,9 +67,9 @@ export class EmployeeController {
     })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async post(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<EmployeeDTO> {
-      employeeDTO.createdBy =req.user.id;
-      if(req.user.authorities.includes('ROLE_COMPANY_ADMIN') == true) {
-        var company = await this.companyService.getCompanyIdForUser(req.user.id);
+      employeeDTO.createdBy =req.user["id"];
+      if(req.user["authorities"].includes('ROLE_COMPANY_ADMIN') == true) {
+        var company = await this.companyService.getCompanyIdForUser(req.user["id"]);
         var company_id = await this.companyService.findById(company["company_id"]);
         employeeDTO.company = company_id;
       }
@@ -87,7 +87,7 @@ export class EmployeeController {
       type: EmployeeDTO,
     })
     async put(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<EmployeeDTO> {
-      employeeDTO.lastModifiedBy =req.user.id;
+      employeeDTO.lastModifiedBy =req.user["id"];
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Employee', employeeDTO.id);
       return await this.employeeService.update(employeeDTO);
     }

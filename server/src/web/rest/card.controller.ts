@@ -145,7 +145,7 @@ export class CardController {
       cardTransactionDTO.card = data.card.id;
       cardTransactionDTO.action = TransactionAction.PLUS;
       cardTransactionDTO.notes = "اضافة نقاط الى البطاقة ( شحن البطاقة )";
-      cardTransactionDTO.createdBy = req.user.id;
+      cardTransactionDTO.createdBy = req.user["id"];
       const created = await this.cardTransactionService.save(cardTransactionDTO);
       return data.card;
     }

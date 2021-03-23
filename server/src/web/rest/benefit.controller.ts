@@ -36,10 +36,10 @@ export class BenefitController {
 
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var hospital;
-      if(req.user.authorities.includes('ROLE_ADMIN') == true) {
+      if(req.user["authorities"].includes('ROLE_ADMIN') == true) {
         hospital = "all";
       } else {
-        hospital = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+        hospital = await this.hospitalService.getHosbitalIdForUser(req.user["id"]);
         hospital = hospital["hospital_id"];
       }
       const [results, count] = await this.benefitService.findAndCount(hospital,{
@@ -74,8 +74,8 @@ export class BenefitController {
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async post(@Req() req: Request, @Body() benefitDTO: BenefitDTO): Promise<BenefitDTO> {
 
-      if (req.user.authorities.includes('ROLE_HOSPITAL_ADMIN') === true) {
-        var hospital_id = await this.hospitalService.getHosbitalIdForUser(req.user.id);
+      if (req.user["authorities"].includes('ROLE_HOSPITAL_ADMIN') === true) {
+        var hospital_id = await this.hospitalService.getHosbitalIdForUser(req.user["id"]);
         var hospital = await this.hospitalService.findById(hospital_id["hospital_id"]);
         benefitDTO.hospital = hospital;
       }

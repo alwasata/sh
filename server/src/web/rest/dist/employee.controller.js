@@ -66,10 +66,10 @@ var EmployeeController = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         company = "";
-                        if (!(req.user.authorities.includes('ROLE_ADMIN') == true)) return [3 /*break*/, 1];
+                        if (!(req.user["authorities"].includes('ROLE_ADMIN') == true)) return [3 /*break*/, 1];
                         company = "all";
                         return [3 /*break*/, 3];
-                    case 1: return [4 /*yield*/, this.companyService.getCompanyIdForUser(req.user.id)];
+                    case 1: return [4 /*yield*/, this.companyService.getCompanyIdForUser(req.user["id"])];
                     case 2:
                         company = _b.sent();
                         _b.label = 3;
@@ -105,9 +105,9 @@ var EmployeeController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        employeeDTO.createdBy = req.user.id;
-                        if (!(req.user.authorities.includes('ROLE_COMPANY_ADMIN') == true)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.companyService.getCompanyIdForUser(req.user.id)];
+                        employeeDTO.createdBy = req.user["id"];
+                        if (!(req.user["authorities"].includes('ROLE_COMPANY_ADMIN') == true)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.companyService.getCompanyIdForUser(req.user["id"])];
                     case 1:
                         company_id = _a.sent();
                         employeeDTO.company = company_id;
@@ -126,7 +126,7 @@ var EmployeeController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        employeeDTO.lastModifiedBy = req.user.id;
+                        employeeDTO.lastModifiedBy = req.user["id"];
                         header_util_1.HeaderUtil.addEntityCreatedHeaders(req.res, 'Employee', employeeDTO.id);
                         return [4 /*yield*/, this.employeeService.update(employeeDTO)];
                     case 1: return [2 /*return*/, _a.sent()];

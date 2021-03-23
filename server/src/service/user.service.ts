@@ -48,7 +48,7 @@ export class UserService {
         return UserMapper.fromEntityToDTO(user);
     }
 
-    async delete(userDTO: UserDTO): Promizse<UserDTO | undefined> {
+    async delete(userDTO: UserDTO): Promise<UserDTO | undefined> {
         const user = UserMapper.fromDTOtoEntity(userDTO);
         const result = await this.userRepository.remove(user);
         return UserMapper.fromEntityToDTO(result);

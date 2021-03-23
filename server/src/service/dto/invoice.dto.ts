@@ -25,6 +25,9 @@ export class InvoiceDTO extends BaseDTO {
     @ApiModelProperty({ description: 'total points', required: false , default:null})
     totalPoints: number;
 
+    @ApiModelProperty({ description: 'main invoice', required: false , default:null})
+    mainInvoice: InvoiceDTO;
+
     @ApiModelProperty({ enum: InvoiceStatus, description: 'invoiceStatus enum field', required: false })
     invoiceStatus: InvoiceStatus;
 
