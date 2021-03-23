@@ -12,8 +12,8 @@ const commonConf = {
 let ormconfig = {
     name: 'default',
     type: 'mysql',
-    database: 'sahati',
-    url: 'mysql://root:toor@localhost:3306/sahati',
+    database: 'alwasata_sahati',
+    url: 'mysql://alwasata_sahati:1g82PXKb-O;4rb@localhost:3306/alwasata_sahati',
     logging: false,
     synchronize: true,
     entities: commonConf.ENTITIES,
@@ -26,8 +26,8 @@ if (process.env.NODE_ENV === 'prod') {
     exports.ormconfig = ormconfig = {
         name: 'default',
         type: 'mysql',
-        database: 'sahati',
-        url: 'mysql://root:toor@localhost:3306/sahati',
+        database: 'alwasata_sahati',
+        url: 'mysql://alwasata_sahati:1g82PXKb-O;4rb@localhost:3306/alwasata_sahati',
         logging: false,
         synchronize: commonConf.SYNCRONIZE,
         entities: commonConf.ENTITIES,
