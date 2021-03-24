@@ -3,7 +3,7 @@
         <div class="col-8">
         <form action="" v-on:submit.prevent="charge()">
             <h2 id='sahatiApp.card.home.createOrEditLabel'>اضافة او تعديل بطاقة</h2>
-            <input type="text" disabled class="form-control" v-model="card.id">
+            <input type="hidden" disabled class="form-control" v-model="card.id">
             <div class='form-group'>
                         <label class='form-control-label' for='card-cardNo'>رقم البطاقة</label>
                         <input type="text" class="form-control" name="cardNo" id="card-cardNo" disabled

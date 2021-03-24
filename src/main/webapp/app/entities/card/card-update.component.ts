@@ -20,9 +20,9 @@ const validations: any = {
 })
 export default class CardUpdate extends Vue {
   @Inject('alertService') private alertService: () => AlertService;
-  @Inject('cardService') private cardService: () => CardService;
   public card: ICard = new Card();
 
+  @Inject('cardService') private cardService: () => CardService;
   @Inject('employeeService') private employeeService: () => EmployeeService;
 
   public employees: IEmployee[] = [];
@@ -32,6 +32,7 @@ export default class CardUpdate extends Vue {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.cardId) {
+        console.log(to.params);
         vm.retrieveCard(to.params.cardId);
       }
       vm.initRelationships();
@@ -75,7 +76,7 @@ export default class CardUpdate extends Vue {
     this.cardService()
       .find(cardId)
       .then(res => {
-        this.card = res;
+        this.card = res.card;
       });
   }
 
