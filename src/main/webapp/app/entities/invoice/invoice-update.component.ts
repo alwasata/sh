@@ -262,7 +262,7 @@ export default class InvoiceUpdate extends Vue {
         mywindow.document.write("<span style='foint-size:16px;'>اسم الشركة  : " + this.companyName + '</span>');
         mywindow.document.write('</div>');
         mywindow.document.write("<hr><div class='row' style='margin-top:15px'>");
-        mywindow.document.write("<span style='foint-size:16px;'>المنفعات :- </span>");
+        mywindow.document.write("<span style='foint-size:16px;'>المنافع :- </span>");
         mywindow.document.write('<table>');
         mywindow.document.write(`
         <thead>

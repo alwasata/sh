@@ -49,7 +49,7 @@
                     <li class='nav-item' v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
                         <router-link class='nav-link' to='/benefit'>
                             <font-awesome-icon icon='asterisk' />
-                            <span>المنفعات</span>
+                            <span>المنافع</span>
                         </router-link>
                     </li>
                     <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">

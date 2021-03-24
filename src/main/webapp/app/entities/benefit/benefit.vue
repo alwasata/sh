@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2 id="page-heading">
-            <span id='benefit-heading'>المنفعات</span>
+            <span id='benefit-heading'>المنافع</span>
             <router-link :to="{name: 'BenefitCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-benefit">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>

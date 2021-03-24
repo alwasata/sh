@@ -100,7 +100,7 @@
             </div>
 
             <hr>
-            <h4>المنفعات المرتجعة</h4>
+            <h4>المنافع المرتجعة</h4>
             <div class="row">
                <table class="table" id="main-table">
                     <thead>

@@ -27,15 +27,15 @@
             </div>
         </div>
         <div class="card text-white bg-success mb-3 ml-3 col-md-3" style="max-width: 18rem;" v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
-            <div class="card-header">المنفعات المفعلة</div>
+            <div class="card-header">المنافع المفعلة</div>
             <div class="card-body">
-                <h5 class="card-title">المنفعات : 4</h5>
+                <h5 class="card-title">المنافع : 4</h5>
             </div>
         </div>
         <div class="card text-white bg-warning mb-3 ml-3 col-md-3" style="max-width: 18rem;" v-if="hasRole(['ROLE_ADMIN'])">
-            <div class="card-header">المنفعات الغير مفعلة</div>
+            <div class="card-header">المنافع الغير مفعلة</div>
             <div class="card-body">
-                <h5 class="card-title">المنفعات : 1</h5>
+                <h5 class="card-title">المنافع : 1</h5>
             </div>
         </div>
         </div>
