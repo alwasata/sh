@@ -6,12 +6,15 @@ import { IInvoice } from '@/shared/model/invoice.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
 
 import InvoiceService from './invoice.service';
+import AccountService from '@/account/account.service';
 
 @Component({
   mixins: [Vue2Filters.mixin],
 })
 export default class Invoice extends mixins(AlertMixin) {
   @Inject('invoiceService') private invoiceService: () => InvoiceService;
+  @Inject('accountService') private accountService: () => AccountService;
+
   private removeId: number = null;
   public itemsPerPage = 20;
   public queryCount: number = null;
@@ -70,6 +73,19 @@ export default class Invoice extends mixins(AlertMixin) {
     if (<any>this.$refs.removeEntity) {
       (<any>this.$refs.removeEntity).show();
     }
+  }
+  public hasRole(roles: any): boolean {
+    if (this.userAuthorities() == null) {
+      return false;
+    }
+    for (const element of roles) {
+      if (this.$store.getters.account.authorities.includes(element)) {
+        return true;
+      }
+    }
+  }
+  public userAuthorities() {
+    return this.accountService().getAuthorities();
   }
 
   public removeInvoice(): void {
