@@ -10,16 +10,16 @@ import { UserDTO } from './user.dto';
  */
 export class CompanyDTO extends BaseDTO {
     @IsNotEmpty()
-    @ApiModelProperty({ description: 'nameAr field' })
+    @ApiModelProperty({ description: 'nameAr field' , uniqueItems: true})
     nameAr: string;
 
-    @ApiModelProperty({ description: 'nameEn field', required: false })
+    @ApiModelProperty({ description: 'nameEn field', required: false, uniqueItems: true })
     nameEn: string;
 
-    @ApiModelProperty({ description: 'email field', required: false })
+    @ApiModelProperty({ description: 'email field', required: false, uniqueItems: true })
     email: string;
 
-    @ApiModelProperty({ description: 'phone field', required: false })
+    @ApiModelProperty({ description: 'phone field', required: false, uniqueItems: true })
     phone: string;
 
     @ApiModelProperty({ description: 'address field', required: false })

@@ -2,7 +2,9 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import CompanyService from '../company/company.service';
 import { ICompany } from '@/shared/model/company.model';
-import { required } from 'vuelidate/lib/validators';
+import { required, helpers } from 'vuelidate/lib/validators';
+export const isEnglish = helpers.regex('alpha', /[a-zA-Z]/);
+export const isPhoneNo = helpers.regex('alpha', /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im);
 
 import AlertService from '@/shared/alert/alert.service';
 import { Employee, IEmployee } from '@/shared/model/employee.model';

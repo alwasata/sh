@@ -80,7 +80,7 @@ export class EmployeeController {
 
     @Put('/')
     @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
-    @ApiOperation({ title: 'Update employee' })
+    @ApiOperation({ title: 'Update employee'})
     @ApiResponse({
       status: 200,
       description: 'The record has been successfully updated.',

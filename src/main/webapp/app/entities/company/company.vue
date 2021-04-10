@@ -48,14 +48,14 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'address'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('discount')"><span>Discount</span>
+                    <!-- <th v-on:click="changeOrder('discount')"><span>Discount</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'discount'"
                                             :reverse='reverse'></jhi-sort-indicator>
-                    </th>
-                    <th v-on:click="changeOrder('fixedDiscount')"><span>Fixed Discount</span>
+                    </th> -->
+                    <!-- <th v-on:click="changeOrder('fixedDiscount')"><span>Fixed Discount</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'fixedDiscount'"
                                             :reverse='reverse'></jhi-sort-indicator>
-                    </th>
+                    </th> -->
                     <th></th>
                 </tr>
                 </thead>
@@ -70,8 +70,8 @@
                     <td>{{company.email}}</td>
                     <td>{{company.phone}}</td>
                     <td>{{company.address}}</td>
-                    <td>{{company.discount}}</td>
-                    <td>{{company.fixedDiscount}}</td>
+                    <!-- <td>{{company.discount}}</td>
+                    <td>{{company.fixedDiscount}}</td> -->
                     <td class="text-right">
                         <div class="btn-group">
                             <router-link :to="{name: 'CompanyView', params: {companyId: company.id}}" tag="button" class="btn btn-info btn-sm details">

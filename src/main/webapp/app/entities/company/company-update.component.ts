@@ -1,6 +1,9 @@
 import { Component, Inject, Vue } from 'vue-property-decorator';
 
-import { required } from 'vuelidate/lib/validators';
+import { required, alpha, helpers, email } from 'vuelidate/lib/validators';
+export const isArabic = helpers.regex('alpha', /[\u0600-\u06FF]/);
+export const isEnglish = helpers.regex('alpha', /[a-zA-Z]/);
+export const isPhoneNo = helpers.regex('alpha', /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im);
 
 import UserService from '@/admin/user-management/user-management.service';
 
@@ -12,11 +15,23 @@ const validations: any = {
   company: {
     nameAr: {
       required,
+      isArabic,
     },
-    nameEn: {},
-    email: {},
-    phone: {},
-    address: {},
+    nameEn: {
+      required,
+      isEnglish,
+    },
+    email: {
+      required,
+      email,
+    },
+    phone: {
+      required,
+      isPhoneNo,
+    },
+    address: {
+      required,
+    },
     discount: {},
     fixedDiscount: {},
   },
@@ -75,7 +90,8 @@ export default class CompanyUpdate extends Vue {
           this.$router.go(-1);
           const message = 'A Company is created with identifier ' + param.id;
           this.alertService().showAlert(message, 'success');
-        });
+        })
+        .catch(e => {});
     }
   }
 
@@ -97,6 +113,13 @@ export default class CompanyUpdate extends Vue {
       .then(res => {
         this.users = res.data;
       });
+  }
+
+  public nameArTyping(): void {
+    var arabic = /[\u0600-\u06FF]/;
+    if (!arabic.test(this.company.nameAr)) {
+      this.company.nameAr = '';
+    }
   }
 
   public getSelected(selectedVals, option): any {
