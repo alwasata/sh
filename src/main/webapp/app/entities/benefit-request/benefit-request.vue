@@ -106,11 +106,11 @@
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>عرض</span>
                             </router-link>
-                            <router-link v-if="benefitRequest.benefitStatus == 'PENDING'" :to="{name: 'BenefitRequestEdit', params: {benefitRequestId: benefitRequest.id}}"  tag="button" class="btn btn-primary btn-sm edit">
+                            <router-link :to="{name: 'BenefitRequestEdit', params: {benefitRequestId: benefitRequest.id}}"  tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
-                            <b-button v-if="benefitRequest.benefitStatus == 'PENDING'" v-on:click="prepareRemove(benefitRequest)"
+                            <b-button  v-on:click="prepareRemove(benefitRequest)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>

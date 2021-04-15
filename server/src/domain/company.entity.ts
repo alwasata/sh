@@ -9,20 +9,38 @@ import { User } from './user.entity';
  */
 @Entity('company')
 export class Company extends BaseEntity {
-    @Column({ name: 'name_ar' })
+    @Column({ name: 'name_ar' , unique: true })
     nameAr: string;
 
-    @Column({ name: 'name_en', nullable: true })
+    @Column({ name: 'name_en', unique: true })
     nameEn: string;
 
-    @Column({ name: 'email', nullable: true })
+    @Column({ name: 'email', unique: true })
     email: string;
 
-    @Column({ name: 'phone', nullable: true })
+    @Column({ name: 'phone', unique: true })
     phone: string;
 
     @Column({ name: 'address', nullable: true })
     address: string;
+
+    @Column({ name: 'city', nullable: true })
+    city: string;
+
+    @Column({ name: 'lat', nullable: true })
+    lat: string;
+
+    @Column({ name: 'lng', nullable: true })
+    lng: string;
+
+    @Column({ name: 'active', default:1 })
+    active: boolean;
+
+    @Column({ name: 'activity_type', nullable: true })
+    activityType: string;
+
+    @Column({ name: 'jurisdiction', nullable: true })
+    jurisdiction: string;
 
     @Column({ type: 'float', name: 'discount', nullable: true, default: 0 })
     discount: number;
@@ -37,6 +55,12 @@ export class Company extends BaseEntity {
         inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' },
     })
     users: User[];
+
+    @Column({ name: 'phone_second', default: null  })
+    phoneSecond: string;
+
+    @Column({ name: 'phone_third', default: null  })
+    phoneThird: string;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 }

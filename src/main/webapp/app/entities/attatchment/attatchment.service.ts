@@ -20,6 +20,19 @@ export default class AttatchmentService {
     });
   }
 
+  public findByEmployee(employeeId: number): Promise<IAttatchment> {
+    return new Promise<IAttatchment>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/employee/${employeeId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public retrieve(paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios

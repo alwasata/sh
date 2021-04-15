@@ -28,12 +28,14 @@ export default class CardUpdate extends Vue {
   public employees: IEmployee[] = [];
   public isSaving = false;
   public currentLanguage = '';
+  public update = false;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.cardId) {
         console.log(to.params);
         vm.retrieveCard(to.params.cardId);
+        this.update = true;
       }
       vm.initRelationships();
     });

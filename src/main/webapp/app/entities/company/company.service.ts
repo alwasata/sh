@@ -33,10 +33,10 @@ export default class CompanyService {
     });
   }
 
-  public delete(id: number): Promise<any> {
+  public delete(id: number, status: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .delete(`${baseApiUrl}/${id}`)
+        .delete(`${baseApiUrl}/${id}/${status}`)
         .then(res => {
           resolve(res);
         })
@@ -46,8 +46,8 @@ export default class CompanyService {
     });
   }
 
-  public create(entity: ICompany): Promise<ICompany> {
-    return new Promise<ICompany>((resolve, reject) => {
+  public create(entity: ICompany): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
         .then(res => {
@@ -59,8 +59,8 @@ export default class CompanyService {
     });
   }
 
-  public update(entity: ICompany): Promise<ICompany> {
-    return new Promise<ICompany>((resolve, reject) => {
+  public update(entity: ICompany): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .put(`${baseApiUrl}`, entity)
         .then(res => {

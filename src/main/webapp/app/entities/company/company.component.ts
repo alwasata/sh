@@ -20,6 +20,7 @@ export default class Company extends mixins(AlertMixin) {
   public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
+  public status = 0;
 
   public companies: ICompany[] = [];
 
@@ -42,6 +43,7 @@ export default class Company extends mixins(AlertMixin) {
       size: this.itemsPerPage,
       sort: this.sort(),
     };
+    console.log(paginationQuery);
     this.companyService()
       .retrieve(paginationQuery)
       .then(
@@ -57,8 +59,9 @@ export default class Company extends mixins(AlertMixin) {
       );
   }
 
-  public prepareRemove(instance: ICompany): void {
+  public prepareRemove(status: number, instance: ICompany): void {
     this.removeId = instance.id;
+    this.status = status;
     if (<any>this.$refs.removeEntity) {
       (<any>this.$refs.removeEntity).show();
     }
@@ -66,9 +69,9 @@ export default class Company extends mixins(AlertMixin) {
 
   public removeCompany(): void {
     this.companyService()
-      .delete(this.removeId)
+      .delete(this.removeId, this.status)
       .then(() => {
-        const message = 'A Company is deleted with identifier ' + this.removeId;
+        const message = this.status == 1 ? ' تم تعطيل الشركة  ' : ' تم تفعيل الشركة ' + this.removeId;
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;
@@ -79,9 +82,9 @@ export default class Company extends mixins(AlertMixin) {
 
   public sort(): Array<any> {
     const result = [this.propOrder + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.propOrder !== 'id') {
-      result.push('id');
-    }
+    // if (this.propOrder !== 'id') {
+    //   result.push('id');
+    // }
     return result;
   }
 

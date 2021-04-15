@@ -102,6 +102,7 @@ export class BenefitRequestController {
     async put(@Req() req: Request, @Body() benefitRequestDTO: BenefitRequestDTO): Promise<BenefitRequestDTO> {
       // you can't modify Benefit Request if its not in PENDING status
       // if (benefitRequestDTO.benefitStatus == BenefitStatus.PENDING) {
+        
         HeaderUtil.addEntityCreatedHeaders(req.res, 'BenefitRequest', benefitRequestDTO.id);
 
         const value = process.env.POINT_COST;

@@ -1,5 +1,6 @@
 import { getRepository, MigrationInterface, QueryRunner } from 'typeorm';
 import { User } from '../domain/user.entity';
+import { Setting } from '../domain/setting.entity';
 import { Authority } from '../domain/authority.entity';
 
 export class SeedUsersRoles1570200490072 implements MigrationInterface {
@@ -7,6 +8,8 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
   role2: Authority = { name: 'ROLE_USER' };
   role3: Authority = { name: 'ROLE_HOSPITAL_ADMIN' };
   role4: Authority = { name: 'ROLE_COMPANY_ADMIN' };
+
+  setting1: Setting = { value: '1' , key: "points"};
 
   user1: User = {
     login: 'system',
@@ -63,11 +66,13 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
     // eslint-disable-next-line
   public async up(queryRunner: QueryRunner): Promise<any> {
     const authorityRepository = getRepository('nhi_authority');
+  const settingRepository = getRepository('setting');
 
     const adminRole = await authorityRepository.save(this.role1);
     const userRole = await authorityRepository.save(this.role2);
     const hospitalAdminRole = await authorityRepository.save(this.role3);
     const companyAdminRole = await authorityRepository.save(this.role4);
+    await settingRepository.save(this.setting1);
 
     const userRepository = getRepository('nhi_user');
 

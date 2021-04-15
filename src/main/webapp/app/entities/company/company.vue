@@ -40,12 +40,28 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'email'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('phone')"><span>رقم الهاتف</span>
+                    <th v-on:click="changeOrder('phone')"><span> رقم الهاتف الاساسي</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'phone'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('city')"><span>المدينة</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'city'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
                     <th v-on:click="changeOrder('address')"><span>العنوان</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'address'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('activityType')"><span>نوع النشاط</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'activityType'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('jurisdiction')"><span>الاختصاص</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'jurisdiction'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('active')"><span>الحالة</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'active'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
                     <!-- <th v-on:click="changeOrder('discount')"><span>Discount</span>
@@ -69,7 +85,18 @@
                     <td>{{company.nameEn}}</td>
                     <td>{{company.email}}</td>
                     <td>{{company.phone}}</td>
+                    <td>{{company.city}}</td>
                     <td>{{company.address}}</td>
+                    <td>{{company.activityType == 'public' ? 'عام' : 'خاص ' }}</td>
+                    <td>{{ company.jurisdiction}}</td>
+                    <td :id="'company-active-' + company.id">
+                        <button v-if="company.active == '1'" class="btn btn-danger btn-sm" v-on:click="prepareRemove(0 ,company)">
+                            تعطيل
+                        </button>
+                        <button v-if="company.active == '0'" class="btn btn-success btn-sm" v-on:click="prepareRemove(1 ,company)">
+                            تفعيل
+                        </button>
+                    </td>
                     <!-- <td>{{company.discount}}</td>
                     <td>{{company.fixedDiscount}}</td> -->
                     <td class="text-right">
@@ -82,13 +109,13 @@
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
-                            <b-button v-on:click="prepareRemove(company)"
+                            <!-- <b-button v-on:click="prepareRemove(company)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>حذف</span>
-                            </b-button>
+                            </b-button> -->
                         </div>
                     </td>
                 </tr>

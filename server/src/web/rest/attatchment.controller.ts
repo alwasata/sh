@@ -36,6 +36,18 @@ export class AttatchmentController {
         return results;
     }
 
+
+    @Get('/employee/:employeeId')
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
+    @ApiResponse({
+      status: 200,
+      description: 'List all records',
+      type: AttatchmentDTO,
+    })
+    async findByEmployee(@Param('employeeId') employeeId : string): Promise<AttatchmentDTO> {
+      return await this.attatchmentService.findByEmplyee(employeeId);
+    }
+
     @Get('/:id')
     @Roles(RoleType.USER)
     @ApiResponse({

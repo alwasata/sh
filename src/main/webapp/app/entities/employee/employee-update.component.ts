@@ -2,6 +2,7 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import CompanyService from '../company/company.service';
 import { ICompany } from '@/shared/model/company.model';
+import { Attatchment, IAttatchment } from '@/shared/model/attatchment.model';
 import { required, helpers } from 'vuelidate/lib/validators';
 export const isEnglish = helpers.regex('alpha', /[a-zA-Z]/);
 export const isPhoneNo = helpers.regex('alpha', /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im);
@@ -10,6 +11,11 @@ import AlertService from '@/shared/alert/alert.service';
 import { Employee, IEmployee } from '@/shared/model/employee.model';
 import EmployeeService from './employee.service';
 import AccountService from '@/account/account.service';
+import AlertMixin from '@/shared/alert/alert.mixin';
+import JhiDataUtils from '@/shared/data/data-utils.service';
+import AttatchmentService from '../attatchment/attatchment.service';
+
+import { mixins } from 'vue-class-component';
 
 const validations: any = {
   employee: {
@@ -27,6 +33,11 @@ const validations: any = {
       required,
     },
   },
+  attatchment: {
+    name: {},
+    file: {},
+    fileUrl: {},
+  },
 };
 
 @Component({
@@ -35,7 +46,10 @@ const validations: any = {
 export default class EmployeeUpdate extends Vue {
   @Inject('alertService') private alertService: () => AlertService;
   @Inject('employeeService') private employeeService: () => EmployeeService;
+  @Inject('attatchmentService') private attatchmentService: () => AttatchmentService;
+
   public employee: IEmployee = new Employee();
+  public attatchment: IAttatchment = new Attatchment();
 
   @Inject('companyService') private companyService: () => CompanyService;
 
@@ -45,6 +59,7 @@ export default class EmployeeUpdate extends Vue {
   public companies: ICompany[] = [];
   public isSaving = false;
   public currentLanguage = '';
+  public base = this;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -80,6 +95,8 @@ export default class EmployeeUpdate extends Vue {
       this.employeeService()
         .create(this.employee)
         .then(param => {
+          this.attatchment.employee = param;
+          this.attatchmentService().create(this.attatchment);
           this.isSaving = false;
           this.$router.go(-1);
           const message = 'A Employee is created with identifier ' + param.id;
@@ -92,8 +109,26 @@ export default class EmployeeUpdate extends Vue {
     this.employeeService()
       .find(employeeId)
       .then(res => {
+        // document.getElementById('img-file').innerHTML = 'يجب ادخال قيمة';
         this.employee = res;
+        this.attatchmentService()
+          .findByEmployee(this.employee.id)
+          .then(res => {
+            this.attatchment = res;
+            console.log(this.toBase64(this.attatchment.file.data));
+            document.getElementById('img-file').innerHTML = 'يجب ادخال قيمة';
+            document.getElementById('img-file').innerHTML = `<img >`;
+            document.getElementById('img-file').innerHTML = `<img width="200" height="200"  :src="'data:image/jpeg;base64,'${this.toBase64(
+              this.attatchment.file.data
+            )}" >`;
+            console.log(res);
+          });
       });
+  }
+
+  public toBase64(arr: any): any {
+    //arr = new Uint8Array(arr) if it's an ArrayBuffer
+    return btoa(arr.reduce((data, byte) => data + String.fromCharCode(byte), ''));
   }
 
   public previousState(): void {
@@ -105,6 +140,14 @@ export default class EmployeeUpdate extends Vue {
       .retrieve()
       .then(res => {
         this.companies = res.data;
+      });
+  }
+
+  public retrieveAttatchment(attatchmentId): void {
+    this.attatchmentService()
+      .find(attatchmentId)
+      .then(res => {
+        this.attatchment = res;
       });
   }
 

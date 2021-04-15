@@ -25,6 +25,14 @@ export class AttatchmentService {
         return AttatchmentMapper.fromEntityToDTO(result);
     }
 
+    async findByEmplyee(employee: string): Promise<AttatchmentDTO | any> {
+      var resultList = await this.attatchmentRepository.createQueryBuilder('attachment')
+      .innerJoinAndSelect('attachment.employee', 'employee')
+      .where('employee.id = :id', { id: employee })
+      .getOne();
+        return resultList;
+    }
+
     async findAndCount(options: FindManyOptions<AttatchmentDTO>): Promise<[AttatchmentDTO[], number]> {
         options.relations = relationshipNames;
         const resultList = await this.attatchmentRepository.findAndCount(options);

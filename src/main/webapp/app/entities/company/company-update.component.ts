@@ -33,7 +33,23 @@ const validations: any = {
       required,
     },
     discount: {},
+    phoneSecond: {
+      isPhoneNo,
+    },
+    phoneThird: {
+      isPhoneNo,
+    },
     fixedDiscount: {},
+    activityType: {},
+    jurisdiction: {
+      required,
+    },
+    lng: {},
+    lat: {},
+    active: {},
+    city: {
+      required,
+    },
   },
 };
 
@@ -50,6 +66,7 @@ export default class CompanyUpdate extends Vue {
   public users: Array<any> = [];
   public isSaving = false;
   public currentLanguage = '';
+  public error = '';
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -72,26 +89,38 @@ export default class CompanyUpdate extends Vue {
   }
 
   public save(): void {
-    this.isSaving = true;
+    // this.isSaving = true;
     if (this.company.id) {
       this.companyService()
         .update(this.company)
         .then(param => {
-          this.isSaving = false;
-          this.$router.go(-1);
-          const message = 'A Company is updated with identifier ' + param.id;
-          this.alertService().showAlert(message, 'info');
+          if (param.code == 'ER_DUP_ENTRY') {
+            this.error = ' مستخدم مسبقا ' + param.message.split("'")[1];
+            (document.getElementById('alert-danger') as HTMLDivElement).hidden = false;
+          } else {
+            this.isSaving = false;
+            this.$router.go(-1);
+            const message = 'A Company is updated with identifier ' + param.id;
+            this.alertService().showAlert(message, 'info');
+          }
         });
     } else {
       this.companyService()
         .create(this.company)
         .then(param => {
-          this.isSaving = false;
-          this.$router.go(-1);
-          const message = 'A Company is created with identifier ' + param.id;
-          this.alertService().showAlert(message, 'success');
+          if (param.code == 'ER_DUP_ENTRY') {
+            this.error = ' مستخدم مسبقا ' + param.message.split("'")[1];
+            (document.getElementById('alert-danger') as HTMLDivElement).hidden = false;
+          } else {
+            this.isSaving = false;
+            this.$router.go(-1);
+            const message = 'A Company is created with identifier ' + param.id;
+            this.alertService().showAlert(message, 'success');
+          }
         })
-        .catch(e => {});
+        .catch(e => {
+          // console.log(e);
+        });
     }
   }
 

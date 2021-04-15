@@ -10,6 +10,7 @@ import { LoggingInterceptor } from '../../client/interceptors/logging.intercepto
 import { HospitalService } from '../../service/hospital.service';
 import { BenefitRequestService } from '../../service/benefit-request.service';
 import { BenefitRequestDTO } from '../../service/dto/benefit-request.dto';
+import { BenefitStatus } from '../../domain/enumeration/benefit-status';
 
 @Controller('api/benefits')
 @UseGuards(AuthGuard, RolesGuard)
@@ -80,10 +81,12 @@ export class BenefitController {
         benefitDTO.hospital = hospital;
       }
       // benefitDTO.pointsCost = ;
+      benefitDTO.createdBy = req.user["id"];
       const created = await this.benefitService.save(benefitDTO);
       const benefitRequestDTO = new BenefitRequestDTO();
       benefitRequestDTO.nameAr = benefitDTO.nameAr;
       benefitRequestDTO.nameEn = benefitDTO.nameEn;
+      benefitRequestDTO.createdBy = req.user["id"];
       // benefitRequestDTO.pointsCost = benefitDTO.cost*1.1;
       benefitRequestDTO.cost = benefitDTO.cost;
       benefitRequestDTO.hospital = benefitDTO.hospital;
@@ -104,8 +107,27 @@ export class BenefitController {
     })
     async put(@Req() req: Request, @Body() benefitDTO: BenefitDTO): Promise<BenefitDTO> {
       // benefitDTO.pointsCost = benefitDTO.cost*1.1;
+
+      const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+      var benefitRequestDTO = new BenefitRequestDTO();
+      benefitRequestDTO.benefit = benefitDTO;
+      const [results, count] = await this.benefitRequestService.findAndCount("all",{
+        where: {benefit : benefitDTO},
+        skip: +pageRequest.page * pageRequest.size,
+        take: +pageRequest.size,
+        order: pageRequest.sort.asOrder(),
+      });
+      benefitRequestDTO = results[0];
+      if(benefitRequestDTO.cost != benefitDTO.cost) {
+        benefitRequestDTO.lastModifiedBy = req.user["id"];
+        benefitRequestDTO.notes = "تم تعديل المنفعة من"+benefitRequestDTO.cost+"الى "+benefitDTO.cost;
+        benefitRequestDTO.cost = benefitDTO.cost;
+        benefitRequestDTO.benefitStatus = BenefitStatus.PENDING;
+        await this.benefitRequestService.update(benefitRequestDTO);
+      }
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Benefit', benefitDTO.id);
       return await this.benefitService.update(benefitDTO);
+      return benefitDTO;
     }
 
     @Delete('/:id')

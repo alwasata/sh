@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post as PostMethod, Put, UseGuards, Req, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiUseTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
-import { Request } from 'express';
+import { Request, response } from 'express';
 import { CompanyDTO } from '../../service/dto/company.dto';
 import { CompanyService } from '../../service/company.service';
 import { PageRequest, Page } from '../../domain/base/pagination.entity';
@@ -56,23 +56,27 @@ export class CompanyController {
         description: 'The record has been successfully created.',
         type: CompanyDTO,
     })
-    @ApiResponse({ status: 403, description: 'Forbidden.' })
+    @ApiResponse({ status: 403, description: 'Forbidden.'})
     async post(@Req() req: Request, @Body() companyDTO: CompanyDTO): Promise<CompanyDTO> {
 
       const userDTO =   new UserDTO();
       userDTO.firstName   = companyDTO['nameAr'];
       userDTO.lastName    = companyDTO['nameEn'];
-      userDTO.email       = companyDTO['nameEn']+'@company.com';
+      userDTO.email       = companyDTO['email'];
       userDTO.login       = companyDTO['nameEn'];
       userDTO.password    = companyDTO['nameEn'];
       userDTO.authorities = [RoleType.COMPANY_ADMIN, RoleType.USER];
+      try {
+        const createdUser = await this.userService.save(userDTO);
+        companyDTO.users  = [ createdUser ];
 
-      const createdUser = await this.userService.save(userDTO);
-      companyDTO.users  = [ createdUser ];
-
-        const created = await this.companyService.save(companyDTO);
-        HeaderUtil.addEntityCreatedHeaders(req.res, 'Company', created.id);
-        return created;
+          const created = await this.companyService.save(companyDTO);
+          HeaderUtil.addEntityCreatedHeaders(req.res, 'Company', created.id);
+          return created;
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
     }
 
     @Put('/')
@@ -84,19 +88,27 @@ export class CompanyController {
         type: CompanyDTO,
     })
     async put(@Req() req: Request, @Body() companyDTO: CompanyDTO): Promise<CompanyDTO> {
+      try {
         HeaderUtil.addEntityCreatedHeaders(req.res, 'Company', companyDTO.id);
         return await this.companyService.update(companyDTO);
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
     }
 
-    @Delete('/:id')
+    @Delete('/:id/:status')
     @Roles(RoleType.ADMIN)
     @ApiOperation({ title: 'Delete company' })
     @ApiResponse({
         status: 204,
         description: 'The record has been successfully deleted.',
     })
-    async deleteById(@Req() req: Request, @Param('id') id: string): Promise<void> {
+    async deleteById(@Req() req: Request, @Param('id') id: string,  @Param('status') status: boolean): Promise<CompanyDTO> {
+      var companyDTO = new CompanyDTO();
+      companyDTO.id = id;
+      companyDTO.active = status;
         HeaderUtil.addEntityDeletedHeaders(req.res, 'Company', id);
-        return await this.companyService.deleteById(id);
+        return await this.companyService.update(companyDTO);
     }
 }
