@@ -78,23 +78,26 @@ export class HospitalController{
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
 
-  async post(@Req() req: Request, @Body() hospitalDTO: HospitalDTO): Promise<HospitalDTO> {
+  async post(@Req() req: Request, @Body() hospitalDTO: HospitalDTO): Promise<any> {
+    try{
+      const userDTO =   new UserDTO();
+      userDTO.firstName   = hospitalDTO['nameAr'];
+      userDTO.lastName    = hospitalDTO['nameEn'];
+      userDTO.email       = hospitalDTO['nameEn']+'@hospital.com';
+      userDTO.login       = hospitalDTO['nameEn'];
+      userDTO.password    = hospitalDTO['nameEn'];
+      userDTO.activated   = hospitalDTO.active;
+      userDTO.authorities = [RoleType.HOSPITAL_ADMIN, RoleType.USER];
 
-    const userDTO =   new UserDTO();
-    userDTO.firstName   = hospitalDTO['nameAr'];
-    userDTO.lastName    = hospitalDTO['nameEn'];
-    userDTO.email       = hospitalDTO['nameEn']+'@hospital.com';
-    userDTO.login       = hospitalDTO['nameEn'];
-    userDTO.password    = hospitalDTO['nameEn'];
-    userDTO.authorities = [RoleType.HOSPITAL_ADMIN, RoleType.USER];
-
-    const createdUser = await this.userService.save(userDTO);
-    hospitalDTO.users  = [ createdUser ];
-    hospitalDTO.createdBy =req.user["id"];
-    const created = await this.hospitalService.save(hospitalDTO);
-    HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', created.id);
-
-    return created;
+      const createdUser = await this.userService.save(userDTO);
+      hospitalDTO.users  = [ createdUser ];
+      hospitalDTO.createdBy =req.user["id"];
+      const created = await this.hospitalService.save(hospitalDTO);
+      HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', created.id);
+      return created;
+    }catch(error){
+      return error;
+    }
   }
 
   @Put('/')
@@ -105,10 +108,20 @@ export class HospitalController{
     description: 'The record has been successfully updated.',
     type: HospitalDTO,
   })
-  async put(@Req() req: Request, @Body() hospitalDTO: HospitalDTO): Promise<HospitalDTO> {
-    hospitalDTO.lastModifiedBy =req.user["id"];
-    HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', hospitalDTO.id);
-    return await this.hospitalService.update(hospitalDTO);
+  async put(@Req() req: Request, @Body() hospitalDTO: HospitalDTO): Promise<any> {
+    try{
+      var userHospital = await this.hospitalService.findById(hospitalDTO.id);
+      var userDto = new UserDTO();
+      userDto.id = userHospital.users[0].id;
+      userDto.activated = hospitalDTO.active;
+      await this.userService.update(userDto);
+
+      hospitalDTO.lastModifiedBy =req.user["id"];
+      HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', hospitalDTO.id);
+      return await this.hospitalService.update(hospitalDTO);
+    }catch(error){
+      return error;
+    }
   }
 
   @Delete('/:id/:status')

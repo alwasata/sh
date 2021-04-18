@@ -64,7 +64,19 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'active'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
+                    <th v-on:click="changeOrder('createdDate')"><span>اضافتها من قبل</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'createdDate'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('createdDate')"><span>تعديلها من قبل</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'createdDate'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
                     <th v-on:click="changeOrder('createdDate')"><span>تاريخ الانشاء</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'createdDate'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('createdDate')"><span>تاريخ التعديل</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'createdDate'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -98,6 +110,8 @@
                             تفعيل
                         </button>
                     </td>
+                    <td>{{ company.createdBy.login}}</td>
+                    <td>{{ company.lastModifiedBy ? company.lastModifiedBy.login : 'لا يوجد'}}</td>
                     <td>
                         {{ company.createdDate | formatDateOnly }}
                         <span class="badge badge-pill badge-warning">
@@ -106,6 +120,16 @@
                             <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
                         </svg>
                         {{ company.createdDate | formatTimeOnly }}
+                        </span>
+                    </td>
+                    <td>
+                        {{company.lastModifiedDate | formatDateOnly}}
+                        <span class="badge badge-pill badge-warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>
+                        {{company.lastModifiedDate | formatTimeOnly}}
                         </span>
                     </td>
                     <!-- <td>{{company.discount}}</td>

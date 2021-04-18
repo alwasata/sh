@@ -27,7 +27,10 @@ export class CompanyService {
 
     async findAndCount(options: FindManyOptions<CompanyDTO>): Promise<[CompanyDTO[], number]> {
         options.relations = relationshipNames;
-        const resultList = await this.companyRepository.findAndCount(options);
+        const resultList =await this.companyRepository.createQueryBuilder('company')
+        .innerJoinAndSelect('company.createdBy', 'createdBy')
+        .leftJoinAndSelect('company.lastModifiedBy', 'lastModifiedBy')
+        .getManyAndCount();
         const companyDTO: CompanyDTO[] = [];
         if (resultList && resultList[0]) {
             resultList[0].forEach(company => companyDTO.push(CompanyMapper.fromEntityToDTO(company)));

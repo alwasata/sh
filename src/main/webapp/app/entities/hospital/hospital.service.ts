@@ -59,8 +59,8 @@ export default class HospitalService {
     });
   }
 
-  public create(entity: IHospital): Promise<IHospital> {
-    return new Promise<IHospital>((resolve, reject) => {
+  public create(entity: IHospital): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
         .then(res => {
@@ -72,8 +72,8 @@ export default class HospitalService {
     });
   }
 
-  public update(entity: IHospital): Promise<IHospital> {
-    return new Promise<IHospital>((resolve, reject) => {
+  public update(entity: IHospital): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .put(`${baseApiUrl}`, entity)
         .then(res => {

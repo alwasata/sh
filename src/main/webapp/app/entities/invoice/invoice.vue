@@ -123,15 +123,20 @@
                             </b-button>
                         </div>
                         </div>
+                        <br>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <b-modal ref="removeEntity" id="removeEntity" >
-            <span slot='modal-title'><span id='sahatiApp.invoice.delete.question'>تاكيد عملية الحذف</span></span>
+            <span slot='modal-title'><span id='sahatiApp.invoice.delete.question'>تاكيد عملية الالغاء</span></span>
             <div class="modal-body">
-                <p id='jhi-delete-invoice-heading'>هل انت متاكد من حذف Invoice?</p>
+                <p id='jhi-delete-invoice-heading'>هل انت متاكد من الغاء الفاتورة?</p>
+
+                 <div class="btn-group text-danger" :id="'invoice-error'">
+
+                </div>
             </div>
             <div slot='modal-footer'>
                 <button class='btn btn-secondary' type='button' v-on:click='closeDialog()'>الغاء</button>
@@ -140,6 +145,8 @@
                 </button>
             </div>
         </b-modal>
+
+
         <div v-show="invoices && invoices.length > 0">
             <div class="row justify-content-center">
                 <jhi-item-count :page="page" :total="queryCount" :itemsPerPage="itemsPerPage"></jhi-item-count>

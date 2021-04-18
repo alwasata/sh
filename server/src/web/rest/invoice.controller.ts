@@ -135,39 +135,37 @@ export class InvoiceController {
       status: 204,
       description: 'The record has been successfully deleted.',
     })
-    async deleteById(@Req() req: Request, @Param('id') id: string): Promise<InvoiceDTO> {
+    async deleteById(@Req() req: Request, @Param('id') id: string): Promise<any> {
       var invoice = await this.invoiceService.findById(id);
       var cardTransaction = await this.cardTransactionService.findById(invoice.cardTransaction.id);
 
       const results = await this.invoiceService.findByInvoice(id);
       var total = invoice.total;
-
       var checkQuantity;
       checkQuantity = true;
-      if(results[0] != 0){
-      for await (const element of results) {
-       total = total - element.total;
+      if(results.length != 0){
+        for await (const element of results) {
+          total = total - element.total;
+        }
+        if(total == 0) {
+          return "error";
+        }
+        var cardTransactionDTO = new CardTransactionDTO();
+        cardTransactionDTO.createdBy = req.user["id"];
+        cardTransactionDTO.card = cardTransaction.card;
+        cardTransactionDTO.amount = total;
+        cardTransactionDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها "+"علما بان هذه الفاتورة تحتوي على فاتورة مرتجعة";
+        cardTransactionDTO.action = TransactionAction.PLUS;
+        await this.cardTransactionService.save(cardTransactionDTO);
+      } else {
+        var cardTransactionDTO = new CardTransactionDTO();
+        cardTransactionDTO.createdBy = req.user["id"];
+        cardTransactionDTO.card = cardTransaction.card;
+        cardTransactionDTO.amount = cardTransaction.amount;
+        cardTransactionDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها";
+        cardTransactionDTO.action = TransactionAction.PLUS;
+        await this.cardTransactionService.save(cardTransactionDTO);
       }
-      console.log("total"+total);
-      if(total != 0) {
-          var cardTransactionDTO = new CardTransactionDTO();
-          cardTransactionDTO.createdBy = req.user["id"];
-          cardTransactionDTO.card = cardTransaction.card;
-          cardTransactionDTO.amount = total;
-          cardTransactionDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها "+"علما بان هذه الفاتورة تحتوي على فاتورة مرتجعة";
-          cardTransactionDTO.action = TransactionAction.PLUS;
-          await this.cardTransactionService.save(cardTransactionDTO);
-      }
-    } else {
-      var cardTransactionDTO = new CardTransactionDTO();
-      cardTransactionDTO.createdBy = req.user["id"];
-      cardTransactionDTO.card = cardTransaction.card;
-      cardTransactionDTO.amount = cardTransaction.amount;
-      cardTransactionDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها";
-      cardTransactionDTO.action = TransactionAction.PLUS;
-      await this.cardTransactionService.save(cardTransactionDTO);
-    }
-
       var invoiceDTO = new InvoiceDTO();
       invoiceDTO.id = id;
       invoiceDTO.invoiceStatus = InvoiceStatus.CANCELLED;

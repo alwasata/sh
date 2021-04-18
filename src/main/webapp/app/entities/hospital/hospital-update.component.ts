@@ -1,6 +1,9 @@
 import { Component, Inject, Vue } from 'vue-property-decorator';
 
-import { required } from 'vuelidate/lib/validators';
+import { required, helpers, email } from 'vuelidate/lib/validators';
+export const isArabic = helpers.regex('alpha', /[\u0600-\u06FF]/);
+export const isEnglish = helpers.regex('alpha', /[a-zA-Z]/);
+export const isPhoneNo = helpers.regex('alpha', /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im);
 
 import UserService from '@/admin/user-management/user-management.service';
 
@@ -12,11 +15,44 @@ const validations: any = {
   hospital: {
     nameAr: {
       required,
+      isArabic,
     },
-    nameEn: {},
-    email: {},
-    phone: {},
-    address: {},
+    nameEn: {
+      required,
+      isEnglish,
+    },
+    email: {
+      required,
+      email,
+    },
+    phone: {
+      required,
+      isPhoneNo,
+    },
+    phoneSecond: {
+      isPhoneNo,
+    },
+    phoneThird: {
+      isPhoneNo,
+    },
+    address: {
+      required,
+    },
+    notes: {
+      required,
+    },
+    type: {
+      required,
+    },
+    lat: {
+      required,
+    },
+    lng: {
+      required,
+    },
+    city: {
+      required,
+    },
   },
 };
 
@@ -33,6 +69,7 @@ export default class HospitalUpdate extends Vue {
   public users: Array<any> = [];
   public isSaving = false;
   public currentLanguage = '';
+  public error = '';
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -55,24 +92,36 @@ export default class HospitalUpdate extends Vue {
   }
 
   public save(): void {
-    this.isSaving = true;
+    document.getElementById('error').innerHTML = '';
     if (this.hospital.id) {
       this.hospitalService()
         .update(this.hospital)
         .then(param => {
-          this.isSaving = false;
-          this.$router.go(-1);
-          const message = 'A Hospital is updated with identifier ' + param.id;
-          this.alertService().showAlert(message, 'info');
+          if (param.code == 'ER_DUP_ENTRY') {
+            this.error = ' مستخدم مسبقا ' + param.message.split("'")[1];
+            (document.getElementById('alert-danger') as HTMLDivElement).hidden = false;
+            document.getElementById('error').innerHTML = 'هناك خطاء في ادخال البيانات ارجو التاكد';
+          } else {
+            this.isSaving = false;
+            this.$router.go(-1);
+            const message = 'A Hospital is updated with identifier ' + param.id;
+            this.alertService().showAlert(message, 'info');
+          }
         });
     } else {
       this.hospitalService()
         .create(this.hospital)
         .then(param => {
-          this.isSaving = false;
-          this.$router.go(-1);
-          const message = 'A Hospital is created with identifier ' + param.id;
-          this.alertService().showAlert(message, 'success');
+          if (param.code == 'ER_DUP_ENTRY') {
+            this.error = ' مستخدم مسبقا ' + param.message.split("'")[1];
+            (document.getElementById('alert-danger') as HTMLDivElement).hidden = false;
+            document.getElementById('error').innerHTML = 'هناك خطاء في ادخال البيانات ارجو التاكد';
+          } else {
+            this.isSaving = false;
+            this.$router.go(-1);
+            const message = 'A Hospital is created with identifier ' + param.id;
+            this.alertService().showAlert(message, 'success');
+          }
         });
     }
   }

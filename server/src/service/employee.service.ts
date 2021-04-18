@@ -30,14 +30,20 @@ export class EmployeeService {
     var resultList = [][0];
 
     if(company_id == "all") {
-      resultList = await this.employeeRepository.findAndCount(options);
+      resultList = await this.employeeRepository.createQueryBuilder('employee')
+      .innerJoinAndSelect('employee.company', 'company')
+      .innerJoinAndSelect('employee.createdBy', 'createdBy')
+      .leftJoinAndSelect('employee.lastModifiedBy', 'lastModifiedBy')
+      .getManyAndCount();
     } else {
       resultList = await this.employeeRepository.createQueryBuilder('employee')
       .innerJoinAndSelect('employee.company', 'company')
+      .innerJoinAndSelect('employee.createdBy', 'createdBy')
+      .leftJoinAndSelect('employee.lastModifiedBy', 'lastModifiedBy')
       .where('company.id = :id', { id: company_id })
       .getManyAndCount();
     }
-    
+
     const employeeDTO: EmployeeDTO[] = [];
     if (resultList && resultList[0]) {
       resultList[0].forEach(employee => employeeDTO.push(EmployeeMapper.fromEntityToDTO(employee)));

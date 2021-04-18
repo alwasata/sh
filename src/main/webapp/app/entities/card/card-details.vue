@@ -28,10 +28,10 @@
                         </span>
                     </dd>
                     <dt>
-                        <span>النقاط</span>
+                        <span>السعر</span>
                     </dt>
                     <dd>
-                        <span>{{ points }} نقطة</span>
+                        <span>{{ points }} د.ل</span>
                     </dd>
                     <dt>
                         <span>موظف</span>
@@ -49,10 +49,7 @@
                         class='btn btn-info'>
                     <font-awesome-icon icon='arrow-left'></font-awesome-icon>&nbsp;<span> Back</span>
                 </button>
-                <router-link v-if='card.id' :to="{name: 'CardEdit', params: {cardId: card.id}}" tag='button'
-                             class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
-                </router-link>
+
             </div>
         </div>
     </div>

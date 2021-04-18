@@ -27,7 +27,10 @@ export class HospitalService {
 
   async findAndCount(options: FindManyOptions<HospitalDTO>): Promise<[HospitalDTO[], number]> {
     options.relations = relationshipNames;
-    const resultList = await this.hospitalRepository.findAndCount(options);
+    const resultList = await this.hospitalRepository.createQueryBuilder('hospital')
+    .innerJoinAndSelect('hospital.createdBy', 'createdBy')
+    .leftJoinAndSelect('hospital.lastModifiedBy', 'lastModifiedBy')
+    .getManyAndCount();
     const hospitalDTO: HospitalDTO[] = [];
     if (resultList && resultList[0]) {
       resultList[0].forEach(hospital => hospitalDTO.push(HospitalMapper.fromEntityToDTO(hospital)));

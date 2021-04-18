@@ -49,26 +49,26 @@ export default class Home extends Vue {
   //   return this.$store.getters.account.authorities;
   // }
 
-  public mounted(): void {
-    this.invoices();
-  }
-  public invoices() {
-    this.invoiceService()
-      .getInvoicesByStatus('APPROVED')
-      .then(result => {
-        return (this.countInvoice = result);
-      });
-    this.invoiceService()
-      .getInvoicesByStatus('RETURNED')
-      .then(result => {
-        return (this.returnInvoice = result);
-      });
-    this.invoiceService()
-      .getInvoicesByStatus('CANCELLED')
-      .then(result => {
-        return (this.cancleInvoice = result);
-      });
-  }
+  // public mounted(): void {
+  //   this.invoices();
+  // }
+  // public invoices() {
+  //   this.invoiceService()
+  //     .getInvoicesByStatus('APPROVED')
+  //     .then(result => {
+  //       return (this.countInvoice = result);
+  //     });
+  //   this.invoiceService()
+  //     .getInvoicesByStatus('RETURNED')
+  //     .then(result => {
+  //       return (this.returnInvoice = result);
+  //     });
+  //   this.invoiceService()
+  //     .getInvoicesByStatus('CANCELLED')
+  //     .then(result => {
+  //       return (this.cancleInvoice = result);
+  //     });
+  // }
 
   public get username(): string {
     return this.$store.getters.account ? this.$store.getters.account.login : '';

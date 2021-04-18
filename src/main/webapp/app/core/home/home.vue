@@ -7,7 +7,7 @@
   :update-config="{duration: 2000, easing: 'easeOutBounce'}"
   type="bar"
 /> -->
-        <div class="row" v-if="authenticated">
+        <!-- <div class="row" v-if="authenticated">
         <div class="card text-white bg-primary mb-3 ml-3 col-md-3" style="max-width: 18rem;" v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
             <div class="card-header">الفواتير</div>
             <div class="card-body">
@@ -38,7 +38,7 @@
                 <h5 class="card-title">المنافع : 1</h5>
             </div>
         </div>
-        </div>
+        </div> -->
 
     <section v-if="!authenticated">
         <div style="flex: 0 0 auto;" class="modal-body">

@@ -7,6 +7,13 @@ export interface IHospital {
   email?: string;
   phone?: string;
   address?: string;
+  city?: string;
+  lat?: string;
+  lng?: string;
+  phoneSecond?: string;
+  phoneThird?: string;
+  type?: string;
+  notes?: string;
   active?: boolean;
   users?: IUser[];
 }
@@ -20,6 +27,13 @@ export class Hospital implements IHospital {
     public phone?: string,
     public active?: boolean,
     public address?: string,
+    public city?: string,
+    public lat?: string,
+    public lng?: string,
+    public phoneSecond?: string,
+    public phoneThird?: string,
+    public type?: string,
+    public notes?: string,
     public users?: IUser[]
   ) {}
 }

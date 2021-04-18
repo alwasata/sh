@@ -9,23 +9,44 @@ import { User } from './user.entity';
  */
 @Entity('hospital')
 export class Hospital extends BaseEntity {
-    @Column({ name: 'name_ar' })
+    @Column({ name: 'name_ar', unique: true  })
     nameAr: string;
 
-    @Column({ name: 'name_en', nullable: true })
+    @Column({ name: 'name_en', unique: true })
     nameEn: string;
 
-    @Column({ name: 'email', nullable: true })
+    @Column({ name: 'email', unique: true })
     email: string;
 
-    @Column({ name: 'phone', nullable: true })
+    @Column({ name: 'phone', unique: true })
     phone: string;
 
     @Column({ name: 'active', default:1 })
     active: boolean;
-    
+
+    @Column({ name: 'city', nullable: true })
+    city: string;
+
     @Column({ name: 'address', nullable: true })
     address: string;
+
+    @Column({ name: 'lat', nullable: true })
+    lat: string;
+
+    @Column({ name: 'lng', nullable: true })
+    lng: string;
+
+    @Column({ name: 'phoneSecond', unique: true })
+    phoneSecond: string;
+
+    @Column({ name: 'phoneThird', unique: true })
+    phoneThird: string;
+
+    @Column({ name: 'type', nullable: true })
+    type: string;
+
+    @Column({ name: 'notes', nullable: true })
+    notes: string;
 
     @ManyToMany(type => User)
     @JoinTable({

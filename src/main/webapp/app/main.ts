@@ -41,8 +41,10 @@ import InvoiceService from '@/entities/invoice/invoice.service';
 import InvoiceBenefitsService from '@/entities/invoice-benefits/invoice-benefits.service';
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
-import moment from 'moment';
+import VueSweetalert2 from 'vue-sweetalert2';
+Vue.use(VueSweetalert2);
 
+import moment from 'moment';
 Vue.filter('formatDateOnly', function (value) {
   if (value) {
     return moment(String(value)).format('YYYY-MM-DD');

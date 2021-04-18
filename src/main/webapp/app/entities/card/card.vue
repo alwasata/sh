@@ -38,11 +38,19 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'isActive'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('isActive')"><span>الذي قام بالعملية</span>
+                    <th v-on:click="changeOrder('isActive')"><span>تم اضافتها عن طريق</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'isActive'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('isActive')"><span>تم تعديلها عن طريق</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'isActive'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
                     <th v-on:click="changeOrder('isActive')"><span>تاريخ الانشاء</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'isActive'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('isActive')"><span>تاريخ التعديل</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'isActive'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -67,6 +75,7 @@
                         </span>
                     </td>
                     <td>{{card.createdBy.login}}</td>
+                    <td>{{ card.lastModifiedBy ? card.lastModifiedBy.login : 'لا يوجد'}}</td>
                     <td>
                         {{card.createdDate | formatDateOnly}}
                         <span class="badge badge-pill badge-warning">
@@ -75,6 +84,16 @@
                             <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
                         </svg>
                         {{card.createdDate | formatTimeOnly}}
+                        </span>
+                    </td>
+                    <td>
+                        {{card.lastModifiedDate | formatDateOnly}}
+                        <span class="badge badge-pill badge-warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>
+                        {{card.lastModifiedDate | formatTimeOnly}}
                         </span>
                     </td>
                     <td class="text-right">

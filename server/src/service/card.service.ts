@@ -34,12 +34,14 @@ export class CardService {
       .innerJoinAndSelect('card.employee', 'employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('card.createdBy', 'createdBy')
+      .leftJoinAndSelect('card.lastModifiedBy', 'lastModifiedBy')
       .getManyAndCount();
     } else {
       resultList = await this.cardRepository.createQueryBuilder('card')
       .innerJoinAndSelect('card.employee', 'employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('card.createdBy', 'createdBy')
+      .leftJoinAndSelect('card.lastModifiedBy', 'lastModifiedBy')
       .where('employee.company.id = :id', { id: company_id })
       .getManyAndCount();
     }

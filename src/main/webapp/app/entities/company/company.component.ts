@@ -68,7 +68,7 @@ export default class Company extends mixins(AlertMixin) {
         const message = status == true ? ' تم تفعيل   ' + instance.nameAr : ' تم تعطيل  ' + instance.nameAr;
         this.alertService().showAlert(message, status == true ? 'success' : 'danger');
         this.getAlertFromStore();
-        this.retrieveAllCompanys();
+        // this.retrieveAllCompanys();
       });
   }
 

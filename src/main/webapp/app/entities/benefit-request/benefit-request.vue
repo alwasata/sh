@@ -44,7 +44,7 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'cost'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('benefitStatus')"><span>حالة المنفعة</span>
+                    <th v-on:click="changeOrder('benefitStatus')"><span>الحالة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'benefitStatus'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -69,6 +69,14 @@
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
                     <th v-on:click="changeOrder('notes')"><span>تم تعديلها من قبل</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('notes')"><span>تاريخ الانشاء</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('notes')"><span>تاريخ التعديل</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
@@ -132,11 +140,30 @@
                      <td>
                        <div v-if='benefitRequest.benefit'>
                             <router-link :to="{name: 'JhiUserView', params: {userId: benefitRequest.createdBy.login}}">
-                                {{ benefitRequest.lastModifiedBy.login }}
+                                {{ benefitRequest.lastModifiedBy ? benefitRequest.lastModifiedBy.login : 'لا يوجد' }}
                             </router-link>
                         </div>
                     </td>
-
+                    <td>
+                        {{benefitRequest.createdDate | formatDateOnly}}
+                        <span class="badge badge-pill badge-warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>
+                        {{benefitRequest.createdDate | formatTimeOnly}}
+                        </span>
+                    </td>
+                    <td>
+                        {{benefitRequest.lastModifiedDate | formatDateOnly}}
+                        <span class="badge badge-pill badge-warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>
+                        {{benefitRequest.lastModifiedDate | formatTimeOnly}}
+                        </span>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <router-link :to="{name: 'BenefitRequestView', params: {benefitRequestId: benefitRequest.id}}" tag="button" class="btn btn-info btn-sm details">

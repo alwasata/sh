@@ -39,7 +39,7 @@ export class BenefitRequestService {
       .innerJoinAndSelect('benefit_request.category', 'category')
       .innerJoinAndSelect('benefit_request.benefit', 'benefit')
       .innerJoinAndSelect('benefit_request.createdBy', 'createdBy')
-      .innerJoinAndSelect('benefit_request.lastModifiedBy', 'lastModifiedBy')
+      .leftJoinAndSelect('benefit_request.lastModifiedBy', 'lastModifiedBy')
       .getManyAndCount();
     } else {
       resultList = await this.benefitRequestRepository.createQueryBuilder('benefit_request')
@@ -47,7 +47,7 @@ export class BenefitRequestService {
       .innerJoinAndSelect('benefit_request.category', 'category')
       .innerJoinAndSelect('benefit_request.benefit', 'benefit')
       .innerJoinAndSelect('benefit_request.createdBy', 'createdBy')
-      .innerJoinAndSelect('benefit_request.lastModifiedBy', 'lastModifiedBy')
+      .leftJoinAndSelect('benefit_request.lastModifiedBy', 'lastModifiedBy')
       .where('hospital.id = :id', { id: hosbital_id })
       .getManyAndCount();
     }

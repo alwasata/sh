@@ -24,10 +24,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th v-on:click="changeOrder('id')"><span>ID</span>
+                    <!-- <th v-on:click="changeOrder('id')"><span>ID</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
                                             :reverse='reverse'></jhi-sort-indicator>
-                    </th>
+                    </th> -->
                     <th v-on:click="changeOrder('name')"><span>الاسم</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'name'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -48,8 +48,24 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('company.nameAr')"><span>شركة</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'company.nameAr'"
+                    <th v-on:click="changeOrder('employee.nameAr')"><span>شركة</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'employee.nameAr'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('employee.nameAr')"><span>تم اضافتها عن طريق</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'employee.nameAr'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('employee.nameAr')"><span>تم تعديلها عن طريق</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'employee.nameAr'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('employee.nameAr')"><span>تاريخ الانشاء</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'employee.nameAr'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('employee.nameAr')"><span>تاريخ التعديل</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'employee.nameAr'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
                     <th></th>
@@ -58,9 +74,9 @@
                 <tbody>
                 <tr v-for="employee in employees"
                     :key="employee.id">
-                    <td>
+                    <!-- <td>
                         <router-link :to="{name: 'EmployeeView', params: {employeeId: employee.id}}">{{employee.id}}</router-link>
-                    </td>
+                    </td> -->
                     <td>{{employee.name}}</td>
                     <td>{{employee.phone}}</td>
                     <td>{{employee.identityNo}}</td>
@@ -75,6 +91,28 @@
                         <div v-else>
                             {{ employee.company.nameAr }}
                         </div>
+                    </td>
+                    <td>{{employee.createdBy.login}}</td>
+                    <td>{{ employee.lastModifiedBy ? employee.lastModifiedBy.login : 'لا يوجد'}}</td>
+                    <td>
+                        {{ employee.createdDate | formatDateOnly }}
+                        <span class="badge badge-pill badge-warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>
+                        {{ employee.createdDate | formatTimeOnly }}
+                        </span>
+                    </td>
+                    <td>
+                        {{employee.lastModifiedDate | formatDateOnly}}
+                        <span class="badge badge-pill badge-warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>
+                        {{employee.lastModifiedDate | formatTimeOnly}}
+                        </span>
                     </td>
                     <td class="text-right">
                         <div class="btn-group">

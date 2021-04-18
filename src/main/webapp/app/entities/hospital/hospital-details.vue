@@ -34,14 +34,14 @@
                     <dd>
                         <span>{{hospital.address}}</span>
                     </dd>
-                    <dt>
+                    <!-- <dt>
                         <span>User</span>
                     </dt>
                     <dd>
                         <span v-for="(user, i) in hospital.users" :key="user.id">{{i > 0 ? ', ' : ''}}
                             {{user.id}}
                         </span>
-                    </dd>
+                    </dd> -->
                 </dl>
                 <button type='submit'
                         v-on:click.prevent='previousState()'

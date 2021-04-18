@@ -157,6 +157,7 @@
 
                 </div>
                 <div>
+
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
                         <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>الغاء</span>
                     </button>

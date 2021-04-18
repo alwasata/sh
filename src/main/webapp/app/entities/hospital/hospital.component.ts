@@ -67,9 +67,9 @@ export default class Hospital extends mixins(AlertMixin) {
         const message = status == true ? ' تم تفعيل   ' + instance.nameAr : ' تم تعطيل  ' + instance.nameAr;
         this.alertService().showAlert(message, status == true ? 'success' : 'danger');
         this.getAlertFromStore();
-        this.retrieveAllHospitals();
+        // this.retrieveAllHospitals();
       });
-    this.status = status;
+    // this.status = status;
   }
 
   public sort(): Array<any> {

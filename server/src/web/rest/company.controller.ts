@@ -68,6 +68,7 @@ export class CompanyController {
     userDTO.email       = companyDTO['email'];
     userDTO.login       = companyDTO['nameEn'];
     userDTO.password    = companyDTO['nameEn'];
+    userDTO.activated   = companyDTO.active;
     userDTO.authorities = [RoleType.COMPANY_ADMIN, RoleType.USER];
     try {
       const createdUser = await this.userService.save(userDTO);
@@ -91,7 +92,13 @@ export class CompanyController {
   })
   async put(@Req() req: Request, @Body() companyDTO: CompanyDTO): Promise<CompanyDTO> {
     try {
+
       companyDTO.lastModifiedBy =req.user["id"];
+      var userCompany = await this.companyService.findById(companyDTO.id);
+      var userDto = new UserDTO();
+      userDto.id = userCompany.users[0].id;
+      userDto.activated = companyDTO.active;
+      await this.userService.update(userDto);
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Company', companyDTO.id);
       return await this.companyService.update(companyDTO);
     } catch (error) {
@@ -111,6 +118,7 @@ export class CompanyController {
     var companyDTO = new CompanyDTO();
     companyDTO.id = id;
     companyDTO.active = status;
+    // await this.userService.save(userDTO);
     HeaderUtil.addEntityDeletedHeaders(req.res, 'Company', id);
     return await this.companyService.update(companyDTO);
   }

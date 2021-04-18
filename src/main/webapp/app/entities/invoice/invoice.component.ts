@@ -1,6 +1,6 @@
 import { mixins } from 'vue-class-component';
 
-import { Component, Inject } from 'vue-property-decorator';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import { IInvoice } from '@/shared/model/invoice.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
@@ -91,10 +91,15 @@ export default class Invoice extends mixins(AlertMixin) {
   public removeInvoice(): void {
     this.invoiceService()
       .delete(this.removeId)
-      .then(() => {
-        this.removeId = null;
-        this.retrieveAllInvoices(this.search);
-        this.closeDialog();
+      .then(param => {
+        console.log(param);
+        if (param.data == 'error') {
+          document.getElementById('invoice-error').innerHTML = 'لا يمكن الغاء هذه الفاتورة لقد تم ارجاع جميع اصنافها ';
+        } else {
+          this.removeId = null;
+          this.retrieveAllInvoices(this.search);
+          this.closeDialog();
+        }
       });
   }
 
