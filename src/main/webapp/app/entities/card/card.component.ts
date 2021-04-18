@@ -7,6 +7,7 @@ import AlertMixin from '@/shared/alert/alert.mixin';
 
 import CardService from './card.service';
 import CardTransactionService from '../card-transaction/card-transaction.service';
+import AccountService from '@/account/account.service';
 
 @Component({
   mixins: [Vue2Filters.mixin],
@@ -14,6 +15,8 @@ import CardTransactionService from '../card-transaction/card-transaction.service
 export default class Card extends mixins(AlertMixin) {
   @Inject('cardService') private cardService: () => CardService;
   @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
+  @Inject('accountService') private accountService: () => AccountService;
+
   private removeId: number = null;
   public itemsPerPage = 20;
   public queryCount: number = null;
@@ -111,6 +114,21 @@ export default class Card extends mixins(AlertMixin) {
     this.propOrder = propOrder;
     this.reverse = !this.reverse;
     this.transition();
+  }
+
+  public hasRole(roles: any): boolean {
+    if (this.userAuthorities() == null) {
+      return false;
+    }
+    for (const element of roles) {
+      if (this.$store.getters.account.authorities.includes(element)) {
+        return true;
+      }
+    }
+  }
+
+  public userAuthorities() {
+    return this.accountService().getAuthorities();
   }
 
   public closeDialog(): void {

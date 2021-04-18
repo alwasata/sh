@@ -59,24 +59,16 @@ export default class Company extends mixins(AlertMixin) {
       );
   }
 
-  public prepareRemove(status: number, instance: ICompany): void {
-    this.removeId = instance.id;
-    this.status = status;
-    if (<any>this.$refs.removeEntity) {
-      (<any>this.$refs.removeEntity).show();
-    }
-  }
-
-  public removeCompany(): void {
+  public prepareRemove(status: boolean, instance: ICompany): void {
+    console.log(instance);
+    instance.active = status;
     this.companyService()
-      .delete(this.removeId, this.status)
-      .then(() => {
-        const message = this.status == 1 ? ' تم تعطيل الشركة  ' : ' تم تفعيل الشركة ' + this.removeId;
-        this.alertService().showAlert(message, 'danger');
+      .update(instance)
+      .then(param => {
+        const message = status == true ? ' تم تفعيل   ' + instance.nameAr : ' تم تعطيل  ' + instance.nameAr;
+        this.alertService().showAlert(message, status == true ? 'success' : 'danger');
         this.getAlertFromStore();
-        this.removeId = null;
         this.retrieveAllCompanys();
-        this.closeDialog();
       });
   }
 

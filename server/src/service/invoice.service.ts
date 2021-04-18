@@ -30,10 +30,10 @@ export class InvoiceService {
     return InvoiceMapper.fromEntityToDTO(result);
   }
 
-  async findByInvoice(options: FindManyOptions<InvoiceDTO>): Promise<InvoiceDTO[] | any> {
-    options.relations = relationshipNames;
-    const resultList = await this.invoiceRepository.findAndCount(options);
-    return resultList;
+  async findByInvoice(id: string): Promise<InvoiceDTO[] | any> {
+    return await this.invoiceRepository.createQueryBuilder('invoice')
+      .where('invoice.mainInvoice = :id', { id: id })
+      .getMany();
   }
   async getAll(): Promise<InvoiceDTO[] | any> {
     const resultList = await this.invoiceRepository.findAndCount();

@@ -54,8 +54,8 @@
                     <input type="text" disabled class="form-control" v-model="cardNumber" name="cardNo">
                 </div>
                 <div class="col col-md-4 col-sm-12 col-xs-12">
-                    <label for=""> النقاط</label>
-                    <input type="text" disabled class="form-control" v-model="cardPoint" name="cardPoint">
+                    <label for=""> المحفظة</label>
+                    <input type="text" disabled class="form-control" v-model="cardPrice" name="cardPrice">
                 </div>
                 <div class="col col-md-4 col-sm-12 col-xs-12">
                     <label for=""> انتهاء صلاحية البطاقة </label>
@@ -74,10 +74,10 @@
                     <label for=""> اختر المنفعة</label>
                     <select id="benefit" class="form-control"  @change="getBeneit($event)" v-model="benefit" name="benefit"></select>
                 </div>
-                <div class="col col-md-2 col-sm-12 col-xs-12 col-sm-12 form-group">
+                <!-- <div class="col col-md-2 col-sm-12 col-xs-12 col-sm-12 form-group">
                     <label for=""> نقاط المنفعة</label>
-                    <input type="number" step="any" min="1" class="form-control" v-model="benefitPoints" v-on:input="changeBenefit()"  name="benefitPoints">
-                </div>
+                    <input type="number" step="any" min="1" class="form-control" v-model="benefitPrice" v-on:input="changeBenefit()"  name="benefitPoints">
+                </div> -->
                 <div class="col col-md-2 col-sm-12 col-xs-12 col-sm-12 form-group">
                     <label for="">  السعر</label>
                     <input type="text" disabled class="form-control" v-model="benefitPrice"  name="benefitPrice">
@@ -124,7 +124,7 @@
                             <!-- <td></td>
                             <td></td> -->
                             <td></td>
-                            <td> مجموع النقاط : {{total.toFixed(3)}}</td>
+                            <td></td>
                             <td></td>
                             <td> اجمالي السعر : {{totalIvoicePrice}}</td>
                             <td>

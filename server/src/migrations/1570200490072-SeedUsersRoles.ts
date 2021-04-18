@@ -21,7 +21,7 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
     activated: true,
     langKey: 'en',
         createdBy: null,
-        lastModifiedBy: 'system',
+        lastModifiedBy: null,
     };
 
     user2: User = {
@@ -34,7 +34,7 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
         activated: true,
         langKey: 'en',
         createdBy: null,
-        lastModifiedBy: 'system',
+        lastModifiedBy: null,
     };
 
     user3: User = {
@@ -47,7 +47,7 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
         activated: true,
         langKey: 'en',
         createdBy: null,
-        lastModifiedBy: 'system',
+        lastModifiedBy: null,
     };
 
     user4: User = {
@@ -60,7 +60,7 @@ export class SeedUsersRoles1570200490072 implements MigrationInterface {
         activated: true,
         langKey: 'en',
         createdBy: null,
-        lastModifiedBy: 'system',
+        lastModifiedBy: null,
     };
 
     // eslint-disable-next-line

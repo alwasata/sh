@@ -10,8 +10,8 @@ export abstract class BaseEntity {
     createdBy?: User;
     @CreateDateColumn({ nullable: true })
     createdDate?: Date;
-    @Column({ nullable: true })
-    lastModifiedBy?: string;
+    @ManyToOne(type => User)
+    lastModifiedBy?: User;
     @UpdateDateColumn({ nullable: true })
     lastModifiedDate?: Date;
 

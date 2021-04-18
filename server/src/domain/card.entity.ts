@@ -9,11 +9,11 @@ import { Employee } from './employee.entity';
  */
 @Entity('card')
 export class Card extends BaseEntity {
-    @Column({ name: 'card_no', nullable: true })
+    @Column({ name: 'card_no', nullable: true, unique:true })
     cardNo: string;
 
     @Column({ type: 'date', name: 'expiry_date', nullable: true })
-    expiryDate: any;
+    expiryDate: Date;
 
     @Column({ type: 'boolean', name: 'is_active', nullable: true })
     isActive: boolean;

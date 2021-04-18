@@ -21,6 +21,9 @@ export class Hospital extends BaseEntity {
     @Column({ name: 'phone', nullable: true })
     phone: string;
 
+    @Column({ name: 'active', default:1 })
+    active: boolean;
+    
     @Column({ name: 'address', nullable: true })
     address: string;
 

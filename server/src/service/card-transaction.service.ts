@@ -25,9 +25,13 @@ export class CardTransactionService {
         return CardTransactionMapper.fromEntityToDTO(result);
     }
 
-    async findAndCount(options: FindManyOptions<CardTransactionDTO>): Promise<[CardTransactionDTO[], number]> {
+    async findAndCount(id: string,options: FindManyOptions<CardTransactionDTO>): Promise<[CardTransactionDTO[], number]> {
         options.relations = relationshipNames;
-        const resultList = await this.cardTransactionRepository.findAndCount(options);
+        const resultList  = await this.cardTransactionRepository.createQueryBuilder('cardTransaction')
+      .innerJoinAndSelect('cardTransaction.card', 'card')
+      .innerJoinAndSelect('cardTransaction.createdBy', 'createdBy')
+      .where('card.id = :id', { id: id })
+      .getManyAndCount();
         const cardTransactionDTO: CardTransactionDTO[] = [];
         if (resultList && resultList[0]) {
             resultList[0].forEach(cardTransaction => cardTransactionDTO.push(CardTransactionMapper.fromEntityToDTO(cardTransaction)));

@@ -12,7 +12,7 @@ export class CardDTO extends BaseDTO {
     cardNo: string;
 
     @ApiModelProperty({ description: 'expiryDate field', required: false })
-    expiryDate: any;
+    expiryDate: Date;
 
     @ApiModelProperty({ description: 'isActive field', required: false })
     isActive: boolean;

@@ -3,6 +3,9 @@
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
                 <h2 id='sahatiApp.benefit.home.createOrEditLabel'>اضافة منفعة</h2>
+                <div class="alert alert-danger" id="alert-danger" role="alert" hidden>
+                    {{ error }}
+                </div>
                 <div>
                     <div class="form-group" v-if="benefit.id">
                         <!-- <label for='id'>ID</label> -->
@@ -14,8 +17,11 @@
                         <input type="text" class="form-control" name="nameAr" id="benefit-nameAr"
                             :class="{'valid': !$v.benefit.nameAr.$invalid, 'invalid': $v.benefit.nameAr.$invalid }" v-model="$v.benefit.nameAr.$model"  required/>
                         <div v-if="$v.benefit.nameAr.$anyDirty && $v.benefit.nameAr.$invalid">
-                            <small v-if='!$v.benefit.nameAr.required' class='form-text text-danger'>
+                            <small v-if='!$v.benefit.nameAr.required ' class='form-text text-danger'>
                                 يجب ادخال الاسم
+                            </small>
+                            <small v-if='!$v.benefit.nameAr.arabicAr && $v.benefit.nameAr.required' class='form-text text-danger'>
+                                يجب ان يكون الاسم بالغة العربية
                             </small>
                         </div>
                     </div>
@@ -23,6 +29,14 @@
                         <label class='form-control-label' for='benefit-nameEn'> الاسم بالانجليزية</label>
                         <input type="text" class="form-control" name="nameEn" id="benefit-nameEn"
                             :class="{'valid': !$v.benefit.nameEn.$invalid, 'invalid': $v.benefit.nameEn.$invalid }" v-model="$v.benefit.nameEn.$model" />
+                        <div v-if="$v.benefit.nameEn.$anyDirty && $v.benefit.nameEn.$invalid">
+                            <small v-if='!$v.benefit.nameEn.required ' class='form-text text-danger'>
+                                يجب ادخال الاسم
+                            </small>
+                            <small v-if='!$v.benefit.nameEn.arabicAr  && $v.benefit.nameEn.required' class='form-text text-danger'>
+                                يجب ان يكون الاسم بالغة الانجليزية
+                            </small>
+                        </div>
                     </div>
                     <!-- <div class="form-group">
                         <label class='form-control-label' for='benefit-pointsCost'>النقاط</label>
@@ -44,6 +58,13 @@
                             </option>
                         </select>
                     </div>
+                    <div class='form-group' v-if="isUpdate">
+                        <label class='form-control-label' for='benefit-hospital'>المستشفى</label>
+                        <select id='benefit-hospital'  class='form-control' name='hospital'>
+                            <option v-bind:value='benefit.hospital.id'>{{benefit.hospital.nameAr}}</option>
+                        </select>
+                    </div>
+                    <div v-else>
                     <div class='form-group' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <label class='form-control-label' for='benefit-hospital'>المستشفى</label>
                         <select id='benefit-hospital' v-model='benefit.hospital' class='form-control' name='hospital'>
@@ -54,6 +75,7 @@
                             </option>
                         </select>
                     </div>
+                    </div>
                 </div>
                 <div>
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
@@ -61,7 +83,7 @@
                     </button>
                     <button type='submit' id='save-entity' :disabled='$v.benefit.$invalid || isSaving'
                             class='btn btn-primary'>
-                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>حفظ</span>
+                        <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>تعديل</span>
                     </button>
                 </div>
             </form>

@@ -41,6 +41,20 @@ import InvoiceService from '@/entities/invoice/invoice.service';
 import InvoiceBenefitsService from '@/entities/invoice-benefits/invoice-benefits.service';
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
+import moment from 'moment';
+
+Vue.filter('formatDateOnly', function (value) {
+  if (value) {
+    return moment(String(value)).format('YYYY-MM-DD');
+  }
+});
+
+Vue.filter('formatTimeOnly', function (value) {
+  if (value) {
+    return moment(String(value)).format('HH:mm');
+  }
+});
+
 /* tslint:enable */
 Vue.config.productionTip = false;
 config.initVueApp(Vue);

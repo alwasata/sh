@@ -73,28 +73,31 @@ export class BenefitController {
       type: BenefitDTO,
     })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
-    async post(@Req() req: Request, @Body() benefitDTO: BenefitDTO): Promise<BenefitDTO> {
+    async post(@Req() req: Request, @Body() benefitDTO: BenefitDTO): Promise<any> {
 
       if (req.user["authorities"].includes('ROLE_HOSPITAL_ADMIN') === true) {
         var hospital_id = await this.hospitalService.getHosbitalIdForUser(req.user["id"]);
         var hospital = await this.hospitalService.findById(hospital_id["hospital_id"]);
         benefitDTO.hospital = hospital;
       }
-      // benefitDTO.pointsCost = ;
-      benefitDTO.createdBy = req.user["id"];
-      const created = await this.benefitService.save(benefitDTO);
-      const benefitRequestDTO = new BenefitRequestDTO();
-      benefitRequestDTO.nameAr = benefitDTO.nameAr;
-      benefitRequestDTO.nameEn = benefitDTO.nameEn;
-      benefitRequestDTO.createdBy = req.user["id"];
-      // benefitRequestDTO.pointsCost = benefitDTO.cost*1.1;
-      benefitRequestDTO.cost = benefitDTO.cost;
-      benefitRequestDTO.hospital = benefitDTO.hospital;
-      benefitRequestDTO.category = benefitDTO.category;
-      benefitRequestDTO.benefit = created;
-      await this.benefitRequestService.save(benefitRequestDTO);
-      HeaderUtil.addEntityCreatedHeaders(req.res, 'Benefit', created.id);
-      return created;
+      try {
+        benefitDTO.createdBy = req.user["id"];
+        const created = await this.benefitService.save(benefitDTO);
+        const benefitRequestDTO = new BenefitRequestDTO();
+        benefitRequestDTO.nameAr = benefitDTO.nameAr;
+        benefitRequestDTO.nameEn = benefitDTO.nameEn;
+        benefitRequestDTO.createdBy = req.user["id"];
+        benefitRequestDTO.cost = benefitDTO.cost;
+        benefitRequestDTO.hospital = benefitDTO.hospital;
+        benefitRequestDTO.category = benefitDTO.category;
+        benefitRequestDTO.notes = "تم اضافة هده المنفعة";
+        benefitRequestDTO.benefit = created;
+        await this.benefitRequestService.save(benefitRequestDTO);
+        HeaderUtil.addEntityCreatedHeaders(req.res, 'Benefit', created.id);
+        return created;
+      }catch(error){
+        return error;
+      }
     }
 
     @Put('/')
@@ -117,17 +120,20 @@ export class BenefitController {
         take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
       });
-      benefitRequestDTO = results[0];
-      if(benefitRequestDTO.cost != benefitDTO.cost) {
-        benefitRequestDTO.lastModifiedBy = req.user["id"];
-        benefitRequestDTO.notes = "تم تعديل المنفعة من"+benefitRequestDTO.cost+"الى "+benefitDTO.cost;
-        benefitRequestDTO.cost = benefitDTO.cost;
-        benefitRequestDTO.benefitStatus = BenefitStatus.PENDING;
-        await this.benefitRequestService.update(benefitRequestDTO);
+      try{
+        benefitRequestDTO = results[0];
+        if(benefitRequestDTO.cost != benefitDTO.cost) {
+          benefitRequestDTO.lastModifiedBy = req.user["id"];
+          benefitRequestDTO.notes = "تم تعديل المنفعة من"+benefitRequestDTO.cost+"الى "+benefitDTO.cost;
+          benefitRequestDTO.cost = benefitDTO.cost;
+          benefitRequestDTO.benefitStatus = BenefitStatus.PENDING;
+          await this.benefitRequestService.update(benefitRequestDTO);
+        }
+        HeaderUtil.addEntityCreatedHeaders(req.res, 'Benefit', benefitDTO.id);
+        return await this.benefitService.update(benefitDTO);
+      }catch(error){
+        return error;
       }
-      HeaderUtil.addEntityCreatedHeaders(req.res, 'Benefit', benefitDTO.id);
-      return await this.benefitService.update(benefitDTO);
-      return benefitDTO;
     }
 
     @Delete('/:id')

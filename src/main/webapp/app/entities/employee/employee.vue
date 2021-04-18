@@ -40,10 +40,10 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'identityNo'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('employeeStatus')"><span>حالة الموظف</span>
+                    <!-- <th v-on:click="changeOrder('employeeStatus')"><span>حالة الموظف</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'employeeStatus'"
                                             :reverse='reverse'></jhi-sort-indicator>
-                    </th>
+                    </th> -->
                     <th v-on:click="changeOrder('notes')"><span>الملاحظات</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -64,13 +64,16 @@
                     <td>{{employee.name}}</td>
                     <td>{{employee.phone}}</td>
                     <td>{{employee.identityNo}}</td>
-                    <td>{{ employee.employeeStatus }}</td>
+                    <!-- <td>{{ employee.employeeStatus }}</td> -->
                     <td>{{employee.notes}}</td>
                     <td>
-                        <div v-if='employee.company'>
+                        <div v-if="hasAnyAuthority('ROLE_ADMIN')">
                             <router-link :to="{name: 'CompanyView', params: {companyId: employee.company.id}}">
                                 {{ employee.company.nameAr }}
                             </router-link>
+                        </div>
+                        <div v-else>
+                            {{ employee.company.nameAr }}
                         </div>
                     </td>
                     <td class="text-right">
@@ -83,13 +86,13 @@
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
-                            <b-button v-on:click="prepareRemove(employee)"
+                            <!-- <b-button v-on:click="prepareRemove(employee)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>حذف</span>
-                            </b-button>
+                            </b-button> -->
                         </div>
                     </td>
                 </tr>

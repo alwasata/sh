@@ -32,10 +32,6 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'nameEn'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('pointsCost')"><span>النقاط</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'pointsCost'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
                     <th v-on:click="changeOrder('cost')"><span>القيمة المالية</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'cost'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -56,7 +52,6 @@
                     :key="benefit.id">
                     <td>{{benefit.nameAr}}</td>
                     <td>{{benefit.nameEn}}</td>
-                    <td>{{ (benefit.cost*points).toFixed(3)}}</td>
                     <td>{{benefit.cost}}</td>
                     <td>
                         <div v-if='benefit.category'>
@@ -82,13 +77,13 @@
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
-                            <b-button v-on:click="prepareRemove(benefit)"
+                            <!-- <b-button v-on:click="prepareRemove(benefit)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>حذف</span>
-                            </b-button>
+                            </b-button> -->
                         </div>
                     </td>
                 </tr>

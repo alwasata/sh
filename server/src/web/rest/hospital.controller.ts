@@ -38,6 +38,25 @@ export class HospitalController{
     return results;
   }
 
+  @Get('/active')
+  @Roles(RoleType.USER)
+  @ApiResponse({
+    status: 200,
+    description: 'List all records',
+    type: HospitalDTO,
+  })
+  async getActive(@Req() req: Request): Promise<HospitalDTO[]> {
+    const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+    const [results, count] = await this.hospitalService.findAndCount({
+      where : {active : 1},
+      skip: +pageRequest.page * pageRequest.size,
+      take: +pageRequest.size,
+      order: pageRequest.sort.asOrder(),
+    });
+    HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
+    return results;
+  }
+
   @Get('/:id')
   @Roles(RoleType.USER)
   @ApiResponse({
@@ -71,7 +90,7 @@ export class HospitalController{
 
     const createdUser = await this.userService.save(userDTO);
     hospitalDTO.users  = [ createdUser ];
-
+    hospitalDTO.createdBy =req.user["id"];
     const created = await this.hospitalService.save(hospitalDTO);
     HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', created.id);
 
@@ -87,19 +106,25 @@ export class HospitalController{
     type: HospitalDTO,
   })
   async put(@Req() req: Request, @Body() hospitalDTO: HospitalDTO): Promise<HospitalDTO> {
+    hospitalDTO.lastModifiedBy =req.user["id"];
     HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', hospitalDTO.id);
     return await this.hospitalService.update(hospitalDTO);
   }
 
-  @Delete('/:id')
+  @Delete('/:id/:status')
   @Roles(RoleType.ADMIN)
   @ApiOperation({ title: 'Delete hospital' })
   @ApiResponse({
     status: 204,
     description: 'The record has been successfully deleted.',
   })
-  async deleteById(@Req() req: Request, @Param('id') id: string): Promise<void> {
-    HeaderUtil.addEntityDeletedHeaders(req.res, 'Hospital', id);
-    return await this.hospitalService.deleteById(id);
+  async deleteById(@Req() req: Request, @Param('id') id: string,  @Param('status') status: boolean): Promise<HospitalDTO> {
+    var hospitalDTO = new HospitalDTO();
+    hospitalDTO.id = id;
+    hospitalDTO.active = status;
+    console.log(hospitalDTO);
+    HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', hospitalDTO.id);
+    return await this.hospitalService.update(hospitalDTO);
   }
+
 }

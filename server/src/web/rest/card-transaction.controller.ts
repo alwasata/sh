@@ -27,7 +27,7 @@ export class CardTransactionController {
     })
     async getAll(@Req() req: Request): Promise<CardTransactionDTO[]> {
         const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-        const [results, count] = await this.cardTransactionService.findAndCount({
+        const [results, count] = await this.cardTransactionService.findAndCount("",{
             skip: +pageRequest.page * pageRequest.size,
             take: +pageRequest.size,
             order: pageRequest.sort.asOrder(),
@@ -47,7 +47,7 @@ export class CardTransactionController {
       console.log("hi");
       console.log(id);
         const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-        const [results, count] = await this.cardTransactionService.findAndCount({
+        const [results, count] = await this.cardTransactionService.findAndCount(id,{
             where: {card :  id},
             skip: +pageRequest.page * pageRequest.size,
             take: +pageRequest.size,
@@ -66,7 +66,7 @@ export class CardTransactionController {
     })
     async getWhere(@Req() req: Request, @Param('id') id: string): Promise<CardTransactionDTO[]> {
         const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-        const [results, count] = await this.cardTransactionService.findAndCount({
+        const [results, count] = await this.cardTransactionService.findAndCount(id,{
             where: {card :  id},
             skip: +pageRequest.page * pageRequest.size,
             take: +pageRequest.size,

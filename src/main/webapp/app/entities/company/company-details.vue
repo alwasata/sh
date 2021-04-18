@@ -1,8 +1,20 @@
 <template>
+<div>
+    <div class="row">
+        <div class="col-10">
+        </div>
+        <div class="col-2">
+            <button type='submit'
+                v-on:click.prevent='previousState()'
+                class='btn btn-info'>
+                <font-awesome-icon icon='arrow-left'></font-awesome-icon>&nbsp;<span> Back</span>
+            </button>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="company">
-                <h2 class='jh-entity-heading'><span>شركة</span> {{ company.id }}</h2>
+                <h2 class='jh-entity-heading'><span>بيانات الشركة</span></h2>
                 <dl class="row jh-entity-details">
                     <dt>
                         <span>الاسم بالعربية</span>
@@ -34,7 +46,7 @@
                     <dd>
                         <span>{{company.address}}</span>
                     </dd>
-                    <dt>
+                    <!-- <dt>
                         <span>Discount</span>
                     </dt>
                     <dd>
@@ -45,28 +57,26 @@
                     </dt>
                     <dd>
                         <span>{{company.fixedDiscount}}</span>
-                    </dd>
+                    </dd> -->
                     <dt>
-                        <span>User</span>
+                        <span>عدد الموظفين</span>
                     </dt>
                     <dd>
-                        <span v-for="(user, i) in company.users" :key="user.id">{{i > 0 ? ', ' : ''}}
-                            {{user.id}}
+                        {{ employee.length}}
+                    </dd>
+                    <dt>
+                        <span>الموظفين</span>
+                    </dt>
+                    <dd>
+                        <span v-for="(user, i) in employee" :key="user.id">{{i > 0 ? ', ' : ''}}
+                            <router-link :to="{name: 'EmployeeView', params: {employeeId: user.id}}">{{user.name}} | </router-link>
                         </span>
                     </dd>
                 </dl>
-                <button type='submit'
-                        v-on:click.prevent='previousState()'
-                        class='btn btn-info'>
-                    <font-awesome-icon icon='arrow-left'></font-awesome-icon>&nbsp;<span> Back</span>
-                </button>
-                <router-link v-if='company.id' :to="{name: 'CompanyEdit', params: {companyId: company.id}}" tag='button'
-                             class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
-                </router-link>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script lang="ts" src="./company-details.component.ts">

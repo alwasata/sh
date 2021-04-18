@@ -1,6 +1,6 @@
 import { Component, Inject, Vue } from 'vue-property-decorator';
 
-import { required } from 'vuelidate/lib/validators';
+import { required, helpers, decimal } from 'vuelidate/lib/validators';
 
 import CategoryService from '../category/category.service';
 import { ICategory } from '@/shared/model/category.model';
@@ -13,14 +13,33 @@ import { Benefit, IBenefit } from '@/shared/model/benefit.model';
 import BenefitService from './benefit.service';
 import AccountService from '@/account/account.service';
 
+export const isArabic = helpers.regex('alpha', /[\u0600-\u06FF]/);
+export const isEnglish = helpers.regex('alpha', /[a-zA-Z]/);
+export const isPhoneNo = helpers.regex('alpha', /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im);
+export const positave = helpers.regex('alpha', /^(?!0*[.,]0*$|[.,]0*$|0*$)\d+[,.]?\d{0,2}$/);
+
 const validations: any = {
   benefit: {
     nameAr: {
       required,
+      isArabic,
     },
-    nameEn: {},
+    nameEn: {
+      required,
+      isEnglish,
+    },
     // pointsCost: {},
-    cost: {},
+    cost: {
+      required,
+      decimal,
+      positave,
+    },
+    category: {
+      required,
+    },
+    hospital: {
+      required,
+    },
   },
 };
 
@@ -36,6 +55,7 @@ export default class BenefitUpdate extends Vue {
 
   @Inject('accountService') private accountService: () => AccountService;
   private hasAnyAuthorityValue = false;
+  private isUpdate = false;
 
   public categories: ICategory[] = [];
 
@@ -44,6 +64,7 @@ export default class BenefitUpdate extends Vue {
   public hospitals: IHospital[] = [];
   public isSaving = false;
   public currentLanguage = '';
+  public error = '';
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -65,24 +86,34 @@ export default class BenefitUpdate extends Vue {
   }
 
   public save(): void {
-    this.isSaving = true;
+    // this.isSaving = true;
     if (this.benefit.id) {
       this.benefitService()
         .update(this.benefit)
         .then(param => {
-          this.isSaving = false;
-          this.$router.go(-1);
-          const message = 'A Benefit is updated with identifier ' + param.id;
-          this.alertService().showAlert(message, 'info');
+          if (param.code == 'ER_DUP_ENTRY') {
+            this.error = ' مستخدم مسبقا ' + param.message.split("'")[1];
+            (document.getElementById('alert-danger') as HTMLDivElement).hidden = false;
+          } else {
+            this.isSaving = false;
+            this.$router.go(-1);
+            const message = 'A Benefit is updated with identifier ' + param.id;
+            this.alertService().showAlert(message, 'info');
+          }
         });
     } else {
       this.benefitService()
         .create(this.benefit)
         .then(param => {
-          this.isSaving = false;
-          this.$router.go(-1);
-          const message = 'A Benefit is created with identifier ' + param.id;
-          this.alertService().showAlert(message, 'success');
+          if (param.code == 'ER_DUP_ENTRY') {
+            this.error = ' مستخدم مسبقا ' + param.message.split("'")[1];
+            (document.getElementById('alert-danger') as HTMLDivElement).hidden = false;
+          } else {
+            this.isSaving = false;
+            this.$router.go(-1);
+            const message = 'A Benefit is created with identifier ' + param.id;
+            this.alertService().showAlert(message, 'success');
+          }
         });
     }
   }
@@ -92,6 +123,7 @@ export default class BenefitUpdate extends Vue {
       .find(benefitId)
       .then(res => {
         this.benefit = res;
+        this.isUpdate = true;
       });
   }
 
@@ -106,14 +138,13 @@ export default class BenefitUpdate extends Vue {
         this.categories = res.data;
       });
     this.hospitalService()
-      .retrieve()
+      .getActive()
       .then(res => {
         this.hospitals = res.data;
       });
   }
 
   public hasAnyAuthority(authorities: any): boolean {
-    console.log(authorities);
     this.accountService()
       .hasAnyAuthorityAndCheckAuth(authorities)
       .then(value => {

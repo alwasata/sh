@@ -20,6 +20,7 @@ export default class Hospital extends mixins(AlertMixin) {
   public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
+  public status;
 
   public hospitals: IHospital[] = [];
 
@@ -57,24 +58,18 @@ export default class Hospital extends mixins(AlertMixin) {
       );
   }
 
-  public prepareRemove(instance: IHospital): void {
-    this.removeId = instance.id;
-    if (<any>this.$refs.removeEntity) {
-      (<any>this.$refs.removeEntity).show();
-    }
-  }
-
-  public removeHospital(): void {
+  public prepareRemove(status: boolean, instance: IHospital): void {
+    console.log(instance);
+    instance.active = status;
     this.hospitalService()
-      .delete(this.removeId)
-      .then(() => {
-        const message = 'A Hospital is deleted with identifier ' + this.removeId;
-        this.alertService().showAlert(message, 'danger');
+      .update(instance)
+      .then(param => {
+        const message = status == true ? ' تم تفعيل   ' + instance.nameAr : ' تم تعطيل  ' + instance.nameAr;
+        this.alertService().showAlert(message, status == true ? 'success' : 'danger');
         this.getAlertFromStore();
-        this.removeId = null;
         this.retrieveAllHospitals();
-        this.closeDialog();
       });
+    this.status = status;
   }
 
   public sort(): Array<any> {

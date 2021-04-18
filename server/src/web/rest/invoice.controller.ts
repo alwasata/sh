@@ -138,14 +138,36 @@ export class InvoiceController {
     async deleteById(@Req() req: Request, @Param('id') id: string): Promise<InvoiceDTO> {
       var invoice = await this.invoiceService.findById(id);
       var cardTransaction = await this.cardTransactionService.findById(invoice.cardTransaction.id);
+
+      const results = await this.invoiceService.findByInvoice(id);
+      var total = invoice.total;
+
+      var checkQuantity;
+      checkQuantity = true;
+      if(results[0] != 0){
+      for await (const element of results) {
+       total = total - element.total;
+      }
+      console.log("total"+total);
+      if(total != 0) {
+          var cardTransactionDTO = new CardTransactionDTO();
+          cardTransactionDTO.createdBy = req.user["id"];
+          cardTransactionDTO.card = cardTransaction.card;
+          cardTransactionDTO.amount = total;
+          cardTransactionDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها "+"علما بان هذه الفاتورة تحتوي على فاتورة مرتجعة";
+          cardTransactionDTO.action = TransactionAction.PLUS;
+          await this.cardTransactionService.save(cardTransactionDTO);
+      }
+    } else {
       var cardTransactionDTO = new CardTransactionDTO();
       cardTransactionDTO.createdBy = req.user["id"];
       cardTransactionDTO.card = cardTransaction.card;
       cardTransactionDTO.amount = cardTransaction.amount;
-      cardTransactionDTO.pointsAmount = cardTransaction.pointsAmount;
       cardTransactionDTO.notes = "فاتورة رقم :"+invoice.invoiceNo+ "تم الغائها";
       cardTransactionDTO.action = TransactionAction.PLUS;
       await this.cardTransactionService.save(cardTransactionDTO);
+    }
+
       var invoiceDTO = new InvoiceDTO();
       invoiceDTO.id = id;
       invoiceDTO.invoiceStatus = InvoiceStatus.CANCELLED;
@@ -225,10 +247,10 @@ export class InvoiceController {
     async saveInvoice(@Req() req: Request, @Body() data): Promise<InvoiceDTO> {
 
       var cardTransactionDTO = new CardTransactionDTO ();
-      cardTransactionDTO.pointsAmount = data.cardTransaction.pointsAmount;
       cardTransactionDTO.amount = data.cardTransaction.amount;
       cardTransactionDTO.card   = data.cardTransaction.card;
       cardTransactionDTO.action = data.cardTransaction.action;
+      cardTransactionDTO.notes = data.cardTransaction.notes;
       cardTransactionDTO.createdBy = req.user["id"];
       const created = await this.cardTransactionService.save(cardTransactionDTO);
 
@@ -268,12 +290,18 @@ export class InvoiceController {
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async checkBenefit(@Req() req: Request, @Body() data): Promise<any> {
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-      const results = await this.invoiceService.findByInvoice({
-        where : { mainInvoice : data.invoice},
-        order: pageRequest.sort.asOrder(),
-      });
+      const results = await this.invoiceService.findByInvoice(data.invoice);
       var count = 0;
-      for await (const element of results[0]) {
+
+      var checkQuantity;
+      checkQuantity = true;
+      if(results[0] == 0){
+        return checkQuantity;
+      }
+
+      for await (const element of results) {
+        console.log(element.id);
+        console.log(data.benefits.id);
         const invoiceBenefit = await this.invoiceBenefitsService.findAndCount({
           where : {
             benefit : data.benefits.id,
@@ -283,14 +311,16 @@ export class InvoiceController {
           take: +pageRequest.size,
           order: pageRequest.sort.asOrder(),
         });
-        if(invoiceBenefit != []){
+        if(invoiceBenefit[0] != 0){
+          console.log(invoiceBenefit)
           count = count + invoiceBenefit[0][0].quantity;
         }
       }
-      var checkQuantity = true;
-      if(data.benefits.returnQuantity + count > data.benefits.quantity) {
-        checkQuantity = false
+
+      if(parseInt(data.benefits.returnQuantity)+count > data.benefits.quantity) {
+        checkQuantity = " تم ارجاع عدد "+count+" من الكمية";
       }
+
       return checkQuantity;
     }
   }

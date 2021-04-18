@@ -19,7 +19,7 @@ export class AttatchmentController {
     constructor(private readonly attatchmentService: AttatchmentService) {}
 
     @Get('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'List all records',
@@ -60,7 +60,7 @@ export class AttatchmentController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Create attatchment' })
     @ApiResponse({
         status: 201,
@@ -75,7 +75,7 @@ export class AttatchmentController {
     }
 
     @Put('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Update attatchment' })
     @ApiResponse({
         status: 200,

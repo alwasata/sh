@@ -44,12 +44,10 @@ export default class InvoiceUpdate extends Vue {
   public cardNo = '';
   public employeeName = '';
   public companyName = '';
-  public cardPoint = 0;
+  public cardPrice = 0;
   public exbireDate = '';
   public cardNumber = '';
   public benefit = '';
-  public benefitPoints = 0;
-  public oldBenefitPoints = 0;
   public benefitPrice = 0;
   public total = 0;
   public totalIvoicePrice = 0;
@@ -62,7 +60,7 @@ export default class InvoiceUpdate extends Vue {
   public invoiceId = 0;
   public invoiceDate = new Date().toISOString().slice(0, 10);
   public rows = [];
-  public checkQuantity = true;
+  public checkQuantity;
   public returnBenefits = [];
 
   @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
@@ -107,8 +105,6 @@ export default class InvoiceUpdate extends Vue {
                 nameAr: element.benefit.nameAr,
                 quantity: element.quantity,
                 nameEn: element.benefit.nameEn,
-                points: element.pointsCost,
-                totalPoints: element.pointsCost,
                 price: element.cost,
                 returnQuantity: element.quantity,
                 totalPrice: element.total,
@@ -119,48 +115,60 @@ export default class InvoiceUpdate extends Vue {
         this.invoiceService()
           .search(res.cardTransaction.card.cardNo)
           .then(res => {
-            var points = 0;
+            var prices = 0;
             res.cardInfo[0].forEach(element => {
               if (element.action == 'PLUS') {
-                points = points + element.pointsAmount;
+                prices = prices + element.amount;
               } else {
-                points = points - element.pointsAmount;
+                prices = prices - element.amount;
               }
             });
             this.hosbitalName = res.benefit[0].hospital.nameAr;
-            this.cardPoint = points;
+            this.cardPrice = prices;
           });
       });
   }
 
   public returnBenefit(row, index): void {
+    document.getElementById('error-quantity' + row.id).innerHTML = '';
     (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     if (this.rows != []) {
       (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
     }
+    console.log(this.invoiceId);
+    this.checkQuantity = true;
     this.invoiceService()
       .checkBenefitQuantity({ benefits: row, invoice: this.invoiceId })
       .then(res => {
         this.checkQuantity = res;
         if (row.returnQuantity == '') {
-          document.getElementById('error-quantity').innerHTML = 'يجب ادخال قيمة';
+          document.getElementById('error-quantity' + row.id).innerHTML = 'يجب ادخال قيمة';
           return;
         }
-        if (this.checkQuantity == false) {
-          document.getElementById('error-quantity').innerHTML = 'تم ارجاع الكمية';
+        if (this.checkQuantity != true) {
+          document.getElementById('error-quantity' + row.id).innerHTML = this.checkQuantity;
           return;
         }
-        if (!this.returnBenefits.includes(row)) {
-          this.returnTotal = this.returnTotal + row.points * row.returnQuantity;
-          this.returnTotalIvoicePrice = this.returnTotalIvoicePrice + row.price * row.returnQuantity;
 
+        var checkBenefit = false;
+        this.returnBenefits.forEach(element => {
+          if (element.id.includes(row.id) == true) {
+            document.getElementById('error-quantity' + row.id).innerHTML = 'تم ادخال المنفعة';
+            checkBenefit = true;
+          }
+        });
+
+        if (checkBenefit == false) {
+          if (row.quantity < row.returnQuantity) {
+            document.getElementById('error-quantity' + row.id).innerHTML = 'القيمة اكبر من الكمية';
+            return;
+          }
+          this.returnTotalIvoicePrice = this.returnTotalIvoicePrice + row.price * row.returnQuantity;
           this.returnBenefits.push({
             id: row.id,
             nameAr: row.nameAr,
             quantity: row.returnQuantity,
             nameEn: row.nameEn,
-            points: row.points,
-            totalPoints: row.totalPoints * row.returnQuantity,
             price: row.price,
             totalPrice: row.price * row.returnQuantity,
           });
@@ -173,14 +181,12 @@ export default class InvoiceUpdate extends Vue {
     if (this.rows.length == 0) {
       (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
     }
-    this.returnTotal = this.returnTotal - row.points;
-    this.returnTotalIvoicePrice = this.returnTotalIvoicePrice - row.price;
+    this.returnTotalIvoicePrice = this.returnTotalIvoicePrice - row.totalPrice;
     this.returnBenefits.splice(indx, 1);
   }
 
   public saveInvoice() {
     this.invoice.total = this.returnTotalIvoicePrice;
-    this.invoice.totalPoints = this.returnTotal;
     this.invoice.invoiceStatus = InvoiceStatus.RETURNED;
     this.invoice.invoiceDate = this.invoiceDate;
     this.invoice.payDate = this.invoiceDate;
@@ -193,8 +199,7 @@ export default class InvoiceUpdate extends Vue {
       invoiceBenefit: this.returnBenefits,
       invoice: this.invoice,
       cardTransaction: {
-        amount: this.totalIvoicePrice,
-        pointsAmount: this.total,
+        amount: this.returnTotalIvoicePrice,
         action: 'PLUS',
         notes: ' اضافة في البطاقة بسبب فاتورة مرجعة رقم : ' + this.invoice.invoiceNo,
         card: this.cardId,
@@ -230,8 +235,8 @@ export default class InvoiceUpdate extends Vue {
       <th style="padding-top: 10px; padding-left: 40px;">اسم المنفعة بالعربي</th>
       <th style="padding-top: 10px; padding-left: 40px;">اسم المنفعة بالانجليزي</th>
       <th style="padding-top: 10px; padding-left: 40px;">الكمية</th>
-      <th style="padding-top: 10px; padding-left: 40px;">النقاط</th>
-      <th style="padding-top: 10px; padding-left: 40px;">اجمالي النقاط</th>
+      <th style="padding-top: 10px; padding-left: 40px;">السعر</th>
+      <th style="padding-top: 10px; padding-left: 40px;">اجمالي السعر</th>
       </tr>
       </thead>
       `);
@@ -242,8 +247,8 @@ export default class InvoiceUpdate extends Vue {
         <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.nameAr}</td>
         <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.nameEn}</td>
         <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.returnQuantity}</td>
-        <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.points}</td>
-        <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.totalPoints}</td>
+        <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.price}</td>
+        <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.totalPrice}</td>
         </tr>
         `);
         });
@@ -253,7 +258,7 @@ export default class InvoiceUpdate extends Vue {
       <td style="padding-top: 10px; padding-left: 40px;"></td>
       <td style="padding-top: 10px; padding-left: 40px;"></td>
       <td style="padding-top: 10px; padding-left: 40px;"></td>
-      <td style="padding-top: 10px; padding-left: 40px;">اجمالي النقاط : ${this.total}</td>
+      <td style="padding-top: 10px; padding-left: 40px;">اجمالي السعر : ${this.returnTotalIvoicePrice}</td>
       </tr>
       `);
         mywindow.document.write('</tbody>');

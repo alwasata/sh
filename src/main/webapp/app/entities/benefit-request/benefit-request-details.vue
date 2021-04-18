@@ -17,12 +17,6 @@
                         <span>{{benefitRequest.nameEn}}</span>
                     </dd>
                     <dt>
-                        <span>النقاط</span>
-                    </dt>
-                    <dd>
-                        <span>{{benefitRequest.pointsCost}}</span>
-                    </dd>
-                    <dt>
                         <span>القيمة المالية</span>
                     </dt>
                     <dd>

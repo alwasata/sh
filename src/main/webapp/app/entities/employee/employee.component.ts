@@ -4,6 +4,7 @@ import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import { IEmployee } from '@/shared/model/employee.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
+import AccountService from '@/account/account.service';
 
 import EmployeeService from './employee.service';
 
@@ -12,6 +13,8 @@ import EmployeeService from './employee.service';
 })
 export default class Employee extends mixins(AlertMixin) {
   @Inject('employeeService') private employeeService: () => EmployeeService;
+  @Inject('accountService') private accountService: () => AccountService;
+
   private removeId: number = null;
   public itemsPerPage = 20;
   public queryCount: number = null;
@@ -20,6 +23,7 @@ export default class Employee extends mixins(AlertMixin) {
   public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
+  private hasAnyAuthorityValue = false;
 
   public employees: IEmployee[] = [];
 
@@ -104,5 +108,14 @@ export default class Employee extends mixins(AlertMixin) {
 
   public closeDialog(): void {
     (<any>this.$refs.removeEntity).hide();
+  }
+
+  public hasAnyAuthority(authorities: any): boolean {
+    this.accountService()
+      .hasAnyAuthorityAndCheckAuth(authorities)
+      .then(value => {
+        this.hasAnyAuthorityValue = value;
+      });
+    return this.hasAnyAuthorityValue;
   }
 }

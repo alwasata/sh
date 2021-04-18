@@ -10,13 +10,13 @@ import { EmployeeStatus } from './enumeration/employee-status';
  */
 @Entity('employee')
 export class Employee extends BaseEntity {
-    @Column({ name: 'name', nullable: true })
+    @Column({ name: 'name', unique: true })
     name: string;
 
-    @Column({ name: 'phone', nullable: true })
+    @Column({ name: 'phone', unique: true  })
     phone: string;
 
-    @Column({ name: 'identity_no', nullable: true })
+    @Column({ name: 'identity_no', unique: true  })
     identityNo: string;
 
     @Column({ type: 'simple-enum', name: 'employee_status', enum: EmployeeStatus })

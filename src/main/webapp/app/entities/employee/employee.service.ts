@@ -33,6 +33,19 @@ export default class EmployeeService {
     });
   }
 
+  public getByCompanyId(companyId: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl + `/company/${companyId}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public delete(id: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
@@ -46,8 +59,8 @@ export default class EmployeeService {
     });
   }
 
-  public create(entity: IEmployee): Promise<IEmployee> {
-    return new Promise<IEmployee>((resolve, reject) => {
+  public create(entity: IEmployee): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
         .then(res => {
@@ -59,8 +72,8 @@ export default class EmployeeService {
     });
   }
 
-  public update(entity: IEmployee): Promise<IEmployee> {
-    return new Promise<IEmployee>((resolve, reject) => {
+  public update(entity: IEmployee): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .put(`${baseApiUrl}`, entity)
         .then(res => {

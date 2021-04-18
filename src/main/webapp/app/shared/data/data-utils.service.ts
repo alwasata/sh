@@ -40,28 +40,20 @@ export default class JhiDataUtils extends Vue {
    * Method to open file
    */
   openFile(contentType, data) {
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      // To support IE and Edge
-      const byteCharacters = atob(data);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], {
-        type: contentType,
-      });
-      window.navigator.msSaveOrOpenBlob(blob);
-    } else {
-      // Other browsers
-      const fileURL = `data:${contentType};base64,${data}`;
-      const win = window.open();
-      win.document.write(
-        '<iframe src="' +
-          fileURL +
-          '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
-      );
+    var binary = '';
+    var bytes = new Uint8Array(data.data);
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
     }
+    console.log(binary);
+    const fileURL = `data:${contentType};base64,${binary}`;
+    const win = window.open();
+    win.document.write(
+      '<iframe src="' +
+        fileURL +
+        '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
+    );
   }
 
   /**
@@ -94,7 +86,7 @@ export default class JhiDataUtils extends Vue {
   }
 
   endsWith(suffix, str) {
-    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    return str.toString().indexOf(suffix, str.length - suffix.length) !== -1;
   }
 
   paddingSize(value) {

@@ -5,7 +5,7 @@
             <router-link :to="{name: 'HospitalCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-hospital">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
-                    اضافة Hospital
+                    اضافة مستشفى
                 </span>
             </router-link>
         </h2>
@@ -62,6 +62,14 @@
                     <td>{{hospital.email}}</td>
                     <td>{{hospital.phone}}</td>
                     <td>{{hospital.address}}</td>
+                    <td :id="'hospital-active-' + hospital.id">
+                        <button v-if="hospital.active == '1'" class="btn btn-danger btn-sm" v-on:click="prepareRemove(false ,hospital)">
+                            تعطيل
+                        </button>
+                        <button v-if="hospital.active == '0'" class="btn btn-success btn-sm" v-on:click="prepareRemove(true ,hospital)">
+                            تفعيل
+                        </button>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <router-link :to="{name: 'HospitalView', params: {hospitalId: hospital.id}}" tag="button" class="btn btn-info btn-sm details">
@@ -72,20 +80,13 @@
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
-                            <b-button v-on:click="prepareRemove(hospital)"
-                                   variant="danger"
-                                   class="btn btn-sm"
-                                   v-b-modal.removeEntity>
-                                <font-awesome-icon icon="times"></font-awesome-icon>
-                                <span class='d-none d-md-inline'>حذف</span>
-                            </b-button>
                         </div>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <b-modal ref="removeEntity" id="removeEntity" >
+        <!-- <b-modal ref="removeEntity" id="removeEntity" >
             <span slot='modal-title'><span
                 id='sahatiApp.hospital.delete.question'>تاكيد عملية الحذف</span></span>
             <div class="modal-body">
@@ -97,7 +98,7 @@
                         v-on:click='removeHospital()'>حذف
                 </button>
             </div>
-        </b-modal>
+        </b-modal> -->
         <div v-show="hospitals && hospitals.length > 0">
             <div class="row justify-content-center">
                 <jhi-item-count :page="page" :total="queryCount" :itemsPerPage="itemsPerPage"></jhi-item-count>

@@ -36,10 +36,7 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'amount'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('pointsAmount')"><span>Points Amount</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'pointsAmount'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
+
                     <th v-on:click="changeOrder('action')"><span>Action</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'action'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -63,7 +60,6 @@
                     </td>
                     <td>{{cardTransaction.transactionNo}}</td>
                     <td>{{cardTransaction.amount}}</td>
-                    <td>{{cardTransaction.pointsAmount}}</td>
                     <td>{{ cardTransaction.action }}</td>
                     <td>{{cardTransaction.notes}}</td>
                     <td>

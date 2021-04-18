@@ -17,10 +17,10 @@
                         <span>{{cardTransaction.amount}}</span>
                     </dd>
                     <dt>
-                        <span>Points Amount</span>
+                        <span>Cost Amount</span>
                     </dt>
                     <dd>
-                        <span>{{cardTransaction.pointsAmount}}</span>
+                        <span>{{cardTransaction.amount}}</span>
                     </dd>
                     <dt>
                         <span>Action</span>

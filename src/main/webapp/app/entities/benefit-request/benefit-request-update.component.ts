@@ -9,10 +9,10 @@ import HospitalService from '../hospital/hospital.service';
 import { IHospital } from '@/shared/model/hospital.model';
 
 import BenefitService from '../benefit/benefit.service';
-import { IBenefit } from '@/shared/model/benefit.model';
+import { Benefit, IBenefit } from '@/shared/model/benefit.model';
 
 import AlertService from '@/shared/alert/alert.service';
-import { BenefitRequest, IBenefitRequest } from '@/shared/model/benefit-request.model';
+import { BenefitRequest, BenefitStatus, IBenefitRequest } from '@/shared/model/benefit-request.model';
 import BenefitRequestService from './benefit-request.service';
 import AccountService from '@/account/account.service';
 
@@ -51,6 +51,7 @@ export default class BenefitRequestUpdate extends Vue {
   @Inject('benefitService') private benefitService: () => BenefitService;
 
   public benefits: IBenefit[] = [];
+  public benefit: IBenefit = new Benefit();
   public isSaving = false;
   public currentLanguage = '';
 
@@ -76,6 +77,13 @@ export default class BenefitRequestUpdate extends Vue {
   public save(): void {
     this.isSaving = true;
     if (this.benefitRequest.id) {
+      this.benefit = this.benefitRequest.benefit;
+      if (this.benefitRequest.benefitStatus == BenefitStatus.REFUSED || this.benefitRequest.benefitStatus == BenefitStatus.CANCELLED) {
+        this.benefit.active = false;
+      } else {
+        this.benefit.active = true;
+      }
+      this.benefitService().update(this.benefit);
       this.benefitRequestService()
         .update(this.benefitRequest)
         .then(param => {

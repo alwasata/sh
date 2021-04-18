@@ -24,10 +24,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th v-on:click="changeOrder('id')"><span>ID</span>
+                    <!-- <th v-on:click="changeOrder('id')"><span>ID</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'id'"
                                             :reverse='reverse'></jhi-sort-indicator>
-                    </th>
+                    </th> -->
                     <th v-on:click="changeOrder('nameAr')"><span>الاسم بالعربية</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'nameAr'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -48,10 +48,6 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'benefitStatus'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
-                    <th v-on:click="changeOrder('notes')"><span>الملاحظات</span>
-                        <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
-                                            :reverse='reverse'></jhi-sort-indicator>
-                    </th>
                     <th v-on:click="changeOrder('category.nameAr')"><span>الفئة</span>
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'category.nameAr'"
                                             :reverse='reverse'></jhi-sort-indicator>
@@ -64,22 +60,47 @@
                         <jhi-sort-indicator :current-order='propOrder' :field-name="'benefit.nameAr'"
                                             :reverse='reverse'></jhi-sort-indicator>
                     </th>
+                    <th v-on:click="changeOrder('notes')"><span>الملاحظات</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('notes')"><span>تم اضافتها من قبل </span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
+                    <th v-on:click="changeOrder('notes')"><span>تم تعديلها من قبل</span>
+                        <jhi-sort-indicator :current-order='propOrder' :field-name="'notes'"
+                                            :reverse='reverse'></jhi-sort-indicator>
+                    </th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="benefitRequest in benefitRequests"
                     :key="benefitRequest.id">
-                    <td>
+                    <!-- <td>
                         <router-link :to="{name: 'BenefitRequestView', params: {benefitRequestId: benefitRequest.id}}">{{benefitRequest.id}}</router-link>
-                    </td>
+                    </td> -->
                     <td>{{benefitRequest.nameAr}}</td>
                     <td>{{benefitRequest.nameEn}}</td>
                     <!-- <td>{{benefitRequest.pointsCost}}</td> -->
                     <td>{{benefitRequest.cost}}</td>
-                    <td>{{ benefitRequest.benefitStatus }}</td>
-                    <td>{{benefitRequest.notes}}</td>
                     <td>
+                         <div  class="btn btn-lg">
+                       <div v-if='benefitRequest.benefitStatus == "PENDING"'>
+                           <span class="badge badge-pill badge-warning">انتضار</span>
+                        </div>
+                       <div v-if='benefitRequest.benefitStatus == "APPROVED"'>
+                           <span class="badge badge-pill badge-success btn-lg">مفعلة</span>
+                        </div>
+                       <div v-if='benefitRequest.benefitStatus == "REFUSED"'>
+                           <span class="badge badge-pill badge-danger btn-lg">تم الرفض</span>
+                        </div>
+                       <div v-if='benefitRequest.benefitStatus == "CANCELLED"'>
+                           <span class="badge badge-pill badge-danger btn-lg">تم الغائها</span>
+                        </div>
+                         </div>
+                    </td>                    <td>
                         <div v-if='benefitRequest.category'>
                             <router-link :to="{name: 'CategoryView', params: {categoryId: benefitRequest.category.id}}">
                                 {{ benefitRequest.category.nameAr }}
@@ -100,6 +121,22 @@
                             </router-link>
                         </div>
                     </td>
+                    <td>{{benefitRequest.notes}}</td>
+                     <td>
+                         <div v-if='benefitRequest.benefit'>
+                            <router-link :to="{name: 'JhiUserView', params: {userId: benefitRequest.createdBy.login}}">
+                                {{ benefitRequest.createdBy.login }}
+                            </router-link>
+                        </div>
+                    </td>
+                     <td>
+                       <div v-if='benefitRequest.benefit'>
+                            <router-link :to="{name: 'JhiUserView', params: {userId: benefitRequest.createdBy.login}}">
+                                {{ benefitRequest.lastModifiedBy.login }}
+                            </router-link>
+                        </div>
+                    </td>
+
                     <td class="text-right">
                         <div class="btn-group">
                             <router-link :to="{name: 'BenefitRequestView', params: {benefitRequestId: benefitRequest.id}}" tag="button" class="btn btn-info btn-sm details">
@@ -110,13 +147,13 @@
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>تعديل</span>
                             </router-link>
-                            <b-button  v-on:click="prepareRemove(benefitRequest)"
+                            <!-- <b-button  v-on:click="prepareRemove(benefitRequest)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>حذف</span>
-                            </b-button>
+                            </b-button> -->
                         </div>
                     </td>
                 </tr>

@@ -11,6 +11,7 @@ import { CardTransactionService } from '../../service/card-transaction.service';
 import { CardTransactionDTO } from '../../service/dto/card-transaction.dto';
 import { SettingService } from '../../service/setting.service';
 import { TransactionAction } from '../../domain/enumeration/transaction-action';
+import { CompanyService } from '../../service/company.service';
 
 @Controller('api/cards')
 @UseGuards(AuthGuard, RolesGuard)
@@ -24,6 +25,7 @@ export class CardController {
     private readonly cardService: CardService,
     private readonly cardTransactionService: CardTransactionService,
     private readonly settingService: SettingService,
+    private readonly companyService: CompanyService,
     ) {}
 
     @Get('/')
@@ -34,8 +36,15 @@ export class CardController {
       type: CardDTO,
     })
     async getAll(@Req() req: Request): Promise<CardDTO[]> {
+      var company;
+      if(req.user["authorities"].includes('ROLE_ADMIN') == true) {
+        company = "all";
+      } else {
+        company = await this.companyService.getCompanyIdForUser(req.user["id"]);
+        company = company["company_id"];
+      }
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-      const [results, count] = await this.cardService.findAndCount({
+      const [results, count] = await this.cardService.findAndCount(company,{
         skip: +pageRequest.page * pageRequest.size,
         take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
@@ -52,7 +61,7 @@ export class CardController {
       type: CardDTO,
     })
     async getOne(@Param('id') id: string): Promise<any> {
-      const results = await this.cardTransactionService.findAndCount({
+      const results = await this.cardTransactionService.findAndCount(id,{
         where: { card : id },
       });
       var points = 0;
@@ -62,9 +71,9 @@ export class CardController {
         console.log(points);
 
         if (element.action == 'PLUS') {
-          pointsPlus = pointsPlus + element.pointsAmount;
+          pointsPlus = pointsPlus + element.amount;
         } else {
-          pointsMinus = pointsMinus + element.pointsAmount;
+          pointsMinus = pointsMinus + element.amount;
           if (pointsMinus < 0) {
             pointsMinus = pointsMinus * -1;
           }
@@ -92,10 +101,15 @@ export class CardController {
       type: CardDTO,
     })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
-    async post(@Req() req: Request, @Body() cardDTO: CardDTO): Promise<CardDTO> {
-      const created = await this.cardService.save(cardDTO);
-      HeaderUtil.addEntityCreatedHeaders(req.res, 'Card', created.id);
-      return created;
+    async post(@Req() req: Request, @Body() cardDTO: CardDTO): Promise<any> {
+      try{
+        cardDTO.createdBy =req.user["id"];
+        const created = await this.cardService.save(cardDTO);
+        HeaderUtil.addEntityCreatedHeaders(req.res, 'Card', created.id);
+        return created;
+      } catch(error){
+        return error
+      }
     }
 
     @Put('/')
@@ -106,9 +120,14 @@ export class CardController {
       description: 'The record has been successfully updated.',
       type: CardDTO,
     })
-    async put(@Req() req: Request, @Body() cardDTO: CardDTO): Promise<CardDTO> {
-      HeaderUtil.addEntityCreatedHeaders(req.res, 'Card', cardDTO.id);
-      return await this.cardService.update(cardDTO);
+    async put(@Req() req: Request, @Body() cardDTO: CardDTO): Promise<any> {
+      try{
+        cardDTO.lastModifiedBy =req.user["id"];
+        HeaderUtil.addEntityCreatedHeaders(req.res, 'Card', cardDTO.id);
+        return await this.cardService.update(cardDTO);
+      }catch(error){
+        return error
+      }
     }
 
     @Delete('/:id')
@@ -140,8 +159,7 @@ export class CardController {
         order: pageRequest.sort.asOrder(),
       });
       var cardTransactionDTO = new CardTransactionDTO ();
-      cardTransactionDTO.amount = data.points / resualtSettings[0][0].value;
-      cardTransactionDTO.pointsAmount = data.points;
+      cardTransactionDTO.amount = data.points;
       cardTransactionDTO.card = data.card.id;
       cardTransactionDTO.action = TransactionAction.PLUS;
       cardTransactionDTO.notes = "اضافة نقاط الى البطاقة ( شحن البطاقة )";

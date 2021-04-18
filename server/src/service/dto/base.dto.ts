@@ -10,7 +10,7 @@ export class BaseDTO {
 
     createdDate?: Date;
 
-    lastModifiedBy?: string;
+    lastModifiedBy?: User;
 
     lastModifiedDate?: Date;
 

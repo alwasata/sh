@@ -46,6 +46,26 @@ export class EmployeeController {
       return results;
     }
 
+    @Get('/company/:id')
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
+    @ApiResponse({
+      status: 200,
+      description: 'List all records',
+      type: EmployeeDTO,
+    })
+    async getByCompanyId(@Param('id') id: string, @Req() req: Request): Promise<EmployeeDTO[]> {
+
+      var company = id;
+      const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+      const [results, count] = await this.employeeService.findAndCount(company,{
+        skip: +pageRequest.page * pageRequest.size,
+        take: +pageRequest.size,
+        order: pageRequest.sort.asOrder(),
+      });
+      HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
+      return results;
+    }
+
     @Get('/:id')
     @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiResponse({
@@ -66,16 +86,20 @@ export class EmployeeController {
       type: EmployeeDTO,
     })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
-    async post(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<EmployeeDTO> {
-      employeeDTO.createdBy =req.user["id"];
-      if(req.user["authorities"].includes('ROLE_COMPANY_ADMIN') == true) {
-        var company = await this.companyService.getCompanyIdForUser(req.user["id"]);
-        var company_id = await this.companyService.findById(company["company_id"]);
-        employeeDTO.company = company_id;
+    async post(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<any> {
+      try{
+        employeeDTO.createdBy =req.user["id"];
+        if(req.user["authorities"].includes('ROLE_COMPANY_ADMIN') == true) {
+          var company = await this.companyService.getCompanyIdForUser(req.user["id"]);
+          var company_id = await this.companyService.findById(company["company_id"]);
+          employeeDTO.company = company_id;
+        }
+        const created = await this.employeeService.save(employeeDTO);
+        HeaderUtil.addEntityCreatedHeaders(req.res, 'Employee', created.id);
+        return created;
+      }catch(error){
+        return error;
       }
-      const created = await this.employeeService.save(employeeDTO);
-      HeaderUtil.addEntityCreatedHeaders(req.res, 'Employee', created.id);
-      return created;
     }
 
     @Put('/')
@@ -86,10 +110,14 @@ export class EmployeeController {
       description: 'The record has been successfully updated.',
       type: EmployeeDTO,
     })
-    async put(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<EmployeeDTO> {
-      employeeDTO.lastModifiedBy =req.user["id"];
-      HeaderUtil.addEntityCreatedHeaders(req.res, 'Employee', employeeDTO.id);
-      return await this.employeeService.update(employeeDTO);
+    async put(@Req() req: Request, @Body() employeeDTO: EmployeeDTO): Promise<any> {
+      try{
+        employeeDTO.lastModifiedBy =req.user["id"];
+        HeaderUtil.addEntityCreatedHeaders(req.res, 'Employee', employeeDTO.id);
+        return await this.employeeService.update(employeeDTO);
+      }catch(error){
+        return error;
+      }
     }
 
     @Delete('/:id')

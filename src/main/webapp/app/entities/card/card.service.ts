@@ -47,8 +47,8 @@ export default class CardService {
     });
   }
 
-  public create(entity: ICard): Promise<ICard> {
-    return new Promise<ICard>((resolve, reject) => {
+  public create(entity: ICard): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
         .then(res => {
@@ -60,8 +60,8 @@ export default class CardService {
     });
   }
 
-  public update(entity: ICard): Promise<ICard> {
-    return new Promise<ICard>((resolve, reject) => {
+  public update(entity: ICard): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .put(`${baseApiUrl}`, entity)
         .then(res => {

@@ -2,10 +2,10 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div v-if="employee">
-                <h2 class='jh-entity-heading'><span>موظف</span> {{ employee.id }}</h2>
+                <h2 class='jh-entity-heading'><span>بيانات الموظف</span></h2>
                 <dl class="row jh-entity-details">
                     <dt>
-                        <span>الاسم</span>
+                        <span>الاسم الرباعي</span>
                     </dt>
                     <dd>
                         <span>{{employee.name}}</span>
@@ -44,16 +44,21 @@
                             </router-link>
                         </div>
                     </dd>
+                    <dt>
+                        <span>الصورة</span>
+                    </dt>
+                    <dd>
+                        <div v-if='attatchment.file' class='clearfix text-success'>
+                            <a class='pull-left'
+                                v-on:click='openFile(attatchment.fileContentType, attatchment.file)'> اضغط هنا لعرض المرفق</a><br>
+                        </div>
+                    </dd>
                 </dl>
                 <button type='submit'
                         v-on:click.prevent='previousState()'
                         class='btn btn-info'>
                     <font-awesome-icon icon='arrow-left'></font-awesome-icon>&nbsp;<span> Back</span>
                 </button>
-                <router-link v-if='employee.id' :to="{name: 'EmployeeEdit', params: {employeeId: employee.id}}"
-                             tag='button' class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
-                </router-link>
             </div>
         </div>
     </div>

@@ -33,12 +33,17 @@ export class BenefitService {
     var resultList = [][0];
 
     if(hosbital_id == "all") {
-      resultList = await this.benefitRepository.findAndCount(options);
+      resultList = await this.benefitRepository.createQueryBuilder('benefit')
+      .innerJoinAndSelect('benefit.hospital', 'hospital')
+      .innerJoinAndSelect('benefit.category', 'category')
+      .where('benefit.active = :active', { active: 1 })
+      .getManyAndCount();
     } else {
       resultList = await this.benefitRepository.createQueryBuilder('benefit')
       .innerJoinAndSelect('benefit.hospital', 'hospital')
       .innerJoinAndSelect('benefit.category', 'category')
       .where('hospital.id = :id', { id: hosbital_id })
+      .where('benefit.active = :active', { active: 1 })
       .getManyAndCount();
     }
 

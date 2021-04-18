@@ -44,7 +44,7 @@
                 </div>
                 <div class="col col-md-4 col-sm-12 col-xs-12">
                     <label for=""> النقاط</label>
-                    <input type="text" disabled class="form-control" v-model="cardPoint" name="cardPoint">
+                    <input type="text" disabled class="form-control" v-model="cardPrice" name="cardPrice">
                 </div>
                 <div class="col col-md-4 col-sm-12 col-xs-12">
                     <label for=""> انتهاء صلاحية البطاقة </label>
@@ -78,7 +78,7 @@
                             <td>
                                 <input type="number" v-model="row.returnQuantity">
                                 <br>
-                                <label  class="text-danger" id="error-quantity"></label>
+                                <label  class="text-danger" :id="'error-quantity'+row.id" ></label>
                             </td>
                             <td>
                                 <button class="btn btn-danger" @click="returnBenefit(row, index)">
@@ -89,7 +89,7 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            <td> مجموع النقاط : {{total}}</td>
+                            <td></td>
                             <td></td>
                             <td> اجمالي السعر : {{totalIvoicePrice}}</td>
                             <td>
@@ -129,7 +129,7 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            <td> مجموع النقاط : {{ returnTotal}}</td>
+                            <td> </td>
                             <td></td>
                             <td> اجمالي السعر : {{ returnTotalIvoicePrice}}</td>
                             <td>

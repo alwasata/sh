@@ -7,6 +7,7 @@ export interface IBenefit {
   nameEn?: string;
   // pointsCost?: number;
   cost?: number;
+  active?: boolean;
   category?: ICategory;
   hospital?: IHospital;
 }
@@ -18,6 +19,7 @@ export class Benefit implements IBenefit {
     public nameEn?: string,
     // public pointsCost?: number,
     public cost?: number,
+    public active?: boolean,
     public category?: ICategory,
     public hospital?: IHospital
   ) {}

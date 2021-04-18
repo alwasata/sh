@@ -16,12 +16,7 @@
                     <dd>
                         <span>{{benefit.nameEn}}</span>
                     </dd>
-                    <dt>
-                        <span>النقاط</span>
-                    </dt>
-                    <dd>
-                        <span>{{benefit.cost*1.1}}</span>
-                    </dd>
+
                     <dt>
                         <span>القيمة المالية</span>
                     </dt>
@@ -54,10 +49,6 @@
                         class='btn btn-info'>
                     <font-awesome-icon icon='arrow-left'></font-awesome-icon>&nbsp;<span> Back</span>
                 </button>
-                <router-link v-if='benefit.id' :to="{name: 'BenefitEdit', params: {benefitId: benefit.id}}" tag='button'
-                             class='btn btn-primary'>
-                    <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
-                </router-link>
             </div>
         </div>
     </div>

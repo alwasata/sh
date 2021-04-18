@@ -9,13 +9,13 @@ import { EmployeeStatus } from '../../domain/enumeration/employee-status';
  * A Employee DTO object.
  */
 export class EmployeeDTO extends BaseDTO {
-    @ApiModelProperty({ description: 'name field', required: false })
+    @ApiModelProperty({ description: 'name field', required: false , uniqueItems: true})
     name: string;
 
-    @ApiModelProperty({ description: 'phone field', required: false })
+    @ApiModelProperty({ description: 'phone field', required: false , uniqueItems: true})
     phone: string;
 
-    @ApiModelProperty({ description: 'identityNo field', required: false })
+    @ApiModelProperty({ description: 'identityNo field', required: false , uniqueItems: true})
     identityNo: string;
 
     @ApiModelProperty({ enum: EmployeeStatus, description: 'employeeStatus enum field', required: false })

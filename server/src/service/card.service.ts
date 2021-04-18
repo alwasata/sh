@@ -10,51 +10,66 @@ relationshipNames.push('employee');
 
 @Injectable()
 export class CardService {
-    logger = new Logger('CardService');
+  logger = new Logger('CardService');
 
-    constructor(@InjectRepository(CardRepository) private cardRepository: CardRepository) {}
+  constructor(@InjectRepository(CardRepository) private cardRepository: CardRepository) {}
 
-    async findById(id: string): Promise<CardDTO | undefined> {
-        const options = { relations: relationshipNames };
-        const result = await this.cardRepository.findOne(id, options);
-        return CardMapper.fromEntityToDTO(result);
+  async findById(id: string): Promise<CardDTO | undefined> {
+    const options = { relations: relationshipNames };
+    const result = await this.cardRepository.findOne(id, options);
+    return CardMapper.fromEntityToDTO(result);
+  }
+
+  async findByfields(options: FindOneOptions<CardDTO>): Promise<CardDTO | undefined> {
+    const result = await this.cardRepository.findOne(options);
+    return CardMapper.fromEntityToDTO(result);
+  }
+
+  async findAndCount(company_id :string,options: FindManyOptions<CardDTO>): Promise<CardDTO[] | any> {
+    options.relations = relationshipNames;
+    var resultList = [][0];
+
+    if(company_id == "all") {
+      resultList = await this.cardRepository.createQueryBuilder('card')
+      .innerJoinAndSelect('card.employee', 'employee')
+      .innerJoinAndSelect('employee.company', 'company')
+      .innerJoinAndSelect('card.createdBy', 'createdBy')
+      .getManyAndCount();
+    } else {
+      resultList = await this.cardRepository.createQueryBuilder('card')
+      .innerJoinAndSelect('card.employee', 'employee')
+      .innerJoinAndSelect('employee.company', 'company')
+      .innerJoinAndSelect('card.createdBy', 'createdBy')
+      .where('employee.company.id = :id', { id: company_id })
+      .getManyAndCount();
     }
-
-    async findByfields(options: FindOneOptions<CardDTO>): Promise<CardDTO | undefined> {
-        const result = await this.cardRepository.findOne(options);
-        return CardMapper.fromEntityToDTO(result);
+    const cardDTO: CardDTO[] = [];
+    if (resultList && resultList[0]) {
+      resultList[0].forEach(card => cardDTO.push(CardMapper.fromEntityToDTO(card)));
+      resultList[0] = cardDTO;
     }
+    return resultList;
+  }
 
-    async findAndCount(options: FindManyOptions<CardDTO>): Promise<CardDTO[] | any> {
-        options.relations = relationshipNames;
-        const resultList = await this.cardRepository.findAndCount(options);
-        const cardDTO: CardDTO[] = [];
-        if (resultList && resultList[0]) {
-            resultList[0].forEach(card => cardDTO.push(CardMapper.fromEntityToDTO(card)));
-            resultList[0] = cardDTO;
-        }
-        return resultList;
-    }
+  async save(cardDTO: CardDTO): Promise<CardDTO | undefined> {
+    const entity = CardMapper.fromDTOtoEntity(cardDTO);
+    const result = await this.cardRepository.save(entity);
+    return CardMapper.fromEntityToDTO(result);
+  }
 
-    async save(cardDTO: CardDTO): Promise<CardDTO | undefined> {
-        const entity = CardMapper.fromDTOtoEntity(cardDTO);
-        const result = await this.cardRepository.save(entity);
-        return CardMapper.fromEntityToDTO(result);
-    }
+  async update(cardDTO: CardDTO): Promise<CardDTO | undefined> {
+    const entity = CardMapper.fromDTOtoEntity(cardDTO);
+    const result = await this.cardRepository.save(entity);
+    return CardMapper.fromEntityToDTO(result);
+  }
 
-    async update(cardDTO: CardDTO): Promise<CardDTO | undefined> {
-        const entity = CardMapper.fromDTOtoEntity(cardDTO);
-        const result = await this.cardRepository.save(entity);
-        return CardMapper.fromEntityToDTO(result);
+  async deleteById(id: string): Promise<void | undefined> {
+    await this.cardRepository.delete(id);
+    const entityFind = await this.findById(id);
+    if (entityFind) {
+      throw new HttpException('Error, entity not deleted!', HttpStatus.NOT_FOUND);
     }
-
-    async deleteById(id: string): Promise<void | undefined> {
-        await this.cardRepository.delete(id);
-        const entityFind = await this.findById(id);
-        if (entityFind) {
-            throw new HttpException('Error, entity not deleted!', HttpStatus.NOT_FOUND);
-        }
-        return;
-    }
+    return;
+  }
 
 }

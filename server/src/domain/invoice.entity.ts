@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne } from 'typeorm';
 import { BaseEntity } from './base/base.entity';
 
 import { CardTransaction } from './card-transaction.entity';
@@ -25,8 +25,8 @@ export class Invoice extends BaseEntity {
 
     @Column({ type: 'float', name: 'totalPoints', nullable: true })
     totalPoints: number;
-    
-    @OneToOne(type => Invoice)
+
+    @ManyToOne(type => Invoice)
     @JoinColumn()
     mainInvoice: Invoice;
 

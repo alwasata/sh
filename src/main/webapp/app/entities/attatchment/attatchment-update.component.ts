@@ -52,7 +52,7 @@ export default class AttatchmentUpdate extends mixins(JhiDataUtils) {
   }
 
   public save(): void {
-    this.isSaving = true;
+    // this.isSaving = true;
     if (this.attatchment.id) {
       this.attatchmentService()
         .update(this.attatchment)
@@ -63,13 +63,14 @@ export default class AttatchmentUpdate extends mixins(JhiDataUtils) {
           this.alertService().showAlert(message, 'info');
         });
     } else {
+      console.log(this.attatchment);
       this.attatchmentService()
         .create(this.attatchment)
         .then(param => {
-          this.isSaving = false;
-          this.$router.go(-1);
-          const message = 'A Attatchment is created with identifier ' + param.id;
-          this.alertService().showAlert(message, 'success');
+          // this.isSaving = false;
+          // this.$router.go(-1);
+          // const message = 'A Attatchment is created with identifier ' + param.id;
+          // this.alertService().showAlert(message, 'success');
         });
     }
   }

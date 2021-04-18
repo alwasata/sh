@@ -33,10 +33,23 @@ export default class HospitalService {
     });
   }
 
-  public delete(id: number): Promise<any> {
+  public getActive(paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .delete(`${baseApiUrl}/${id}`)
+        .get(baseApiUrl + `/active?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public delete(id: number, status: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .delete(`${baseApiUrl}/${id}/${status}`)
         .then(res => {
           resolve(res);
         })

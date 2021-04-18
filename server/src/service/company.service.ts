@@ -42,7 +42,6 @@ export class CompanyService {
       .innerJoinAndSelect('company.users', 'user')
       .where('user.id = :id', { id: user_id })
       .getRawOne();
-      console.log(resultList);
       return resultList;
     }
 

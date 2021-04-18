@@ -24,6 +24,9 @@ export class HospitalDTO extends BaseDTO {
 
     @ApiModelProperty({ description: 'address field', required: false })
     address: string;
+    
+    @ApiModelProperty({ description: 'lng field', required: false , default: 1})
+    active: boolean;
 
     @ApiModelProperty({ type: UserDTO, isArray: true, description: 'users relationship' })
     users: UserDTO[];

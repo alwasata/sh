@@ -7,6 +7,7 @@ export interface IHospital {
   email?: string;
   phone?: string;
   address?: string;
+  active?: boolean;
   users?: IUser[];
 }
 
@@ -17,6 +18,7 @@ export class Hospital implements IHospital {
     public nameEn?: string,
     public email?: string,
     public phone?: string,
+    public active?: boolean,
     public address?: string,
     public users?: IUser[]
   ) {}

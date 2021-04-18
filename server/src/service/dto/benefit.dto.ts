@@ -23,6 +23,9 @@ export class BenefitDTO extends BaseDTO {
     @ApiModelProperty({ description: 'cost field', required: false })
     cost: number;
 
+    @ApiModelProperty({ description: 'active field', default: 1 })
+    active: boolean;
+
     @ApiModelProperty({ type: CategoryDTO, description: 'category relationship' })
     category: CategoryDTO;
 

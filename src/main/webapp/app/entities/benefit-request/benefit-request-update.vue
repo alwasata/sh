@@ -4,11 +4,11 @@
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
                 <h2 id='sahatiApp.benefitRequest.home.createOrEditLabel'>اضافة او تعديل طلب منفعة</h2>
                 <div>
-                    <div class="form-group" v-if="benefitRequest.id">
+                    <!-- <div class="form-group" v-if="benefitRequest.id">
                         <label for='id'>ID</label>
                         <input disabled type="text" class="form-control" id="id" name="id"
                                v-model="benefitRequest.id" readonly />
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label class='form-control-label' for='benefit-request-nameAr'>الاسم بالعربية</label>
                         <input disabled type="text" class="form-control" name="nameAr" id="benefit-request-nameAr"
@@ -35,17 +35,6 @@
                             :class="{'valid': !$v.benefitRequest.cost.$invalid, 'invalid': $v.benefitRequest.cost.$invalid }" v-model.number="$v.benefitRequest.cost.$model" />
                     </div>
                     <div class="form-group">
-                        <label class='form-control-label' for='benefit-request-benefitStatus'>حالة المنفعة</label>
-                        <select class='form-control' name='benefitStatus'
-                                :class="{'valid': !$v.benefitRequest.benefitStatus.$invalid, 'invalid': $v.benefitRequest.benefitStatus.$invalid }"
-                                v-model='$v.benefitRequest.benefitStatus.$model' id='benefit-request-benefitStatus'>
-                            <option value='PENDING'>PENDING</option>
-                            <option value='APPROVED'>APPROVED</option>
-                            <option value='REFUSED'>REFUSED</option>
-                            <option value='CANCELLED'>CANCELLED</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label class='form-control-label' for='benefit-request-notes'>الملاحظات</label>
                         <input disabled type="text" class="form-control" name="notes" id="benefit-request-notes"
                             :class="{'valid': !$v.benefitRequest.notes.$invalid, 'invalid': $v.benefitRequest.notes.$invalid }" v-model="$v.benefitRequest.notes.$model" />
@@ -54,22 +43,14 @@
                         <label class='form-control-label' for='benefit-request-category'>الفئة</label>
                         <select disabled id='benefit-request-category' v-model='benefitRequest.category' class='form-control'
                                 name='category'>
-                            <option v-bind:value='null'></option>
-                            <option v-for='categoryOption in categories' :key='categoryOption.id'
-                                    v-bind:value='benefitRequest.category && categoryOption.id === benefitRequest.category.id ? benefitRequest.category : categoryOption'>
-                                {{ categoryOption.nameAr }}
-                            </option>
+                            <option v-bind:value='benefitRequest.category' selected>{{benefitRequest.category.nameAr}}</option>
                         </select>
                     </div>
                     <div class='form-group' v-if="hasAnyAuthority('ROLE_ADMIN')">
                         <label class='form-control-label' for='benefit-request-hospital'>المستشفى</label>
                         <select disabled id='benefit-request-hospital' v-model='benefitRequest.hospital' class='form-control'
                                 name='hospital'>
-                            <option v-bind:value='null'></option>
-                            <option v-for='hospitalOption in hospitals' :key='hospitalOption.id'
-                                    v-bind:value='benefitRequest.hospital && hospitalOption.id === benefitRequest.hospital.id ? benefitRequest.hospital : hospitalOption'>
-                                {{ hospitalOption.nameAr }}
-                            </option>
+                            <option v-bind:value='benefitRequest.hospital' selected>{{benefitRequest.hospital.nameAr}}</option>
                         </select>
                     </div>
                     <!-- <div class='form-group'>
@@ -84,6 +65,17 @@
                         </select>
                     </div> -->
                 </div>
+                    <div class="form-group">
+                        <label class='form-control-label' for='benefit-request-benefitStatus'>حالة المنفعة</label>
+                        <select class='form-control' name='benefitStatus'
+                                :class="{'valid': !$v.benefitRequest.benefitStatus.$invalid, 'invalid': $v.benefitRequest.benefitStatus.$invalid }"
+                                v-model='$v.benefitRequest.benefitStatus.$model' id='benefit-request-benefitStatus'>
+                            <option value='PENDING'>PENDING</option>
+                            <option value='APPROVED'>APPROVED</option>
+                            <option value='REFUSED'>REFUSED</option>
+                            <option value='CANCELLED'>CANCELLED</option>
+                        </select>
+                    </div>
                 <div>
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
                         <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>الغاء</span>

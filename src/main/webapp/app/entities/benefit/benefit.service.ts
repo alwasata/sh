@@ -46,8 +46,8 @@ export default class BenefitService {
     });
   }
 
-  public create(entity: IBenefit): Promise<IBenefit> {
-    return new Promise<IBenefit>((resolve, reject) => {
+  public create(entity: IBenefit): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
         .then(res => {
@@ -59,8 +59,8 @@ export default class BenefitService {
     });
   }
 
-  public update(entity: IBenefit): Promise<IBenefit> {
-    return new Promise<IBenefit>((resolve, reject) => {
+  public update(entity: IBenefit): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       axios
         .put(`${baseApiUrl}`, entity)
         .then(res => {

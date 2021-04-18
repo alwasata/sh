@@ -122,9 +122,9 @@ export default class InvoiceUpdate extends Vue {
             var points = 0;
             res.cardInfo[0].forEach(element => {
               if (element.action == 'PLUS') {
-                points = points + element.pointsAmount;
+                points = points + element.amount;
               } else {
-                points = points - element.pointsAmount;
+                points = points - element.amount;
               }
             });
             this.hosbitalName = res.benefit[0].hospital.nameAr;

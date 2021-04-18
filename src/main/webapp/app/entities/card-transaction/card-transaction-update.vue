@@ -14,15 +14,11 @@
                         <input type="text" class="form-control" name="transactionNo" id="card-transaction-transactionNo"
                             :class="{'valid': !$v.cardTransaction.transactionNo.$invalid, 'invalid': $v.cardTransaction.transactionNo.$invalid }" v-model="$v.cardTransaction.transactionNo.$model" />
                     </div>
+
                     <div class="form-group">
-                        <label class='form-control-label' for='card-transaction-amount'>Amount</label>
+                        <label class='form-control-label' for='card-transaction-amount'>Cost Amount</label>
                         <input type="number" class="form-control" name="amount" id="card-transaction-amount"
                             :class="{'valid': !$v.cardTransaction.amount.$invalid, 'invalid': $v.cardTransaction.amount.$invalid }" v-model.number="$v.cardTransaction.amount.$model" />
-                    </div>
-                    <div class="form-group">
-                        <label class='form-control-label' for='card-transaction-pointsAmount'>Points Amount</label>
-                        <input type="number" class="form-control" name="pointsAmount" id="card-transaction-pointsAmount"
-                            :class="{'valid': !$v.cardTransaction.pointsAmount.$invalid, 'invalid': $v.cardTransaction.pointsAmount.$invalid }" v-model.number="$v.cardTransaction.pointsAmount.$model" />
                     </div>
                     <div class="form-group">
                         <label class='form-control-label' for='card-transaction-action'>Action</label>

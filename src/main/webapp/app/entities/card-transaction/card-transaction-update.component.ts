@@ -14,7 +14,7 @@ const validations: any = {
   cardTransaction: {
     transactionNo: {},
     amount: {},
-    pointsAmount: {},
+    costAmount: {},
     action: {},
     notes: {},
   },
