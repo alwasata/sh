@@ -38,10 +38,10 @@
                         <font-awesome-icon icon="user" />
                         <span>ادارة المسؤلين </span>
                     </b-dropdown-item>
-                    <b-dropdown-item active-class='active' to='/admin/docs'>
+                    <!-- <b-dropdown-item active-class='active' to='/admin/docs'>
                         <font-awesome-icon icon='book' />
                         <span>API</span>
-                    </b-dropdown-item>
+                    </b-dropdown-item> -->
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown
                     right

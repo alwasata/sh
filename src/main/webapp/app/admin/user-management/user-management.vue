@@ -2,11 +2,11 @@
     <div>
         <h2>
             <span id='user-management-page-heading'>Users</span>
-            <router-link tag='button' class='btn btn-primary float-left jh-create-entity'
+            <!-- <router-link tag='button' class='btn btn-primary float-left jh-create-entity'
                          :to="{name: 'JhiUserCreate'}">
                 <font-awesome-icon icon='plus'></font-awesome-icon>
                 <span>اضافة User</span>
-            </router-link>
+            </router-link> -->
         </h2>
         <b-alert :show="dismissCountDown"
                  dismissible
@@ -79,7 +79,7 @@
                                     <font-awesome-icon icon="eye"></font-awesome-icon>
                                     <span class='d-none d-md-inline'>عرض</span>
                                 </router-link>
-                                <router-link :to="{name: 'JhiUserEdit', params: {userId: user.login}}"  tag="button" class="btn btn-primary btn-sm edit">
+                                <!-- <router-link :to="{name: 'JhiUserEdit', params: {userId: user.login}}"  tag="button" class="btn btn-primary btn-sm edit">
                                     <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                     <span class='d-none d-md-inline'>تعديل</span>
                                 </router-link>
@@ -89,7 +89,7 @@
                                        :disabled="username === user.login">
                                     <font-awesome-icon icon="times"></font-awesome-icon>
                                     <span class='d-none d-md-inline'>حذف</span>
-                                </b-button>
+                                </b-button> -->
                             </div>
                         </td>
                     </tr>
