@@ -58,7 +58,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class='form-group' v-if="isUpdate">
+                    <div class='form-group' v-if="isUpdate == true">
                         <label class='form-control-label' for='benefit-hospital'>المستشفى</label>
                         <select id='benefit-hospital'  class='form-control' name='hospital'>
                             <option v-bind:value='benefit.hospital.id'>{{benefit.hospital.nameAr}}</option>

@@ -33,11 +33,12 @@ export default class HospitalService {
     });
   }
 
-  public getActive(paginationQuery?: any): Promise<any> {
+  public getActive(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(baseApiUrl + `/active?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(baseApiUrl + `/active/hospital`)
         .then(res => {
+          console.log(res);
           resolve(res);
         })
         .catch(err => {

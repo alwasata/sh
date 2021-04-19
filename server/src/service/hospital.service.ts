@@ -52,6 +52,7 @@ export class HospitalService {
     }
     return resultList;
   }
+
   async getHosbitalIdForUser(id : string): Promise<[HospitalDTO[]]> {
     const options = { relations: relationshipNames };
     const resultList = await this.hospitalRepository.createQueryBuilder('hospital')

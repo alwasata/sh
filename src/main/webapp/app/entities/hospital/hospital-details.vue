@@ -48,10 +48,10 @@
                         class='btn btn-info'>
                     <font-awesome-icon icon='arrow-left'></font-awesome-icon>&nbsp;<span> Back</span>
                 </button>
-                <router-link v-if='hospital.id' :to="{name: 'HospitalEdit', params: {hospitalId: hospital.id}}"
+                <!-- <router-link v-if='hospital.id' :to="{name: 'HospitalEdit', params: {hospitalId: hospital.id}}"
                              tag='button' class='btn btn-primary'>
                     <font-awesome-icon icon='pencil-alt'></font-awesome-icon>&nbsp;<span> تعديل</span>
-                </router-link>
+                </router-link> -->
             </div>
         </div>
     </div>

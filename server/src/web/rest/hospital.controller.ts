@@ -38,7 +38,7 @@ export class HospitalController{
     return results;
   }
 
-  @Get('/active')
+  @Get('/active/hospital')
   @Roles(RoleType.USER)
   @ApiResponse({
     status: 200,
@@ -48,7 +48,7 @@ export class HospitalController{
   async getActive(@Req() req: Request): Promise<HospitalDTO[]> {
     const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
     const [results, count] = await this.hospitalService.findAndCount("false",{
-      where : {active : 1},
+      // where : {active : 1},
       skip: +pageRequest.page * pageRequest.size,
       take: +pageRequest.size,
       order: pageRequest.sort.asOrder(),

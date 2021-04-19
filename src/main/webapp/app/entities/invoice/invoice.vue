@@ -17,7 +17,7 @@
             {{alertMessage}}
         </b-alert>
         <div class="col col-md-6">
-        <input type="text" v-model="search" class="form-control" v-on:input="searchInput()" placeholder="ابحث عن طريق رقم الفاتورة او اسم الموظف" >
+        <input type="text" v-model="search" class="form-control" v-on:input="searchInput()" placeholder="البحث" >
         </div>
         <br/>
         <div class="alert alert-warning" v-if="!isFetching && invoices && invoices.length === 0">

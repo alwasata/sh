@@ -55,7 +55,6 @@ export default class BenefitUpdate extends Vue {
 
   @Inject('accountService') private accountService: () => AccountService;
   private hasAnyAuthorityValue = false;
-  private isUpdate = false;
 
   public categories: ICategory[] = [];
 
@@ -65,6 +64,7 @@ export default class BenefitUpdate extends Vue {
   public isSaving = false;
   public currentLanguage = '';
   public error = '';
+  public isUpdate = false;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -123,7 +123,6 @@ export default class BenefitUpdate extends Vue {
     this.benefitService()
       .find(benefitId)
       .then(res => {
-        console.log(res);
         this.benefit = res;
         this.isUpdate = true;
       });
@@ -142,6 +141,7 @@ export default class BenefitUpdate extends Vue {
     this.hospitalService()
       .getActive()
       .then(res => {
+        console.log(res);
         this.hospitals = res.data;
       });
   }
