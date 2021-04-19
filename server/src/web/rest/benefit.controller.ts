@@ -53,7 +53,7 @@ export class BenefitController {
       return results;
     }
 
-    @Get('/:id')
+    @Get('/find/:id')
     @Roles(RoleType.HOSPITAL_ADMIN, RoleType.ADMIN)
     @ApiResponse({
       status: 200,
@@ -61,6 +61,7 @@ export class BenefitController {
       type: BenefitDTO,
     })
     async getOne(@Param('id') id: string): Promise<BenefitDTO> {
+      console.log(id)
       return await this.benefitService.findById(id);
     }
 

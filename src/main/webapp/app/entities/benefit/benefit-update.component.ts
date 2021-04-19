@@ -69,6 +69,7 @@ export default class BenefitUpdate extends Vue {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.benefitId) {
+        console.log(to.params);
         vm.retrieveBenefit(to.params.benefitId);
       }
       vm.initRelationships();
@@ -122,6 +123,7 @@ export default class BenefitUpdate extends Vue {
     this.benefitService()
       .find(benefitId)
       .then(res => {
+        console.log(res);
         this.benefit = res;
         this.isUpdate = true;
       });

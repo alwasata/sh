@@ -18,9 +18,7 @@ import AccountService from '@/account/account.service';
 
 const validations: any = {
   benefitRequest: {
-    nameAr: {
-      required,
-    },
+    nameAr: {},
     nameEn: {},
     pointsCost: {},
     cost: {},

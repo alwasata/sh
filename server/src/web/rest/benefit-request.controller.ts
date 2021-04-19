@@ -48,7 +48,7 @@ export class BenefitRequestController {
       return results;
     }
 
-    @Get('/:id')
+    @Get('/find/:id')
     @Roles(RoleType.ADMIN)
     @ApiResponse({
       status: 200,

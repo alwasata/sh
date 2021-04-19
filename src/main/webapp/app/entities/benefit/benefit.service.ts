@@ -10,8 +10,9 @@ export default class BenefitService {
   public find(id: number): Promise<IBenefit> {
     return new Promise<IBenefit>((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}/${id}`)
+        .get(`${baseApiUrl}/find/${id}`)
         .then(res => {
+          console.log(res);
           resolve(res.data);
         })
         .catch(err => {

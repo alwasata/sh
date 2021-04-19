@@ -10,7 +10,7 @@ export default class BenefitRequestService {
   public find(id: number): Promise<IBenefitRequest> {
     return new Promise<IBenefitRequest>((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}/${id}`)
+        .get(`${baseApiUrl}/find/${id}`)
         .then(res => {
           resolve(res.data);
         })
