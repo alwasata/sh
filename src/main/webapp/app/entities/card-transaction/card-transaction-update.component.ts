@@ -94,7 +94,7 @@ export default class CardTransactionUpdate extends Vue {
 
   public initRelationships(): void {
     this.cardService()
-      .retrieve()
+      .retrieve('false')
       .then(res => {
         this.cards = res.data;
       });
