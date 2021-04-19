@@ -3,8 +3,11 @@
         <div class="col-8">
             <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" v-if="userAccount">
                 <h2 id='myUserLabel'>
-                    اضافة او تعديل User
+                    اضافة او تعديل مستخدم
                 </h2>
+                <div class="alert alert-danger" id="alert-danger" role="alert" hidden>
+                    {{ error }}
+                </div>
                 <div>
                     <div class="form-group" :hidden="!userAccount.id">
                         <label>ID</label>
@@ -88,13 +91,6 @@
                             <span> تفعيل </span>
                         </label>
                             <input class="form-check-input" :disabled="userAccount.id === null" type="checkbox" id="activated" name="activated" v-model="userAccount.activated">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Profiles</label>
-                        <select class="form-control" multiple name="authority" v-model="userAccount.authorities">
-                            <option v-for="authority of authorities" :value="authority" :key="authority">{{authority}}</option>
-                        </select>
                     </div>
                 </div>
                 <div>

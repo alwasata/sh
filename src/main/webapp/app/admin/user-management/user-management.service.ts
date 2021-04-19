@@ -9,11 +9,29 @@ export default class UserManagementService {
   }
 
   public create(user): Promise<any> {
-    return axios.post('api/users', user);
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .post('api/users', user)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
   public update(user): Promise<any> {
-    return axios.put('api/users', user);
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .put('api/users', user)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
   public remove(userId: number): Promise<any> {

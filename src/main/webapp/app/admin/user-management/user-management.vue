@@ -1,12 +1,12 @@
 <template>
     <div>
         <h2>
-            <span id='user-management-page-heading'>Users</span>
-            <!-- <router-link tag='button' class='btn btn-primary float-left jh-create-entity'
+            <span id='user-management-page-heading'>مسؤلين</span>
+            <router-link tag='button' class='btn btn-primary float-left jh-create-entity'
                          :to="{name: 'JhiUserCreate'}">
                 <font-awesome-icon icon='plus'></font-awesome-icon>
-                <span>اضافة User</span>
-            </router-link> -->
+                <span>اضافة مسؤل</span>
+            </router-link>
         </h2>
         <b-alert :show="dismissCountDown"
                  dismissible
@@ -79,11 +79,11 @@
                                     <font-awesome-icon icon="eye"></font-awesome-icon>
                                     <span class='d-none d-md-inline'>عرض</span>
                                 </router-link>
-                                <!-- <router-link :to="{name: 'JhiUserEdit', params: {userId: user.login}}"  tag="button" class="btn btn-primary btn-sm edit">
+                                <router-link :to="{name: 'JhiUserEdit', params: {userId: user.login}}"  tag="button" class="btn btn-primary btn-sm edit">
                                     <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                     <span class='d-none d-md-inline'>تعديل</span>
                                 </router-link>
-                                <b-button v-on:click="prepareRemove(user)"
+                                <!-- <b-button v-on:click="prepareRemove(user)"
                                        variant="danger"
                                        class="btn btn-sm delete"
                                        :disabled="username === user.login">

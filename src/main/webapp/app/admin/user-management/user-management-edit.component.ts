@@ -43,6 +43,7 @@ export default class JhiUserManagementEdit extends Vue {
   public isSaving = false;
   public authorities: any[] = [];
   public languages: any = this.$store.getters.languages;
+  public error = '';
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -85,16 +86,27 @@ export default class JhiUserManagementEdit extends Vue {
       this.userManagementService()
         .update(this.userAccount)
         .then(res => {
-          this.returnToList();
-          this.alertService().showAlert(this.getMessageFromHeader(res), 'info');
+          if (res.code == 'ER_DUP_ENTRY') {
+            this.error = ' مستخدم مسبقا ' + res.message.split("'")[1];
+            (document.getElementById('alert-danger') as HTMLDivElement).hidden = false;
+          } else {
+            this.returnToList();
+            this.alertService().showAlert(this.getMessageFromHeader(res), 'info');
+          }
         });
     } else {
+      this.userAccount.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
       this.userAccount.langKey = 'en';
       this.userManagementService()
         .create(this.userAccount)
         .then(res => {
-          this.returnToList();
-          this.alertService().showAlert(this.getMessageFromHeader(res), 'success');
+          if (res.code == 'ER_DUP_ENTRY') {
+            this.error = ' مستخدم مسبقا ' + res.message.split("'")[1];
+            (document.getElementById('alert-danger') as HTMLDivElement).hidden = false;
+          } else {
+            this.returnToList();
+            this.alertService().showAlert(this.getMessageFromHeader(res), 'success');
+          }
         });
     }
   }
