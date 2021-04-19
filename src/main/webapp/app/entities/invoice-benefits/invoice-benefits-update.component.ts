@@ -93,7 +93,7 @@ export default class InvoiceBenefitsUpdate extends Vue {
 
   public initRelationships(): void {
     this.benefitService()
-      .retrieve()
+      .retrieve('false')
       .then(res => {
         this.benefits = res.data;
       });

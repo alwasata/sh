@@ -23,14 +23,14 @@ export class BenefitRequestController {
     private readonly hospitalService: HospitalService
     ) {}
 
-    @Get('/')
+    @Get('/:search')
     @Roles(RoleType.ADMIN)
     @ApiResponse({
       status: 200,
       description: 'List all records',
       type: BenefitRequestDTO,
     })
-    async getAll(@Req() req: Request): Promise<BenefitRequestDTO[]> {
+    async getAll(@Req() req: Request, @Param('search') search: string): Promise<BenefitRequestDTO[]> {
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
       var hospital;
       if(req.user["authorities"].includes('ROLE_ADMIN') == true) {
@@ -39,7 +39,7 @@ export class BenefitRequestController {
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user["id"]);
         hospital = hospital["hospital_id"];
       }
-      const [results, count] = await this.benefitRequestService.findAndCount(hospital,{
+      const [results, count] = await this.benefitRequestService.findAndCount(search, hospital,{
         skip: +pageRequest.page * pageRequest.size,
         take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
@@ -102,7 +102,7 @@ export class BenefitRequestController {
     async put(@Req() req: Request, @Body() benefitRequestDTO: BenefitRequestDTO): Promise<BenefitRequestDTO> {
       // you can't modify Benefit Request if its not in PENDING status
       if (benefitRequestDTO.benefitStatus == BenefitStatus.CANCELLED || benefitRequestDTO.benefitStatus == BenefitStatus.REFUSED) {
-        
+
       }
 
         HeaderUtil.addEntityCreatedHeaders(req.res, 'BenefitRequest', benefitRequestDTO.id);

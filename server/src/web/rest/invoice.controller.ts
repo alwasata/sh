@@ -191,7 +191,7 @@ export class InvoiceController {
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user["id"]);
         hospital = hospital["hospital_id"];
       }
-      const [benefit, count] = await this.benefitRequestService.findAndCount(hospital,{
+      const [benefit, count] = await this.benefitRequestService.findAndCount("false",hospital,{
         where : { benefitStatus : "APPROVED" },
         skip: +pageRequest.page * pageRequest.size,
         take: +pageRequest.size,

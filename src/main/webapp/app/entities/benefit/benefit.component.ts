@@ -24,41 +24,36 @@ export default class Benefit extends mixins(AlertMixin) {
   public reverse = false;
   public totalItems = 0;
   public points = 0;
-
+  public search = '';
   public benefits: IBenefit[] = [];
 
   public isFetching = false;
 
   public mounted(): void {
-    this.retrieveAllBenefits();
+    this.retrieveAllBenefits(this.search);
   }
 
   public clear(): void {
     this.page = 1;
-    this.retrieveAllBenefits();
+    this.retrieveAllBenefits(this.search);
   }
 
-  public retrieveAllBenefits(): void {
-    this.isFetching = true;
+  public searchInput(): void {
+    this.page = 1;
+    this.retrieveAllBenefits(this.search);
+  }
 
+  public retrieveAllBenefits(search): void {
+    this.isFetching = true;
+    search = search == '' ? 'false' : search;
     const paginationQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
 
-    this.settingService()
-      .retrieve(paginationQuery)
-      .then(
-        res => {
-          this.points = res.data[0].value;
-        },
-        err => {
-          this.isFetching = false;
-        }
-      );
     this.benefitService()
-      .retrieve(paginationQuery)
+      .retrieve(search, paginationQuery)
       .then(
         res => {
           this.benefits = res.data;
@@ -87,7 +82,7 @@ export default class Benefit extends mixins(AlertMixin) {
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;
-        this.retrieveAllBenefits();
+        this.retrieveAllBenefits(this.search);
         this.closeDialog();
       });
   }
@@ -108,7 +103,7 @@ export default class Benefit extends mixins(AlertMixin) {
   }
 
   public transition(): void {
-    this.retrieveAllBenefits();
+    this.retrieveAllBenefits(this.search);
   }
 
   public changeOrder(propOrder): void {

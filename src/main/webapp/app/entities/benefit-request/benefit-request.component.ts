@@ -20,30 +20,36 @@ export default class BenefitRequest extends mixins(AlertMixin) {
   public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
+  public search = '';
 
   public benefitRequests: IBenefitRequest[] = [];
 
   public isFetching = false;
 
   public mounted(): void {
-    this.retrieveAllBenefitRequests();
+    this.retrieveAllBenefitRequests(this.search);
+  }
+
+  public searchInput(): void {
+    this.page = 1;
+    this.retrieveAllBenefitRequests(this.search);
   }
 
   public clear(): void {
     this.page = 1;
-    this.retrieveAllBenefitRequests();
+    this.retrieveAllBenefitRequests(this.search);
   }
 
-  public retrieveAllBenefitRequests(): void {
+  public retrieveAllBenefitRequests(search): void {
     this.isFetching = true;
-
+    search = search == '' ? 'false' : search;
     const paginationQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
     this.benefitRequestService()
-      .retrieve(paginationQuery)
+      .retrieve(search, paginationQuery)
       .then(
         res => {
           this.benefitRequests = res.data;
@@ -72,7 +78,7 @@ export default class BenefitRequest extends mixins(AlertMixin) {
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;
-        this.retrieveAllBenefitRequests();
+        this.retrieveAllBenefitRequests(this.search);
         this.closeDialog();
       });
   }
@@ -93,7 +99,7 @@ export default class BenefitRequest extends mixins(AlertMixin) {
   }
 
   public transition(): void {
-    this.retrieveAllBenefitRequests();
+    this.retrieveAllBenefitRequests(this.search);
   }
 
   public changeOrder(propOrder): void {

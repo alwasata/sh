@@ -16,7 +16,7 @@ export class UserDTO extends BaseDTO {
     @ApiModelProperty({ example: 'MyUser', description: 'User last name', required: false })
     lastName?: string;
 
-    @ApiModelProperty({ example: 'myuser@localhost.it', description: 'User email' })
+    @ApiModelProperty({ uniqueItems: true, example: 'myuser@localhost.it', description: 'User email' })
     @IsEmail()
     email: string;
 

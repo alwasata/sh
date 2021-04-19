@@ -27,9 +27,9 @@ export class BenefitRequestService {
     return BenefitRequestMapper.fromEntityToDTO(result);
   }
 
-  async findAndCount(hosbital_id :string,options: FindManyOptions<BenefitRequestDTO>): Promise<[BenefitRequestDTO[], number]> {
+  async findAndCount(search: string, hosbital_id :string,options: FindManyOptions<BenefitRequestDTO>): Promise<[BenefitRequestDTO[], number]> {
     options.relations = relationshipNames;
-
+    search = search == "false" ? "" : search;
     // const resultList = await this.benefitRequestRepository.findAndCount(options);
     var resultList = [][0];
 
@@ -40,6 +40,17 @@ export class BenefitRequestService {
       .innerJoinAndSelect('benefit_request.benefit', 'benefit')
       .innerJoinAndSelect('benefit_request.createdBy', 'createdBy')
       .leftJoinAndSelect('benefit_request.lastModifiedBy', 'lastModifiedBy')
+      .where('benefit_request.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('benefit_request.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('benefit_request.createdDate like :createdDate', { createdDate: '%' + search + '%' })
+      .orWhere('benefit_request.lastModifiedDate like :lastModifiedDate', { lastModifiedDate: '%' + search + '%' })
+      .orWhere('benefit_request.benefitStatus like :benefitStatus', { benefitStatus: '%' + search + '%' })
+      .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('hospital.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('hospital.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('category.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('category.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .getManyAndCount();
     } else {
       resultList = await this.benefitRequestRepository.createQueryBuilder('benefit_request')
@@ -49,6 +60,17 @@ export class BenefitRequestService {
       .innerJoinAndSelect('benefit_request.createdBy', 'createdBy')
       .leftJoinAndSelect('benefit_request.lastModifiedBy', 'lastModifiedBy')
       .where('hospital.id = :id', { id: hosbital_id })
+      .where('benefit_request.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('benefit_request.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('benefit_request.createdDate like :createdDate', { createdDate: '%' + search + '%' })
+      .orWhere('benefit_request.lastModifiedDate like :lastModifiedDate', { lastModifiedDate: '%' + search + '%' })
+      .orWhere('benefit_request.benefitStatus like :benefitStatus', { benefitStatus: '%' + search + '%' })
+      .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('hospital.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('hospital.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('category.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('category.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .getManyAndCount();
     }
     const benefitRequestDTO: BenefitRequestDTO[] = [];

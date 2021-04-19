@@ -27,9 +27,9 @@ export class BenefitService {
     return BenefitMapper.fromEntityToDTO(result);
   }
 
-  async findAndCount(hosbital_id : string ,options: FindManyOptions<BenefitDTO>): Promise<[BenefitDTO[], number]> {
+  async findAndCount(search : string, hosbital_id : string ,options: FindManyOptions<BenefitDTO>): Promise<[BenefitDTO[], number]> {
     options.relations = relationshipNames;
-
+    search = search == "false" ? "" : search;
     var resultList = [][0];
 
     if(hosbital_id == "all") {
@@ -37,6 +37,12 @@ export class BenefitService {
       .innerJoinAndSelect('benefit.hospital', 'hospital')
       .innerJoinAndSelect('benefit.category', 'category')
       .where('benefit.active = :active', { active: 1 })
+      .where('benefit.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('benefit.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('hospital.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('hospital.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('category.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('category.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .getManyAndCount();
     } else {
       resultList = await this.benefitRepository.createQueryBuilder('benefit')
@@ -44,6 +50,12 @@ export class BenefitService {
       .innerJoinAndSelect('benefit.category', 'category')
       .where('hospital.id = :id', { id: hosbital_id })
       .where('benefit.active = :active', { active: 1 })
+      .where('benefit.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('benefit.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('hospital.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('hospital.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('category.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('category.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .getManyAndCount();
     }
 
