@@ -140,7 +140,7 @@ export default class EmployeeUpdate extends mixins(JhiDataUtils) {
 
   public initRelationships(): void {
     this.companyService()
-      .retrieve()
+      .retrieve('false')
       .then(res => {
         this.companies = res.data;
       });
