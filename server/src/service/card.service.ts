@@ -25,16 +25,34 @@ export class CardService {
     return CardMapper.fromEntityToDTO(result);
   }
 
-  async findAndCount(company_id :string,options: FindManyOptions<CardDTO>): Promise<CardDTO[] | any> {
+  async findAndCount(search : string, company_id :string,options: FindManyOptions<CardDTO>): Promise<CardDTO[] | any> {
+    search = search == "false" ? "" : search;
     options.relations = relationshipNames;
     var resultList = [][0];
-
+    if(search == "مفعلة"){
+      search = "1";
+    }
+    if(search == "معطلة"){
+      search = "0";
+    }
     if(company_id == "all") {
       resultList = await this.cardRepository.createQueryBuilder('card')
       .innerJoinAndSelect('card.employee', 'employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('card.createdBy', 'createdBy')
       .leftJoinAndSelect('card.lastModifiedBy', 'lastModifiedBy')
+      .where('card.createdDate like :createdDate', { createdDate: '%' + search + '%' })
+      .orWhere('card.lastModifiedDate like :lastModifiedDate', { lastModifiedDate: '%' + search + '%' })
+      .orWhere('card.isActive like :isActive', { isActive: '%' + search + '%' })
+      .orWhere('card.cardNo like :cardNo', { cardNo: '%' + search + '%' })
+      .orWhere('card.expiryDate like :expiryDate', { expiryDate: '%' + search + '%' })
+      .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('employee.name like :name', { name: '%' + search + '%' })
+      .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
+      .orWhere('company.email like :email', { email: '%' + search + '%' })
+      .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .getManyAndCount();
     } else {
       resultList = await this.cardRepository.createQueryBuilder('card')
@@ -43,6 +61,18 @@ export class CardService {
       .innerJoinAndSelect('card.createdBy', 'createdBy')
       .leftJoinAndSelect('card.lastModifiedBy', 'lastModifiedBy')
       .where('employee.company.id = :id', { id: company_id })
+      .where('card.createdDate like :createdDate', { createdDate: '%' + search + '%' })
+      .orWhere('card.lastModifiedDate like :lastModifiedDate', { lastModifiedDate: '%' + search + '%' })
+      .orWhere('card.isActive like :isActive', { isActive: '%' + search + '%' })
+      .orWhere('card.cardNo like :cardNo', { cardNo: '%' + search + '%' })
+      .orWhere('card.expiryDate like :expiryDate', { expiryDate: '%' + search + '%' })
+      .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('employee.name like :name', { name: '%' + search + '%' })
+      .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
+      .orWhere('company.email like :email', { email: '%' + search + '%' })
+      .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .getManyAndCount();
     }
     const cardDTO: CardDTO[] = [];

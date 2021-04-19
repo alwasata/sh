@@ -10,7 +10,7 @@ export default class CardService {
   public find(id: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}/${id}`)
+        .get(`${baseApiUrl}/find/${id}`)
         .then(res => {
           resolve(res.data);
         })
@@ -20,10 +20,10 @@ export default class CardService {
     });
   }
 
-  public retrieve(paginationQuery?: any): Promise<any> {
+  public retrieve(search: string, paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(baseApiUrl + `/${search}?${buildPaginationQueryOpts(paginationQuery)}`)
         .then(res => {
           resolve(res);
         })

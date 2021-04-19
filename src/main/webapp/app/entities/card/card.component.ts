@@ -26,21 +26,26 @@ export default class Card extends mixins(AlertMixin) {
   public reverse = false;
   public cardNo = '';
   public totalItems = 0;
+  public search = '';
 
   public cards: ICard[] = [];
 
   public isFetching = false;
 
   public mounted(): void {
-    this.retrieveAllCards();
+    this.retrieveAllCards(this.search);
   }
-
+  public searchInput(): void {
+    this.page = 1;
+    this.retrieveAllCards(this.search);
+  }
   public clear(): void {
     this.page = 1;
-    this.retrieveAllCards();
+    this.retrieveAllCards(this.search);
   }
 
-  public retrieveAllCards(): void {
+  public retrieveAllCards(search): void {
+    search = search == '' ? 'false' : search;
     this.isFetching = true;
     const paginationQuery = {
       page: this.page - 1,
@@ -49,7 +54,7 @@ export default class Card extends mixins(AlertMixin) {
     };
 
     this.cardService()
-      .retrieve(paginationQuery)
+      .retrieve(search, paginationQuery)
       .then(
         res => {
           this.cards = res.data;
@@ -79,14 +84,14 @@ export default class Card extends mixins(AlertMixin) {
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.cardNo = '';
-        this.retrieveAllCards();
+        this.retrieveAllCards(this.search);
         this.closeDialog();
       })
       .catch(err => {
         const message = 'لا يمكن حذف هذه البطاقة رقم ' + this.cardNo + ' تحتوي على حركات بدلا من حذفها يمكنك تعطيل البطاقة';
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
-        this.retrieveAllCards();
+        this.retrieveAllCards(this.search);
         this.closeDialog();
       });
   }
@@ -107,7 +112,7 @@ export default class Card extends mixins(AlertMixin) {
   }
 
   public transition(): void {
-    this.retrieveAllCards();
+    this.retrieveAllCards(this.search);
   }
 
   public changeOrder(propOrder): void {
