@@ -82,30 +82,30 @@ const SettingDetails = () => import('@/entities/setting/setting-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default [
-  {
-    path: '/attatchment',
-    name: 'Attatchment',
-    component: Attatchment,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/attatchment/new',
-    name: 'AttatchmentCreate',
-    component: AttatchmentUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/attatchment/:attatchmentId/edit',
-    name: 'AttatchmentEdit',
-    component: AttatchmentUpdate,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/attatchment/:attatchmentId/view',
-    name: 'AttatchmentView',
-    component: AttatchmentDetails,
-    meta: { authorities: [Authority.USER] },
-  },
+  // {
+  //   path: '/attatchment',
+  //   name: 'Attatchment',
+  //   component: Attatchment,
+  //   meta: { authorities: [Authority.USER] },
+  // },
+  // {
+  //   path: '/attatchment/new',
+  //   name: 'AttatchmentCreate',
+  //   component: AttatchmentUpdate,
+  //   meta: { authorities: [Authority.USER] },
+  // },
+  // {
+  //   path: '/attatchment/:attatchmentId/edit',
+  //   name: 'AttatchmentEdit',
+  //   component: AttatchmentUpdate,
+  //   meta: { authorities: [Authority.USER] },
+  // },
+  // {
+  //   path: '/attatchment/:attatchmentId/view',
+  //   name: 'AttatchmentView',
+  //   component: AttatchmentDetails,
+  //   meta: { authorities: [Authority.USER] },
+  // },
 
   {
     path: '/benefit',
@@ -173,7 +173,7 @@ export default [
     path: '/card/:cardId/edit',
     name: 'CardEdit',
     component: CardUpdate,
-    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/card/:cardId/transactions',
@@ -191,7 +191,7 @@ export default [
     path: '/card/:cardId/charge',
     name: 'CardCharge',
     component: CardCharge,
-    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
 
   {
@@ -200,18 +200,18 @@ export default [
     component: CardTransaction,
     meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
   },
-  {
-    path: '/card-transaction/new',
-    name: 'CardTransactionCreate',
-    component: CardTransactionUpdate,
-    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
-  },
-  {
-    path: '/card-transaction/:cardTransactionId/edit',
-    name: 'CardTransactionEdit',
-    component: CardTransactionUpdate,
-    meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
-  },
+  // {
+  //   path: '/card-transaction/new',
+  //   name: 'CardTransactionCreate',
+  //   component: CardTransactionUpdate,
+  //   meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
+  // },
+  // {
+  //   path: '/card-transaction/:cardTransactionId/edit',
+  //   name: 'CardTransactionEdit',
+  //   component: CardTransactionUpdate,
+  //   meta: { authorities: [Authority.COMPANY_ADMIN, Authority.ADMIN] },
+  // },
   {
     path: '/card-transaction/:cardTransactionId/view',
     name: 'CardTransactionView',
@@ -223,25 +223,25 @@ export default [
     path: '/category',
     name: 'Category',
     component: Category,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/category/new',
     name: 'CategoryCreate',
     component: CategoryUpdate,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/category/:categoryId/edit',
     name: 'CategoryEdit',
     component: CategoryUpdate,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
   {
     path: '/category/:categoryId/view',
     name: 'CategoryView',
     component: CategoryDetails,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.ADMIN] },
   },
 
   {
@@ -323,81 +323,81 @@ export default [
     path: '/invoice',
     name: 'Invoice',
     component: Invoice,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice/new',
     name: 'InvoiceCreate',
     component: InvoiceUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice/:invoiceId/edit',
     name: 'InvoiceEdit',
     component: InvoiceUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice/:invoiceId/return',
     name: 'InvoiceReturn',
     component: InvoiceReturn,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice/:invoiceId/view',
     name: 'InvoiceView',
     component: InvoiceDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
 
   {
     path: '/invoice-benefits',
     name: 'InvoiceBenefits',
     component: InvoiceBenefits,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice-benefits/new',
     name: 'InvoiceBenefitsCreate',
     component: InvoiceBenefitsUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice-benefits/:invoiceBenefitsId/edit',
     name: 'InvoiceBenefitsEdit',
     component: InvoiceBenefitsUpdate,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice-benefits/:invoiceBenefitsId/view',
     name: 'InvoiceBenefitsView',
     component: InvoiceBenefitsDetails,
-    meta: { authorities: [Authority.USER] },
+    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
   },
 
-  {
-    path: '/setting',
-    name: 'setting',
-    component: Setting,
-    meta: { authorities: [Authority.ADMIN] },
-  },
-  {
-    path: '/setting/new',
-    name: 'SettingCreate',
-    component: SettingUpdate,
-    meta: { authorities: [Authority.ADMIN] },
-  },
-  {
-    path: '/setting/:settingId/edit',
-    name: 'SettingEdit',
-    component: SettingUpdate,
-    meta: { authorities: [Authority.ADMIN] },
-  },
-  {
-    path: '/setting/:settingId/view',
-    name: 'SettingView',
-    component: SettingDetails,
-    meta: { authorities: [Authority.ADMIN] },
-  },
+  // {
+  //   path: '/setting',
+  //   name: 'setting',
+  //   component: Setting,
+  //   meta: { authorities: [Authority.ADMIN] },
+  // },
+  // {
+  //   path: '/setting/new',
+  //   name: 'SettingCreate',
+  //   component: SettingUpdate,
+  //   meta: { authorities: [Authority.ADMIN] },
+  // },
+  // {
+  //   path: '/setting/:settingId/edit',
+  //   name: 'SettingEdit',
+  //   component: SettingUpdate,
+  //   meta: { authorities: [Authority.ADMIN] },
+  // },
+  // {
+  //   path: '/setting/:settingId/view',
+  //   name: 'SettingView',
+  //   component: SettingDetails,
+  //   meta: { authorities: [Authority.ADMIN] },
+  // },
   // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
 ];

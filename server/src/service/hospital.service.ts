@@ -25,11 +25,25 @@ export class HospitalService {
     return HospitalMapper.fromEntityToDTO(result);
   }
 
-  async findAndCount(options: FindManyOptions<HospitalDTO>): Promise<[HospitalDTO[], number]> {
+  async findAndCount(search : string, options: FindManyOptions<HospitalDTO>): Promise<[HospitalDTO[], number]> {
+    search = search == "false" ? "" : search;
     options.relations = relationshipNames;
     const resultList = await this.hospitalRepository.createQueryBuilder('hospital')
     .innerJoinAndSelect('hospital.createdBy', 'createdBy')
     .leftJoinAndSelect('hospital.lastModifiedBy', 'lastModifiedBy')
+    .where('hospital.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+    .orWhere('hospital.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+    .orWhere('hospital.email like :email', { email: '%' + search + '%' })
+    .orWhere('hospital.phone like :phone', { phone: '%' + search + '%' })
+    .orWhere('hospital.address like :address', { address: '%' + search + '%' })
+    .orWhere('hospital.city like :city', { city: '%' + search + '%' })
+    .orWhere('hospital.lat like :lat', { lat: '%' + search + '%' })
+    .orWhere('hospital.lng like :lng', { lng: '%' + search + '%' })
+    .orWhere('hospital.phoneSecond like :phoneSecond', { phoneSecond: '%' + search + '%' })
+    .orWhere('hospital.phoneThird like :phoneThird', { phoneThird: '%' + search + '%' })
+    .orWhere('hospital.type like :type', { type: '%' + search + '%' })
+    .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+    .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
     .getManyAndCount();
     const hospitalDTO: HospitalDTO[] = [];
     if (resultList && resultList[0]) {

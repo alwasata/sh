@@ -21,30 +21,36 @@ export default class Hospital extends mixins(AlertMixin) {
   public reverse = false;
   public totalItems = 0;
   public status;
+  public search = '';
 
   public hospitals: IHospital[] = [];
 
   public isFetching = false;
 
   public mounted(): void {
-    this.retrieveAllHospitals();
+    this.retrieveAllHospitals(this.search);
+  }
+
+  public searchInput(): void {
+    this.page = 1;
+    this.retrieveAllHospitals(this.search);
   }
 
   public clear(): void {
     this.page = 1;
-    this.retrieveAllHospitals();
+    this.retrieveAllHospitals(this.search);
   }
 
-  public retrieveAllHospitals(): void {
+  public retrieveAllHospitals(search): void {
     this.isFetching = true;
-
+    search = search == '' ? 'false' : search;
     const paginationQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
     this.hospitalService()
-      .retrieve(paginationQuery)
+      .retrieve(search, paginationQuery)
       .then(
         res => {
           this.hospitals = res.data;
@@ -67,7 +73,7 @@ export default class Hospital extends mixins(AlertMixin) {
         const message = status == true ? ' تم تفعيل   ' + instance.nameAr : ' تم تعطيل  ' + instance.nameAr;
         this.alertService().showAlert(message, status == true ? 'success' : 'danger');
         this.getAlertFromStore();
-        // this.retrieveAllHospitals();
+        // this.retrieveAllHospitals(this.search);
       });
     // this.status = status;
   }
@@ -88,7 +94,7 @@ export default class Hospital extends mixins(AlertMixin) {
   }
 
   public transition(): void {
-    this.retrieveAllHospitals();
+    this.retrieveAllHospitals(this.search);
   }
 
   public changeOrder(propOrder): void {

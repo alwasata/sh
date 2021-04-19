@@ -25,15 +25,23 @@ export class EmployeeService {
     return EmployeeMapper.fromEntityToDTO(result);
   }
 
-  async findAndCount(company_id : any,options: FindManyOptions<EmployeeDTO>): Promise<[EmployeeDTO[], number]> {
+  async findAndCount(search : string,company_id : any,options: FindManyOptions<EmployeeDTO>): Promise<[EmployeeDTO[], number]> {
     options.relations = relationshipNames;
     var resultList = [][0];
-
+    search = search == "false" ? "" : search;
     if(company_id == "all") {
       resultList = await this.employeeRepository.createQueryBuilder('employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('employee.createdBy', 'createdBy')
       .leftJoinAndSelect('employee.lastModifiedBy', 'lastModifiedBy')
+      .where('employee.name like :name', { name: '%' + search + '%' })
+      .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
+      .orWhere('employee.identityNo like :identityNo', { identityNo: '%' + search + '%' })
+      .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
+      .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
       .getManyAndCount();
     } else {
       resultList = await this.employeeRepository.createQueryBuilder('employee')
@@ -41,6 +49,14 @@ export class EmployeeService {
       .innerJoinAndSelect('employee.createdBy', 'createdBy')
       .leftJoinAndSelect('employee.lastModifiedBy', 'lastModifiedBy')
       .where('company.id = :id', { id: company_id })
+      .where('employee.name like :name', { name: '%' + search + '%' })
+      .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
+      .orWhere('employee.identityNo like :identityNo', { identityNo: '%' + search + '%' })
+      .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
+      .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
       .getManyAndCount();
     }
 

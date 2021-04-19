@@ -32,8 +32,8 @@ export class InvoiceService {
 
   async findByInvoice(id: string): Promise<InvoiceDTO[] | any> {
     return await this.invoiceRepository.createQueryBuilder('invoice')
-      .where('invoice.mainInvoice = :id', { id: id })
-      .getMany();
+    .where('invoice.mainInvoice = :id', { id: id })
+    .getMany();
   }
   async getAll(): Promise<InvoiceDTO[] | any> {
     const resultList = await this.invoiceRepository.findAndCount();
@@ -55,8 +55,17 @@ export class InvoiceService {
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('invoice.hospital', 'hospital')
       .where('invoice.invoiceNo like :invoiceNo', { invoiceNo: '%' + search + '%' })
-      .where('invoice.invoiceNo like :invoiceNo', { invoiceNo: '%' + search + '%' })
+      .orWhere('invoice.invoiceDate like :invoiceDate', { invoiceDate: '%' + search + '%' })
+      .orWhere('invoice.payDate like :payDate', { payDate: '%' + search + '%' })
+      .orWhere('invoice.invoiceStatus like :invoiceStatus', { invoiceStatus: '%' + search + '%' })
+      .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
       .orWhere('employee.name like :firstName', { firstName: '%' + search + '%' })
+      .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
+      .orWhere('employee.identityNo like :identityNo', { identityNo: '%' + search + '%' })
+      .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
+      .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .skip(options.skip)
       .take(options.take)
       .getManyAndCount();
@@ -71,7 +80,17 @@ export class InvoiceService {
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('invoice.hospital', 'hospital')
       .where('invoice.invoiceNo like :invoiceNo', { invoiceNo: '%' + search + '%' })
+      .orWhere('invoice.invoiceDate like :invoiceDate', { invoiceDate: '%' + search + '%' })
+      .orWhere('invoice.payDate like :payDate', { payDate: '%' + search + '%' })
+      .orWhere('invoice.invoiceStatus like :invoiceStatus', { invoiceStatus: '%' + search + '%' })
+      .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
       .orWhere('employee.name like :firstName', { firstName: '%' + search + '%' })
+      .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
+      .orWhere('employee.identityNo like :identityNo', { identityNo: '%' + search + '%' })
+      .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
+      .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .andWhere('hospital.id = :id', { id: id })
       .skip(options.skip)
       .take(options.take)

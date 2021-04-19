@@ -16,6 +16,9 @@
             @dismiss-count-down="countDownChanged">
             {{alertMessage}}
         </b-alert>
+        <div class="col col-md-6">
+        <input type="text" v-model="search" class="form-control" v-on:input="searchInput()" placeholder="البحث" >
+        </div>
         <br/>
         <div class="alert alert-warning" v-if="!isFetching && hospitals && hospitals.length === 0">
             <span>No hospitals found</span>

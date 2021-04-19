@@ -20,16 +20,16 @@ export class HospitalController{
 
   constructor(private readonly hospitalService: HospitalService, private readonly userService : UserService) {}
 
-  @Get('/')
+  @Get('/:search')
   @Roles(RoleType.USER)
   @ApiResponse({
     status: 200,
     description: 'List all records',
     type: HospitalDTO,
   })
-  async getAll(@Req() req: Request): Promise<HospitalDTO[]> {
+  async getAll(@Req() req: Request, @Param('search') search: string): Promise<HospitalDTO[]> {
     const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-    const [results, count] = await this.hospitalService.findAndCount({
+    const [results, count] = await this.hospitalService.findAndCount(search,{
       skip: +pageRequest.page * pageRequest.size,
       take: +pageRequest.size,
       order: pageRequest.sort.asOrder(),
@@ -47,7 +47,7 @@ export class HospitalController{
   })
   async getActive(@Req() req: Request): Promise<HospitalDTO[]> {
     const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-    const [results, count] = await this.hospitalService.findAndCount({
+    const [results, count] = await this.hospitalService.findAndCount("false",{
       where : {active : 1},
       skip: +pageRequest.page * pageRequest.size,
       take: +pageRequest.size,
@@ -57,7 +57,7 @@ export class HospitalController{
     return results;
   }
 
-  @Get('/:id')
+  @Get('/find/:id')
   @Roles(RoleType.USER)
   @ApiResponse({
     status: 200,
@@ -83,10 +83,10 @@ export class HospitalController{
       const userDTO =   new UserDTO();
       userDTO.firstName   = hospitalDTO['nameAr'];
       userDTO.lastName    = hospitalDTO['nameEn'];
-      userDTO.email       = hospitalDTO['nameEn']+'@hospital.com';
+      userDTO.email       = hospitalDTO['email'];
       userDTO.login       = hospitalDTO['nameEn'];
       userDTO.password    = hospitalDTO['nameEn'];
-      userDTO.activated   = hospitalDTO.active;
+      userDTO.activated   = true;
       userDTO.authorities = [RoleType.HOSPITAL_ADMIN, RoleType.USER];
 
       const createdUser = await this.userService.save(userDTO);
@@ -96,6 +96,7 @@ export class HospitalController{
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Hospital', created.id);
       return created;
     }catch(error){
+      console.log(error)
       return error;
     }
   }

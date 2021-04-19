@@ -21,14 +21,14 @@ export class EmployeeController {
     private readonly companyService: CompanyService
     ) {}
 
-    @Get('/')
+    @Get('/:search')
     @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiResponse({
       status: 200,
       description: 'List all records',
       type: EmployeeDTO,
     })
-    async getAll(@Req() req: Request): Promise<EmployeeDTO[]> {
+    async getAll(@Req() req: Request, @Param('search') search: string): Promise<EmployeeDTO[]> {
       var company;
       if(req.user["authorities"].includes('ROLE_ADMIN') == true) {
         company = "all";
@@ -37,7 +37,7 @@ export class EmployeeController {
         company = company["company_id"];
       }
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-      const [results, count] = await this.employeeService.findAndCount(company,{
+      const [results, count] = await this.employeeService.findAndCount(search,company,{
         skip: +pageRequest.page * pageRequest.size,
         take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
@@ -57,7 +57,7 @@ export class EmployeeController {
 
       var company = id;
       const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-      const [results, count] = await this.employeeService.findAndCount(company,{
+      const [results, count] = await this.employeeService.findAndCount("false",company,{
         skip: +pageRequest.page * pageRequest.size,
         take: +pageRequest.size,
         order: pageRequest.sort.asOrder(),
@@ -66,7 +66,7 @@ export class EmployeeController {
       return results;
     }
 
-    @Get('/:id')
+    @Get('/find/:id')
     @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
     @ApiResponse({
       status: 200,

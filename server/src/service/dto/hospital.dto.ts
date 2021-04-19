@@ -10,16 +10,16 @@ import { UserDTO } from './user.dto';
  */
 export class HospitalDTO extends BaseDTO {
     @IsNotEmpty()
-    @ApiModelProperty({ description: 'nameAr field', uniqueItems: false  })
+    @ApiModelProperty({ description: 'nameAr field', uniqueItems: true  })
     nameAr: string;
 
-    @ApiModelProperty({ description: 'nameEn field', uniqueItems: false })
+    @ApiModelProperty({ description: 'nameEn field', uniqueItems: true })
     nameEn: string;
 
-    @ApiModelProperty({ description: 'email field', uniqueItems: false })
+    @ApiModelProperty({ description: 'email field', uniqueItems: true })
     email: string;
 
-    @ApiModelProperty({ description: 'phone field', uniqueItems: false })
+    @ApiModelProperty({ description: 'phone field', uniqueItems: true })
     phone: string;
 
     @ApiModelProperty({ description: 'city field', required: false })
@@ -31,10 +31,10 @@ export class HospitalDTO extends BaseDTO {
     @ApiModelProperty({ description: 'lng field', required: false })
     lng: string;
 
-    @ApiModelProperty({ description: 'phoneSecond field', uniqueItems: false })
+    @ApiModelProperty({ description: 'phoneSecond field', required: false })
     phoneSecond: string;
 
-    @ApiModelProperty({ description: 'phoneThird field', uniqueItems: false })
+    @ApiModelProperty({ description: 'phoneThird field', required: false })
     phoneThird: string;
 
     @ApiModelProperty({ description: 'address field', required: false })

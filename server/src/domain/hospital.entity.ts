@@ -36,10 +36,10 @@ export class Hospital extends BaseEntity {
     @Column({ name: 'lng', nullable: true })
     lng: string;
 
-    @Column({ name: 'phoneSecond', unique: true })
+    @Column({ name: 'phoneSecond', nullable: true })
     phoneSecond: string;
 
-    @Column({ name: 'phoneThird', unique: true })
+    @Column({ name: 'phoneThird', nullable: true })
     phoneThird: string;
 
     @Column({ name: 'type', nullable: true })

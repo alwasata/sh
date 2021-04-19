@@ -24,30 +24,36 @@ export default class Employee extends mixins(AlertMixin) {
   public reverse = false;
   public totalItems = 0;
   private hasAnyAuthorityValue = false;
+  private search = '';
 
   public employees: IEmployee[] = [];
 
   public isFetching = false;
 
   public mounted(): void {
-    this.retrieveAllEmployees();
+    this.retrieveAllEmployees(this.search);
+  }
+
+  public searchInput(): void {
+    this.page = 1;
+    this.retrieveAllEmployees(this.search);
   }
 
   public clear(): void {
     this.page = 1;
-    this.retrieveAllEmployees();
+    this.retrieveAllEmployees(this.search);
   }
 
-  public retrieveAllEmployees(): void {
+  public retrieveAllEmployees(search): void {
     this.isFetching = true;
-
+    search = search == '' ? 'false' : search;
     const paginationQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
     this.employeeService()
-      .retrieve(paginationQuery)
+      .retrieve(search, paginationQuery)
       .then(
         res => {
           this.employees = res.data;
@@ -76,7 +82,7 @@ export default class Employee extends mixins(AlertMixin) {
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
         this.removeId = null;
-        this.retrieveAllEmployees();
+        this.retrieveAllEmployees(this.search);
         this.closeDialog();
       });
   }
@@ -97,7 +103,7 @@ export default class Employee extends mixins(AlertMixin) {
   }
 
   public transition(): void {
-    this.retrieveAllEmployees();
+    this.retrieveAllEmployees(this.search);
   }
 
   public changeOrder(propOrder): void {
