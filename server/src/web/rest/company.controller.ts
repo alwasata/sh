@@ -19,19 +19,19 @@ export class CompanyController {
 
   constructor(private readonly companyService: CompanyService, private readonly userService : UserService) {}
 
-  @Get('/')
+  @Get('/:search')
   @Roles(RoleType.COMPANY_ADMIN, RoleType.ADMIN)
   @ApiResponse({
     status: 200,
     description: 'List all records',
     type: CompanyDTO,
   })
-  async getAll(@Req() req: Request): Promise<CompanyDTO[]> {
+  async getAll(@Req() req: Request, @Param('search') search: string): Promise<CompanyDTO[]> {
     if(req.user["authorities"].includes('ROLE_COMPANY_ADMIN') == true) {
       return [];
     }
     const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
-    const [results, count] = await this.companyService.findAndCount({
+    const [results, count] = await this.companyService.findAndCount(search,{
       skip: +pageRequest.page * pageRequest.size,
       take: +pageRequest.size,
       order: pageRequest.sort.asOrder(),
@@ -40,7 +40,7 @@ export class CompanyController {
     return results;
   }
 
-  @Get('/:id')
+  @Get('/find/:id')
   @Roles(RoleType.ADMIN)
   @ApiResponse({
     status: 200,

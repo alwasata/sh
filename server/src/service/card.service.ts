@@ -29,12 +29,7 @@ export class CardService {
     search = search == "false" ? "" : search;
     options.relations = relationshipNames;
     var resultList = [][0];
-    if(search == "مفعلة"){
-      search = "1";
-    }
-    if(search == "معطلة"){
-      search = "0";
-    }
+    
     if(company_id == "all") {
       resultList = await this.cardRepository.createQueryBuilder('card')
       .innerJoinAndSelect('card.employee', 'employee')

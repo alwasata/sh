@@ -21,31 +21,36 @@ export default class Company extends mixins(AlertMixin) {
   public reverse = false;
   public totalItems = 0;
   public status = 0;
+  public search = '';
 
   public companies: ICompany[] = [];
 
   public isFetching = false;
 
   public mounted(): void {
-    this.retrieveAllCompanys();
+    this.retrieveAllCompanys(this.search);
+  }
+
+  public searchInput(): void {
+    this.page = 1;
+    this.retrieveAllCompanys(this.search);
   }
 
   public clear(): void {
     this.page = 1;
-    this.retrieveAllCompanys();
+    this.retrieveAllCompanys(this.search);
   }
 
-  public retrieveAllCompanys(): void {
+  public retrieveAllCompanys(search): void {
     this.isFetching = true;
-
+    search = search == '' ? 'false' : search;
     const paginationQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
-    console.log(paginationQuery);
     this.companyService()
-      .retrieve(paginationQuery)
+      .retrieve(search, paginationQuery)
       .then(
         res => {
           this.companies = res.data;
@@ -68,7 +73,7 @@ export default class Company extends mixins(AlertMixin) {
         const message = status == true ? ' تم تفعيل   ' + instance.nameAr : ' تم تعطيل  ' + instance.nameAr;
         this.alertService().showAlert(message, status == true ? 'success' : 'danger');
         this.getAlertFromStore();
-        // this.retrieveAllCompanys();
+        // this.retrieveAllCompanys(this.search);
       });
   }
 
@@ -88,7 +93,7 @@ export default class Company extends mixins(AlertMixin) {
   }
 
   public transition(): void {
-    this.retrieveAllCompanys();
+    this.retrieveAllCompanys(this.search);
   }
 
   public changeOrder(propOrder): void {
