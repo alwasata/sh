@@ -89,7 +89,7 @@ export default class AttatchmentUpdate extends mixins(JhiDataUtils) {
 
   public initRelationships(): void {
     this.employeeService()
-      .retrieve()
+      .retrieve('false')
       .then(res => {
         this.employees = res.data;
       });

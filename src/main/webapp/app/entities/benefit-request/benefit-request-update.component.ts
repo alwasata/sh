@@ -121,7 +121,7 @@ export default class BenefitRequestUpdate extends Vue {
         this.categories = res.data;
       });
     this.hospitalService()
-      .retrieve()
+      .retrieve('false')
       .then(res => {
         this.hospitals = res.data;
       });
