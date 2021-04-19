@@ -40,12 +40,12 @@
                 <font-awesome-icon icon='th-list'/>
             </h6>
             <ul class="nav flex-column">
-                    <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
+                    <!-- <li class='nav-item' v-if="hasRole(['ROLE_ADMIN'])">
                         <router-link class='nav-link' to='/setting'>
                             <font-awesome-icon icon='asterisk' />
                             <span>النقاط</span>
                         </router-link>
-                    </li>
+                    </li> -->
                     <li class='nav-item' v-if="hasRole(['ROLE_ADMIN','ROLE_HOSPITAL_ADMIN'])">
                         <router-link class='nav-link' to='/benefit'>
                             <font-awesome-icon icon='asterisk' />
