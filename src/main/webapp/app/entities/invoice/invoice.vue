@@ -2,7 +2,7 @@
     <div>
         <h2 id="page-heading">
             <span id='invoice-heading'>الفواتير</span>
-            <router-link :to="{name: 'InvoiceCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-invoice">
+            <router-link v-if="hasRole(['ROLE_HOSPITAL_ADMIN'])" :to="{name: 'InvoiceCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-invoice">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
                     اضافة فاتورة
@@ -107,13 +107,13 @@
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>عرض</span>
                             </router-link>
-                        <div class="btn-group">
+                        <div class="btn-group" v-if="hasRole(['ROLE_HOSPITAL_ADMIN'])" >
                             <router-link v-if="invoice.invoiceStatus == 'APPROVED'" :to="{name: 'InvoiceReturn', params: {invoiceId: invoice.id}}"  tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class='d-none d-md-inline'>ارجاع</span>
                             </router-link>
                         </div>
-                        <div v-if="invoice.invoiceStatus == 'APPROVED'"  class="btn-group" :id="'invoice-delete-' + invoice.id">
+                        <div v-if="invoice.invoiceStatus == 'APPROVED' && hasRole(['ROLE_HOSPITAL_ADMIN'])"  class="btn-group" :id="'invoice-delete-' + invoice.id">
                            <b-button v-on:click="prepareRemove(invoice)"
                                    variant="danger"
                                    class="btn btn-sm"
