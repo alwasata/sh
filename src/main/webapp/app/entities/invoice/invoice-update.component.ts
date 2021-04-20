@@ -6,6 +6,7 @@ import { ICardTransaction } from '@/shared/model/card-transaction.model';
 import AlertService from '@/shared/alert/alert.service';
 import { IInvoice, Invoice, InvoiceStatus } from '@/shared/model/invoice.model';
 import { IEmployee, Employee } from '@/shared/model/employee.model';
+import { IBenefit, Benefit } from '@/shared/model/benefit.model';
 import InvoiceService from './invoice.service';
 import SettingService from '../setting/setting.service';
 import pdfMake from 'pdfmake-arabic/build/pdfmake';
@@ -33,6 +34,7 @@ export default class InvoiceUpdate extends Vue {
   @Inject('alertService') private alertService: () => AlertService;
   @Inject('invoiceService') private invoiceService: () => InvoiceService;
   public invoice: IInvoice = new Invoice();
+  public benefits = [];
 
   public cardNo = '';
   public employeeName = '';
@@ -137,7 +139,6 @@ export default class InvoiceUpdate extends Vue {
         res.cardInfo[0].forEach(element => {
           if (element.action == 'PLUS') {
             pricesPlus = pricesPlus + element.amount;
-            console.log(pricesPlus);
           } else {
             pricesMinus = pricesMinus + element.amount;
             if (pricesMinus < 0) {
@@ -151,24 +152,15 @@ export default class InvoiceUpdate extends Vue {
         }
         this.hosbitalName = res.benefit[0].hospital.nameAr;
         this.employeePrices = prices;
-        res.benefit.forEach(element => {
-          document.getElementById(
-            'benefit'
-          ).innerHTML += `<option value="${element.benefit.id}">${element.benefit.nameAr} | ${element.benefit.nameEn}</option>`;
-        });
+        this.benefits = res.benefit;
         this.cardPrice = prices;
       });
   }
 
   public getBeneit(event): void {
+    this.oldBenefitPrice = event.benefit.cost;
+    this.benefitPrice = event.benefit.cost;
     (document.getElementById('addBenefit') as HTMLButtonElement).disabled = false;
-    this.invoiceService()
-      .getBeneit(event.target.value)
-      .then(res => {
-        console.log(res);
-        this.oldBenefitPrice = res.benefit.cost;
-        this.benefitPrice = res.benefit.cost;
-      });
   }
 
   public changeBenefit(): void {
@@ -187,35 +179,27 @@ export default class InvoiceUpdate extends Vue {
     if (this.rows != []) {
       (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
     }
-    var e = document.getElementById('benefit') as HTMLSelectElement;
-    var value = e.options[e.selectedIndex].value;
-    this.invoiceService()
-      .getBeneit(value)
-      .then(res => {
-        if (this.total + this.benefitPrice * this.quantity < this.employeePrices) {
-          var checkBenefit = false;
-          this.rows.forEach(element => {
-            if (element.id.includes(res.benefit.id) == true) {
-              checkBenefit = true;
-            }
-          });
-
-          if (checkBenefit == false) {
-            this.total = this.total + this.benefitPrice * this.quantity;
-            this.totalIvoicePrice = this.totalIvoicePrice + this.benefitPrice * this.quantity;
-            this.rows.push({
-              id: res.benefit.id,
-              nameAr: res.benefit.nameAr,
-              quantity: this.quantity,
-              nameEn: res.benefit.nameEn,
-              // points: this.benefitPoints,
-              // totalPoints: this.benefitPoints * this.quantity,
-              price: res.benefit.cost,
-              totalPrice: this.quantity * res.benefit.cost,
-            });
-          }
+    if (this.total + this.benefitPrice * this.quantity < this.employeePrices) {
+      var checkBenefit = false;
+      this.rows.forEach(element => {
+        if (element.id.includes(this.benefit['benefit']['id']) == true) {
+          checkBenefit = true;
         }
       });
+
+      if (checkBenefit == false) {
+        this.total = this.total + this.benefitPrice * this.quantity;
+        this.totalIvoicePrice = this.totalIvoicePrice + this.benefitPrice * this.quantity;
+        this.rows.push({
+          id: this.benefit['benefit']['id'],
+          nameAr: this.benefit['benefit']['nameAr'],
+          quantity: this.quantity,
+          nameEn: this.benefit['benefit']['nameEn'],
+          price: this.benefit['benefit']['cost'],
+          totalPrice: this.quantity * this.benefit['benefit']['cost'],
+        });
+      }
+    }
   }
 
   public removeRow(row, indx) {
@@ -330,7 +314,6 @@ export default class InvoiceUpdate extends Vue {
     } else {
       (document.getElementById('addBenefit') as HTMLButtonElement).disabled = false;
     }
-    console.log(this.quantity);
   }
 
   public pdfgenerator(): void {

@@ -22,6 +22,8 @@ import UserManagementService from '@/admin/user-management/user-management.servi
 import LoginService from './account/login.service';
 import AccountService from './account/account.service';
 
+import Multiselect from 'vue-multiselect';
+
 import '../content/scss/vendor.scss';
 import AlertService from '@/shared/alert/alert.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
@@ -56,6 +58,8 @@ Vue.filter('formatTimeOnly', function (value) {
     return moment(String(value)).format('HH:mm');
   }
 });
+
+Vue.component('multiselect', Multiselect);
 
 /* tslint:enable */
 Vue.config.productionTip = false;

@@ -74,15 +74,11 @@
                             :class="{'valid': !$v.employee.notes.$invalid, 'invalid': $v.employee.notes.$invalid }" v-model="$v.employee.notes.$model" />
                     </div>
                     <div class='form-group' v-if="hasAnyAuthority('ROLE_ADMIN')">
-                        <label class='form-control-label' for='employee-company'>شركة</label>
-                        <select id='employee-company' v-model='employee.company' class='form-control' name='company'>
-                            <option v-bind:value='null'></option>
-                            <option v-for='companyOption in companies' :key='companyOption.id'
-                                    v-bind:value='employee.company && companyOption.id === employee.company.id ? employee.company : companyOption'>
-                                {{ companyOption.nameAr }}
-                            </option>
-                        </select>
+                        <label class="typo__label">شركة</label>
+                        <multiselect id='employee-company' v-model='employee.company' name='companies' :options="companies"  placeholder="Select one" label="nameAr" track-by="id"></multiselect>
+                        <pre class="language-json"><code></code></pre>
                     </div>
+
 
                     <div class="form-group">
                         <label class='form-control-label' for='attatchment-file'></label>

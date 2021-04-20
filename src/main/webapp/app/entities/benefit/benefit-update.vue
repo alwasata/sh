@@ -49,14 +49,9 @@
                             :class="{'valid': !$v.benefit.cost.$invalid, 'invalid': $v.benefit.cost.$invalid }" v-model.number="$v.benefit.cost.$model" />
                     </div>
                     <div class='form-group'>
-                        <label class='form-control-label' for='benefit-category'>الفئة</label>
-                        <select id='benefit-category' v-model='benefit.category' class='form-control' name='category'>
-                            <option v-bind:value='null'></option>
-                            <option v-for='categoryOption in categories' :key='categoryOption.id'
-                                    v-bind:value='benefit.category && categoryOption.id === benefit.category.id ? benefit.category : categoryOption'>
-                                {{ categoryOption.nameAr }}
-                            </option>
-                        </select>
+                        <label class="typo__label">الفئة</label>
+                        <multiselect id='benefit-category' v-model='benefit.category' name='category' :options="categories"  placeholder="Select one" label="nameAr" track-by="id"></multiselect>
+                        <pre class="language-json"><code></code></pre>
                     </div>
                     <div class='form-group' v-if="isUpdate == true">
                         <label class='form-control-label' for='benefit-hospital'>المستشفى</label>
@@ -66,14 +61,9 @@
                     </div>
                     <div v-else>
                     <div class='form-group' v-if="hasAnyAuthority('ROLE_ADMIN')">
-                        <label class='form-control-label' for='benefit-hospital'>المستشفى</label>
-                        <select id='benefit-hospital' v-model='benefit.hospital' class='form-control' name='hospital'>
-                            <option v-bind:value='null'></option>
-                            <option v-for='hospitalOption in hospitals' :key='hospitalOption.id'
-                                    v-bind:value='benefit.hospital && hospitalOption.id === benefit.hospital.id ? benefit.hospital : hospitalOption'>
-                                {{ hospitalOption.nameAr }}
-                            </option>
-                        </select>
+                        <label class="typo__label">اختر المستشفى</label>
+                        <multiselect id='benefit-hospital' v-model='benefit.hospital' name='hospital' :options="hospitals"  placeholder="Select one" label="nameAr" track-by="id"></multiselect>
+                        <pre class="language-json"><code></code></pre>
                     </div>
                     </div>
                 </div>

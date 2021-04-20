@@ -76,7 +76,7 @@
                             <td>{{row.price}}</td>
                             <td>{{row.totalPrice}}</td>
                             <td>
-                                <input type="number" v-model="row.returnQuantity">
+                                <input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" step="1" v-model="row.returnQuantity">
                                 <br>
                                 <label  class="text-danger" :id="'error-quantity'+row.id" ></label>
                             </td>

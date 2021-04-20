@@ -274,6 +274,8 @@ ui bootstrap tweaks
   padding-top: 5rem !important;
   padding: 0px 10px;
 }
-
+.multiselect--above .multiselect__content-wrapper {
+  bottom: none;
+}
 /* jhipster-needle-scss-add-main JHipster will add new css style */
 @import 'custom.scss';

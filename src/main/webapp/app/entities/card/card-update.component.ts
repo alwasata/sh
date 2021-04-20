@@ -35,7 +35,7 @@ export default class CardUpdate extends Vue {
   public currentLanguage = '';
   public expiryDateType = 'month';
   public error = '';
-
+  private hasAnyAuthorityValue = false;
   public isUpdate = false;
 
   beforeRouteEnter(to, from, next) {
@@ -135,5 +135,13 @@ export default class CardUpdate extends Vue {
       .then(res => {
         this.employees = res.data;
       });
+  }
+  public hasAnyAuthority(authorities: any): boolean {
+    this.accountService()
+      .hasAnyAuthorityAndCheckAuth(authorities)
+      .then(value => {
+        this.hasAnyAuthorityValue = value;
+      });
+    return this.hasAnyAuthorityValue;
   }
 }

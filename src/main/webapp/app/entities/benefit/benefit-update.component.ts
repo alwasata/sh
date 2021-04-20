@@ -65,11 +65,17 @@ export default class BenefitUpdate extends Vue {
   public currentLanguage = '';
   public error = '';
   public isUpdate = false;
+  public options: [
+    { name: 'Vue.js'; language: 'JavaScript' },
+    { name: 'Rails'; language: 'Ruby' },
+    { name: 'Sinatra'; language: 'Ruby' },
+    { name: 'Laravel'; language: 'PHP' },
+    { name: 'Phoenix'; language: 'Elixir' }
+  ];
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.benefitId) {
-        console.log(to.params);
         vm.retrieveBenefit(to.params.benefitId);
       }
       vm.initRelationships();
@@ -141,7 +147,6 @@ export default class BenefitUpdate extends Vue {
     this.hospitalService()
       .getActive()
       .then(res => {
-        console.log(res);
         this.hospitals = res.data;
       });
   }

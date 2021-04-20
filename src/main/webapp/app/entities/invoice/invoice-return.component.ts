@@ -130,17 +130,24 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public returnBenefit(row, index): void {
+    if (row.returnQuantity <= 0 || row.returnQuantity <= '') {
+      document.getElementById('error-quantity' + row.id).innerHTML = ' القيمة غير صحيحة';
+      return;
+    }
     document.getElementById('error-quantity' + row.id).innerHTML = '';
     (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     if (this.rows != []) {
       (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
     }
-    console.log(this.invoiceId);
     this.checkQuantity = true;
     this.invoiceService()
       .checkBenefitQuantity({ benefits: row, invoice: this.invoiceId })
       .then(res => {
         this.checkQuantity = res;
+        if (row.quantity < row.returnQuantity) {
+          document.getElementById('error-quantity' + row.id).innerHTML = 'القيمة اكبر من الكمية';
+          return;
+        }
         if (row.returnQuantity == '') {
           document.getElementById('error-quantity' + row.id).innerHTML = 'يجب ادخال قيمة';
           return;
@@ -159,10 +166,6 @@ export default class InvoiceUpdate extends Vue {
         });
 
         if (checkBenefit == false) {
-          if (row.quantity < row.returnQuantity) {
-            document.getElementById('error-quantity' + row.id).innerHTML = 'القيمة اكبر من الكمية';
-            return;
-          }
           this.returnTotalIvoicePrice = this.returnTotalIvoicePrice + row.price * row.returnQuantity;
           this.returnBenefits.push({
             id: row.id,

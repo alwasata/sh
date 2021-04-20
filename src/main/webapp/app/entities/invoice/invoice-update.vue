@@ -70,21 +70,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col col-md-4 col-sm-12 col-xs-12 col-sm-12 form-group">
-                    <label for=""> اختر المنفعة</label>
-                    <select id="benefit" class="form-control"  @change="getBeneit($event)" v-model="benefit" name="benefit"></select>
+                <div class='col col-md-4 col-sm-12 col-xs-12 col-sm-12 form-group'>
+                    <label class="typo__label">اختر المنفعة</label>
+                    <multiselect id='benefit' v-model='benefit' @input="getBeneit(benefit)" name='hospital' :options="benefits"  placeholder="Select one" label="nameAr" track-by="id"></multiselect>
+                    <pre class="language-json"><code></code></pre>
                 </div>
-                <!-- <div class="col col-md-2 col-sm-12 col-xs-12 col-sm-12 form-group">
-                    <label for=""> نقاط المنفعة</label>
-                    <input type="number" step="any" min="1" class="form-control" v-model="benefitPrice" v-on:input="changeBenefit()"  name="benefitPoints">
-                </div> -->
+
                 <div class="col col-md-2 col-sm-12 col-xs-12 col-sm-12 form-group">
                     <label for="">  السعر</label>
                     <input type="text" disabled class="form-control" v-model="benefitPrice"  name="benefitPrice">
                 </div>
                 <div class="col col-md-2 col-sm-12 col-xs-12 col-sm-12 form-group">
                     <label for=""> الكمية</label>
-                    <input type="number" v-on:input="changeQuantity()"  class="form-control" id="quantity" v-model="quantity" min="1" step="1" required name="quantity">
+                    <input type="number"  v-on:input="changeQuantity()"  class="form-control" id="quantity" onkeypress="return event.charCode >= 48 && event.charCode <= 57" v-model="quantity" min="1" step="1" required name="quantity">
                 </div>
                 <div class="col col-md-2 col-sm-12 col-xs-12 col-sm-12 form-group" style="margin-top:30px">
                     <label for=""> </label>
