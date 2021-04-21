@@ -329,19 +329,19 @@ export default [
     path: '/invoice/new',
     name: 'InvoiceCreate',
     component: InvoiceUpdate,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice/:invoiceId/edit',
     name: 'InvoiceEdit',
     component: InvoiceUpdate,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice/:invoiceId/return',
     name: 'InvoiceReturn',
     component: InvoiceReturn,
-    meta: { authorities: [Authority.ADMIN, Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: [Authority.HOSPITAL_ADMIN] },
   },
   {
     path: '/invoice/:invoiceId/view',

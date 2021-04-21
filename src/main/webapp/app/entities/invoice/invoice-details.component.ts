@@ -44,12 +44,12 @@ export default class InvoiceUpdate extends Vue {
   public cardNo = '';
   public employeeName = '';
   public companyName = '';
-  public cardPoint = 0;
+  public cardCost = 0;
   public exbireDate = new Date();
   public cardNumber = '';
   public benefit = '';
-  public benefitPoints = 0;
-  public oldBenefitPoints = 0;
+  public benefitcosts = 0;
+  public oldBenefitcosts = 0;
   public benefitPrice = 0;
   public total = 0;
   public totalIvoicePrice = 0;
@@ -85,7 +85,6 @@ export default class InvoiceUpdate extends Vue {
     this.invoiceService()
       .find(invoiceId)
       .then(res => {
-        console.log(res);
         this.employeeName = res.cardTransaction.card.employee.name;
         this.companyName = res.cardTransaction.card.employee.company.nameAr + ' | ' + res.cardTransaction.card.employee.company.nameEn;
         this.cardNumber = res.cardTransaction.card.cardNo;
@@ -99,16 +98,12 @@ export default class InvoiceUpdate extends Vue {
         this.invoiceBenefitsService()
           .find(res.id)
           .then(res => {
-            console.log('show here');
-            console.log(res);
             res[0].forEach(element => {
               this.rows.push({
                 id: element.benefit.id,
                 nameAr: element.benefit.nameAr,
                 quantity: element.quantity,
                 nameEn: element.benefit.nameEn,
-                points: element.pointsCost,
-                totalPoints: element.pointsCost,
                 price: element.cost,
                 returnQuantity: element.quantity,
                 totalPrice: element.total,
@@ -119,16 +114,16 @@ export default class InvoiceUpdate extends Vue {
         this.invoiceService()
           .search(res.cardTransaction.card.cardNo)
           .then(res => {
-            var points = 0;
+            var costs = 0;
             res.cardInfo[0].forEach(element => {
               if (element.action == 'PLUS') {
-                points = points + element.amount;
+                costs = costs + element.amount;
               } else {
-                points = points - element.amount;
+                costs = costs - element.amount;
               }
             });
             this.hosbitalName = res.benefit[0].hospital.nameAr;
-            this.cardPoint = points;
+            this.cardCost = costs;
           });
       });
   }
@@ -161,8 +156,8 @@ export default class InvoiceUpdate extends Vue {
       <th style="padding-top: 10px; padding-left: 40px;">اسم المنفعة بالعربي</th>
       <th style="padding-top: 10px; padding-left: 40px;">اسم المنفعة بالانجليزي</th>
       <th style="padding-top: 10px; padding-left: 40px;">الكمية</th>
-      <th style="padding-top: 10px; padding-left: 40px;">النقاط</th>
-      <th style="padding-top: 10px; padding-left: 40px;">اجمالي النقاط</th>
+      <th style="padding-top: 10px; padding-left: 40px;">السعر</th>
+      <th style="padding-top: 10px; padding-left: 40px;">اجمالي السعر</th>
       </tr>
       </thead>
       `);
@@ -173,8 +168,8 @@ export default class InvoiceUpdate extends Vue {
         <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.nameAr}</td>
         <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.nameEn}</td>
         <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.returnQuantity}</td>
-        <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.points}</td>
-        <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.totalPoints}</td>
+        <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.price}</td>
+        <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.totalPrice}</td>
         </tr>
         `);
     });
@@ -184,7 +179,7 @@ export default class InvoiceUpdate extends Vue {
       <td style="padding-top: 10px; padding-left: 40px;"></td>
       <td style="padding-top: 10px; padding-left: 40px;"></td>
       <td style="padding-top: 10px; padding-left: 40px;"></td>
-      <td style="padding-top: 10px; padding-left: 40px;">اجمالي النقاط : ${this.total}</td>
+      <td style="padding-top: 10px; padding-left: 40px;">اجمالي السعر : ${this.totalIvoicePrice}</td>
       </tr>
       `);
     mywindow.document.write('</tbody>');

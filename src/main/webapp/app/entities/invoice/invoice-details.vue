@@ -22,10 +22,10 @@
                     <label for=""> رقم البطاقة</label>
                     <input type="text" disabled class="form-control" v-model="cardNumber" name="cardNo">
                 </div>
-                <div class="col col-md-4 col-sm-12 col-xs-12">
-                    <label for=""> النقاط</label>
-                    <input type="text" disabled class="form-control" v-model="cardPoint" name="cardPoint">
-                </div>
+                <!-- <div class="col col-md-4 col-sm-12 col-xs-12">
+                    <label for=""> الرصيد</label>
+                    <input type="text" disabled class="form-control" v-model="cardCost" name="cardCost">
+                </div> -->
                 <div class="col col-md-4 col-sm-12 col-xs-12">
                     <label for=""> انتهاء صلاحية البطاقة </label>
                     <input type="text" disabled class="form-control" v-model="exbireDate" name="exbireDate">
@@ -55,7 +55,7 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            <td> مجموع النقاط : {{total}}</td>
+                            <td> </td>
                             <td></td>
                             <td> اجمالي السعر : {{totalIvoicePrice}}</td>
                             <td>
