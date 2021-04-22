@@ -19,7 +19,7 @@ export class CategoryController {
     constructor(private readonly categoryService: CategoryService) {}
 
     @Get('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'List all records',
@@ -37,7 +37,7 @@ export class CategoryController {
     }
 
     @Get('/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'The found record',
@@ -48,7 +48,7 @@ export class CategoryController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiOperation({ title: 'Create category' })
     @ApiResponse({
         status: 201,
@@ -63,7 +63,7 @@ export class CategoryController {
     }
 
     @Put('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiOperation({ title: 'Update category' })
     @ApiResponse({
         status: 200,
@@ -76,7 +76,7 @@ export class CategoryController {
     }
 
     @Delete('/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiOperation({ title: 'Delete category' })
     @ApiResponse({
         status: 204,

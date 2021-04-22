@@ -21,7 +21,7 @@ export class HospitalController{
   constructor(private readonly hospitalService: HospitalService, private readonly userService : UserService) {}
 
   @Get('/:search')
-  @Roles(RoleType.USER)
+  @Roles(RoleType.ADMIN)
   @ApiResponse({
     status: 200,
     description: 'List all records',
@@ -39,7 +39,7 @@ export class HospitalController{
   }
 
   @Get('/active/hospital')
-  @Roles(RoleType.USER)
+  @Roles(RoleType.ADMIN)
   @ApiResponse({
     status: 200,
     description: 'List all records',
@@ -58,7 +58,7 @@ export class HospitalController{
   }
 
   @Get('/find/:id')
-  @Roles(RoleType.USER)
+  @Roles(RoleType.ADMIN)
   @ApiResponse({
     status: 200,
     description: 'The found record',
@@ -87,7 +87,7 @@ export class HospitalController{
       userDTO.login       = hospitalDTO['nameEn'];
       userDTO.password    = hospitalDTO['nameEn'];
       userDTO.activated   = true;
-      userDTO.authorities = [RoleType.HOSPITAL_ADMIN, RoleType.USER];
+      userDTO.authorities = [RoleType.HOSPITAL_ADMIN, RoleType.ADMIN];
 
       const createdUser = await this.userService.save(userDTO);
       hospitalDTO.users  = [ createdUser ];

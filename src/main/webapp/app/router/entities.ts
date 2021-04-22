@@ -1,4 +1,5 @@
 import { Authority } from '@/shared/security/authority';
+
 /* tslint:disable */
 // prettier-ignore
 
@@ -329,14 +330,14 @@ export default [
     path: '/invoice/new',
     name: 'InvoiceCreate',
     component: InvoiceUpdate,
-    meta: { authorities: [Authority.HOSPITAL_ADMIN] },
+    meta: { authorities: Authority.HOSPITAL_ADMIN },
   },
-  {
-    path: '/invoice/:invoiceId/edit',
-    name: 'InvoiceEdit',
-    component: InvoiceUpdate,
-    meta: { authorities: [Authority.HOSPITAL_ADMIN] },
-  },
+  // {
+  //   path: '/invoice/:invoiceId/edit',
+  //   name: 'InvoiceEdit',
+  //   component: InvoiceUpdate,
+  //   meta: { authorities: [Authority.HOSPITAL_ADMIN] },
+  // },
   {
     path: '/invoice/:invoiceId/return',
     name: 'InvoiceReturn',

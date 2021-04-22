@@ -19,7 +19,7 @@ export class CardTransactionController {
     constructor(private readonly cardTransactionService: CardTransactionService) {}
 
     @Get('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.COMPANY_ADMIN, RoleType.HOSPITAL_ADMIN)
     @ApiResponse({
         status: 200,
         description: 'List all records',

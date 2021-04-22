@@ -30,10 +30,12 @@ export class BenefitRequestService {
   async findAndCount(search: string, hosbital_id :string,options: FindManyOptions<BenefitRequestDTO>): Promise<[BenefitRequestDTO[], number]> {
     options.relations = relationshipNames;
     search = search == "false" ? "" : search;
-    // const resultList = await this.benefitRequestRepository.findAndCount(options);
     var resultList = [][0];
-
-    if(hosbital_id == "all") {
+    console.log(options.where)
+    if(options.where != undefined){
+      resultList = await this.benefitRequestRepository.findAndCount(options);
+    }
+    else if(hosbital_id == "all") {
       resultList = await this.benefitRequestRepository.createQueryBuilder('benefit_request')
       .innerJoinAndSelect('benefit_request.hospital', 'hospital')
       .innerJoinAndSelect('benefit_request.category', 'category')

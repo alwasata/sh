@@ -34,10 +34,10 @@ export default [
     component: ChangePassword,
     meta: { authorities: [Authority.USER] },
   },
-  {
-    path: '/account/settings',
-    name: 'Settings',
-    component: Settings,
-    meta: { authorities: [Authority.USER] },
-  },
+  // {
+  //   path: '/account/settings',
+  //   name: 'Settings',
+  //   component: Settings,
+  //   meta: { authorities: [Authority.USER] },
+  // },
 ];

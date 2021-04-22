@@ -41,7 +41,7 @@ export class InvoiceController {
     ) {}
 
     @Get('/:search')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN,RoleType.ADMIN)
     @ApiResponse({
       status: 200,
       description: 'List all records',
@@ -68,7 +68,7 @@ export class InvoiceController {
     }
 
     @Get('/getinvoices/staus')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN,RoleType.ADMIN)
     @ApiResponse({
       status: 200,
       description: 'List all records',
@@ -100,7 +100,7 @@ export class InvoiceController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.HOSPITAL_ADMIN)
     @ApiOperation({ title: 'Create invoice' })
     @ApiResponse({
       status: 201,
@@ -116,7 +116,7 @@ export class InvoiceController {
     }
 
     @Put('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.HOSPITAL_ADMIN)
     @ApiOperation({ title: 'Update invoice' })
     @ApiResponse({
       status: 200,
@@ -129,7 +129,7 @@ export class InvoiceController {
     }
 
     @Delete('/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN)
     @ApiOperation({ title: 'Delete invoice' })
     @ApiResponse({
       status: 204,
@@ -175,7 +175,7 @@ export class InvoiceController {
     }
 
     @Get('search/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN)
     @ApiResponse({
       status: 200,
       description: 'The found record',
@@ -211,7 +211,7 @@ export class InvoiceController {
     }
 
     @Get('getbenefit/:id')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN)
     @ApiResponse({
       status: 200,
       description: 'The found record',
@@ -233,7 +233,7 @@ export class InvoiceController {
     }
 
     @PostMethod('saveinvoice')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN)
     @ApiOperation({ title: 'Create invoice' })
     @ApiResponse({
       status: 201,
@@ -277,7 +277,7 @@ export class InvoiceController {
 
 
     @PostMethod('checkbenefit')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.HOSPITAL_ADMIN)
     @ApiOperation({ title: 'Create invoice' })
     @ApiResponse({
       status: 201,

@@ -29,7 +29,7 @@ export class CardController {
     ) {}
 
     @Get('/:search')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN,RoleType.COMPANY_ADMIN)
     @ApiResponse({
       status: 200,
       description: 'List all records',
@@ -93,7 +93,7 @@ export class CardController {
     }
 
     @PostMethod('/')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN,RoleType.COMPANY_ADMIN)
     @ApiOperation({ title: 'Create card' })
     @ApiResponse({
       status: 201,
@@ -113,7 +113,7 @@ export class CardController {
     }
 
     @Put('/')
-    @Roles(RoleType.ADMIN)
+    @Roles(RoleType.ADMIN,RoleType.COMPANY_ADMIN)
     @ApiOperation({ title: 'Update card' })
     @ApiResponse({
       status: 200,
@@ -143,7 +143,7 @@ export class CardController {
     }
 
     @Put('chargecard')
-    @Roles(RoleType.USER)
+    @Roles(RoleType.ADMIN)
     @ApiOperation({ title: 'Create card' })
     @ApiResponse({
       status: 201,

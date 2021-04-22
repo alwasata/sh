@@ -17,6 +17,7 @@ import LoginForm from '@/account/login-form/login-form.vue';
 })
 export default class App extends Vue {
   public get authenticated(): boolean {
+    console.log(this.$store.getters);
     return this.$store.getters.authenticated;
   }
 }
