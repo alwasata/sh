@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-8">
-            <form name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
+            <form class="form-class"  name="editForm" role="form" novalidate v-on:submit.prevent="save()" >
                 <h2 id='sahatiApp.card.home.createOrEditLabel'>اضافة او تعديل بطاقة</h2>
                 <div class="alert alert-danger" id="alert-danger" role="alert" hidden>
                     {{ error }}

@@ -2,7 +2,7 @@
 <template>
 
     <div class="row justify-content-center">
-        <div class="col-8">
+        <div class="col-8 form-class">
                 <h2 id='sahatiApp.invoice.home.createOrEditLabel'>اضافة او تعديل Invoice</h2>
                 <!-- <button @click="pdfgenerator()">generate pdf</button>
                  <table class="table" id="pptable">

@@ -85,7 +85,6 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta && to.meta.authorities && to.meta.authorities.length > 0) {
     accountService.hasRole(to.meta.authorities).then(value => {
-      console.log(value);
       if (value == false) {
         sessionStorage.setItem('requested-url', to.fullPath);
         next('/forbidden');

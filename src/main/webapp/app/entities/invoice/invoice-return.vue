@@ -2,7 +2,7 @@
 <template>
 
     <div class="row justify-content-center">
-        <div class="col-8">
+        <div class="col-8 form-class" >
                 <h2 id='sahatiApp.invoice.home.createOrEditLabel'>ارجاع الفاتورة</h2>
 
             <!-- <form action="" v-on:submit.prevent="retrieveInvoice()">
@@ -151,7 +151,6 @@
         <div>
         </div>
         </div>
-    </div>
 </template>
 <script lang="ts" src="./invoice-return.component.ts">
 </script>

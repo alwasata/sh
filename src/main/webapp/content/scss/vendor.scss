@@ -48,4 +48,30 @@ eg $input-color: red;
 
 @import './vue-multiselect';
 
+.navbar-dark .navbar-nav .nav-link {
+  color: rgb(255 255 255);
+}
+
+.jh-navbar[data-v-39b7de9c] {
+  background-color: #25a2b8;
+  padding: 0.2em 1em;
+}
+.btn-secondary {
+  color: #fff;
+  background-color: #25a2b8;
+  border-color: #ffffff;
+}
+
+#sidebar-1___title__ {
+  margin-left: 50%;
+  color: #25a2b8;
+}
+
+.form-class {
+  background-color: #f6f6f6;
+  padding: 32px;
+  border-radius: 22px;
+  border: 1px solid #ddd;
+  border-top: 10px solid #25a2b8;
+}
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

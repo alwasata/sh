@@ -95,7 +95,7 @@ export default class AccountService {
     }
     var userAuth = this.store.getters.account.authorities;
     for (const element of roles) {
-      if (userAuth.includes(element)) {
+      if (userAuth[0].includes(element) || userAuth[1].includes(element)) {
         return new Promise(resolve => {
           resolve(true);
         });
