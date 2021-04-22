@@ -86,4 +86,23 @@ export default class AccountService {
   public get userAuthorities(): any {
     return this.store.getters.account.authorities;
   }
+
+  public hasRole(roles: any): Promise<boolean> {
+    if (this.store.getters.account == null) {
+      return new Promise(resolve => {
+        resolve(false);
+      });
+    }
+    var userAuth = this.store.getters.account.authorities;
+    for (const element of roles) {
+      if (userAuth.includes(element)) {
+        return new Promise(resolve => {
+          resolve(true);
+        });
+      }
+    }
+    return new Promise(resolve => {
+      resolve(false);
+    });
+  }
 }
