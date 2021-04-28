@@ -1,0 +1,25 @@
+internal/modules/cjs/loader.js:969
+  throw err;
+  ^
+
+Error: Cannot find module '/home/sahati/server/src/server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:966:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:842:27)
+    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)
+    at internal/main/run_main_module.js:17:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+(node:41972) Warning: To load an ES module, set "type": "module" in the package.json or use the .mjs extension.
+/home/sahati/server/src/main.ts:2
+import { NestFactory } from '@nestjs/core';
+^^^^^^
+
+SyntaxError: Cannot use import statement outside a module
+    at wrapSafe (internal/modules/cjs/loader.js:1054:16)
+    at Module._compile (internal/modules/cjs/loader.js:1102:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1158:10)
+    at Module.load (internal/modules/cjs/loader.js:986:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:879:14)
+    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)
+    at internal/main/run_main_module.js:17:47
