@@ -13,3 +13,5 @@ This application was generated using JHipster 6.10.3, you can find documentation
     npm install
 
     npm run start:app
+
+# sahaty
