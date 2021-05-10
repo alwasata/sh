@@ -40,6 +40,52 @@ export class InvoiceController {
     private readonly settingService: SettingService,
     ) {}
 
+    @Get(`/getInvoicesWithStatus/:status/:dateFrom/:dateTo`)
+    @Roles(RoleType.HOSPITAL_ADMIN)
+    @ApiResponse({
+      status: 200,
+      type: InvoiceDTO
+    })
+    async getInvoicesWithStatus(@Req() req: Request, @Param('status') status: string, @Param('dateFrom') dateFrom: Date, @Param('dateTo') dateTo: Date): Promise<InvoiceDTO[]>{
+      
+      const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+      var hospital;
+        console.log("Params = " + status + "Dateform = " + dateFrom + "Dateto" + dateTo);
+        hospital = await this.hospitalService.getHosbitalIdForUser(req.user["id"]);
+        hospital = hospital["hospital_id"];
+        console.log("Hospital user = " + hospital);
+        const [results, count] = await this.invoiceService.invoicesReport(status, hospital, dateFrom, dateTo,{
+          skip: +pageRequest.page * pageRequest.size,
+          take: +pageRequest.size,
+          order: pageRequest.sort.asOrder(),
+        });
+        HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
+        return results;
+        return null;
+      }
+
+
+      @Get(`/getInvoicesWithStatusAdmin/:status/:hospital/:dateFrom/:dateTo`)
+      @Roles(RoleType.ADMIN, RoleType.HOSPITAL_ADMIN)
+      @ApiResponse({
+        status: 200,
+        type: InvoiceDTO
+      })
+      async getInvoicesWithStatusAdmin(@Req() req: Request, @Param('status') status: string, @Param('hospital') hospital: string, @Param('dateFrom') dateFrom: Date, @Param('dateTo') dateTo: Date): Promise<InvoiceDTO[]>{
+        
+        const pageRequest: PageRequest = new PageRequest(req.query.page, req.query.size, req.query.sort);
+          console.log("Params = " + status + "Dateform = " + dateFrom + "Dateto" + dateTo);
+          console.log("Hospital user = " + hospital);
+          const [results, count] = await this.invoiceService.invoicesReport(status, hospital, dateFrom, dateTo,{
+            skip: +pageRequest.page * pageRequest.size,
+            take: +pageRequest.size,
+            order: pageRequest.sort.asOrder(),
+          });
+          HeaderUtil.addPaginationHeaders(req.res, new Page(results, count, pageRequest));
+          return results;
+          return null;
+        }
+
     @Get('/:search')
     @Roles(RoleType.HOSPITAL_ADMIN,RoleType.ADMIN)
     @ApiResponse({
@@ -110,13 +156,17 @@ export class InvoiceController {
 
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async post(@Req() req: Request, @Body() invoiceDTO: InvoiceDTO): Promise<InvoiceDTO> {
+      try{
       const created = await this.invoiceService.save(invoiceDTO);
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Invoice', created.id);
       return created;
+      }catch(error){
+        return error;
+      }
     }
 
     @Put('/')
-    @Roles(RoleType.HOSPITAL_ADMIN)
+    @Roles(RoleType.HOSPITAL_ADMIN, RoleType.ADMIN)
     @ApiOperation({ title: 'Update invoice' })
     @ApiResponse({
       status: 200,
@@ -125,6 +175,7 @@ export class InvoiceController {
     })
     async put(@Req() req: Request, @Body() invoiceDTO: InvoiceDTO): Promise<InvoiceDTO> {
       HeaderUtil.addEntityCreatedHeaders(req.res, 'Invoice', invoiceDTO.id);
+      invoiceDTO.lastModifiedBy = req.user["id"];
       return await this.invoiceService.update(invoiceDTO);
     }
 

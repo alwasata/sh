@@ -35,6 +35,9 @@ export class Invoice extends BaseEntity {
 
     @Column({ name: 'notes', nullable: true })
     notes: string;
+    //This si the new column for moamalat
+    @Column({ name: 'moamalatId', nullable: true })
+    moamalatId: string;
 
     @OneToOne(type => CardTransaction)
     @JoinColumn()

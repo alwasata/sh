@@ -1,3 +1,4 @@
+import { required, helpers } from 'vuelidate/lib/validators';
 import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import CardTransactionService from '../card-transaction/card-transaction.service';
@@ -12,6 +13,7 @@ import SettingService from '../setting/setting.service';
 import pdfMake from 'pdfmake-arabic/build/pdfmake';
 import pdfFonts from 'pdfmake-arabic/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+export const isPhoneNo = helpers.regex('alpha', /^[0-9]{4,6}$/im);
 
 const validations: any = {
   invoice: {
@@ -24,6 +26,10 @@ const validations: any = {
     invoiceStatus: {},
     hosbital: {},
     notes: {},
+    moamalatId: {
+      required,
+      isPhoneNo,
+    },
   },
 };
 
@@ -54,6 +60,7 @@ export default class InvoiceUpdate extends Vue {
   public hosbitalName = '';
   public invoiceDate = new Date().toISOString().slice(0, 10);
   public rows = [];
+  public moamalatId = '';
 
   @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
 
@@ -92,14 +99,16 @@ export default class InvoiceUpdate extends Vue {
           this.alertService().showAlert(message, 'info');
         });
     } else {
-      this.invoiceService()
-        .create(this.invoice)
-        .then(param => {
-          this.isSaving = false;
-          this.$router.go(-1);
-          const message = 'A Invoice is created with identifier ' + param.id;
-          this.alertService().showAlert(message, 'success');
-        });
+      if (this.moamalatId != '') {
+        this.invoiceService()
+          .create(this.invoice)
+          .then(param => {
+            this.isSaving = false;
+            this.$router.go(-1);
+            const message = 'A Invoice is created with identifier ' + param.id;
+            this.alertService().showAlert(message, 'success');
+          });
+      }
     }
   }
 
@@ -157,6 +166,16 @@ export default class InvoiceUpdate extends Vue {
       });
   }
 
+  public checkMoamalat(e): void {
+    this.moamalatId = e;
+
+    console.log('This is moamalat id =' + e + 'This row = ' + this.rows.length);
+    if (this.moamalatId == '' || this.moamalatId.length < 5 || this.rows.length == 0 || this.moamalatId.match(/^[0-9]+$/) == null) {
+      (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
+    } else {
+      (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
+    }
+  }
   public getBeneit(event): void {
     this.oldBenefitPrice = event.benefit.cost;
     this.benefitPrice = event.benefit.cost;
@@ -176,9 +195,9 @@ export default class InvoiceUpdate extends Vue {
 
   public addBenefit(): void {
     (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
-    if (this.rows != []) {
-      (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
-    }
+    console.log(this.moamalatId);
+    this.checkMoamalat(this.moamalatId);
+
     if (this.total + this.benefitPrice * this.quantity < this.employeePrices) {
       var checkBenefit = false;
       this.rows.forEach(element => {
@@ -203,24 +222,31 @@ export default class InvoiceUpdate extends Vue {
   }
 
   public removeRow(row, indx) {
-    (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
-    if (this.rows.length == 0) {
-      (document.getElementById('save-invoice') as HTMLButtonElement).disabled = false;
-    }
+    this.checkMoamalat(this.moamalatId);
+
     this.total = this.total - row.totalPrice;
     this.totalIvoicePrice = this.totalIvoicePrice - row.totalPrice;
     this.rows.splice(indx, 1);
   }
 
   public saveInvoice() {
+    this.checkMoamalat(this.moamalatId);
+    if (!(this.moamalatId.length >= 5 && this.rows.length > 0)) {
+      console.log('This row = ' + this.rows + 'moamalat id = ' + this.moamalatId);
+      alert('الرجاء اختيار المنافع وتغبئة خانة فاتورة معاملات');
+      return null;
+    }
     (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     this.invoice.total = this.totalIvoicePrice;
     // this.invoice.totalInvoicePoints = this.total;
-    this.invoice.invoiceStatus = InvoiceStatus.APPROVED;
+    this.invoice.invoiceStatus = InvoiceStatus.PENDING;
     this.invoice.invoiceDate = this.invoiceDate;
     this.invoice.payDate = this.invoiceDate;
     this.invoice.invoiceNo = 'IN-' + new Date().getFullYear() + '-' + new Date().getMonth() + '-' + Math.floor(1000 + Math.random() * 9000);
     this.invoice.notes = `فاتورة صادرة رقم الفاتورة : ${this.invoice.invoiceNo}`;
+
+    this.invoice.moamalatId = this.moamalatId;
+
     var data = {
       invoiceBenefit: this.rows,
       invoice: this.invoice,
@@ -297,6 +323,9 @@ export default class InvoiceUpdate extends Vue {
 
         mywindow.print();
         location.reload();
+      })
+      .catch(err => {
+        alert('This id is duplicate' + err);
       });
   }
 

@@ -5,6 +5,7 @@ export const enum InvoiceStatus {
   APPROVED = 'APPROVED',
   CANCELLED = 'CANCELLED',
   RETURNED = 'RETURNED',
+  PENDING = 'PENDING',
 }
 
 export interface IInvoice {
@@ -18,6 +19,7 @@ export interface IInvoice {
   invoiceStatus?: InvoiceStatus;
   notes?: string;
   cardTransaction?: ICardTransaction;
+  moamalatId?: string;
 }
 
 export class Invoice implements IInvoice {
@@ -31,6 +33,7 @@ export class Invoice implements IInvoice {
     public mainInvoice?: Double,
     public invoiceStatus?: InvoiceStatus,
     public notes?: string,
-    public cardTransaction?: ICardTransaction
+    public cardTransaction?: ICardTransaction,
+    public moamalatId?: string
   ) {}
 }

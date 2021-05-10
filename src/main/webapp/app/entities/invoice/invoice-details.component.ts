@@ -22,6 +22,7 @@ const validations: any = {
     createdBy: {},
     hospital: {},
     mainInvoice: {},
+    moamalatId: {},
   },
   invoiceBenefits: {
     pointsCost: {},
@@ -64,6 +65,7 @@ export default class InvoiceUpdate extends Vue {
   public rows = [];
   public checkQuantity = true;
   public returnBenefits = [];
+  public moamalatId = '';
 
   @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
 
@@ -94,6 +96,7 @@ export default class InvoiceUpdate extends Vue {
         this.total = res.totalPoints;
         this.totalIvoicePrice = res.total;
         this.invoiceNo = res.invoiceNo;
+        this.moamalatId = res.moamalatId;
 
         this.invoiceBenefitsService()
           .find(res.id)

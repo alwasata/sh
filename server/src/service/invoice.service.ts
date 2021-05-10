@@ -43,7 +43,7 @@ export class InvoiceService {
     options.relations = relationshipNames;
     search = search == "false" ? "" : search;
     var resultList = {};
-    console.log(search);
+    console.log("Query =" +search);
     if(id == "all") {
       resultList = await this.invoiceRepository.createQueryBuilder('invoice')
       .leftJoinAndSelect('invoice.mainInvoice', 'mainInvoice')
@@ -63,7 +63,7 @@ export class InvoiceService {
       .orWhere('employee.name like :firstName', { firstName: '%' + search + '%' })
       .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
       .orWhere('employee.identityNo like :identityNo', { identityNo: '%' + search + '%' })
-      .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
+      // .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
       .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
       .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .skip(options.skip)
@@ -88,7 +88,7 @@ export class InvoiceService {
       .orWhere('employee.name like :firstName', { firstName: '%' + search + '%' })
       .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
       .orWhere('employee.identityNo like :identityNo', { identityNo: '%' + search + '%' })
-      .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
+      // .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
       .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
       .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .andWhere('hospital.id = :id', { id: id })
@@ -96,6 +96,10 @@ export class InvoiceService {
       .take(options.take)
       .getManyAndCount();
     }
+
+    
+
+
     const invoiceDTO: InvoiceDTO[] = [];
     if (resultList && resultList[0]) {
       resultList[0].forEach(invoice => invoiceDTO.push(InvoiceMapper.fromEntityToDTO(invoice)));
@@ -103,6 +107,38 @@ export class InvoiceService {
     }
     return resultList;
   }
+
+  async invoicesReport(status : string, id : any, dateFrom: Date, dateTo: Date, options: FindManyOptions<InvoiceDTO>): Promise<InvoiceDTO[] | any> {
+    options.relations = relationshipNames;
+    var resultList = {};
+    console.log("Query =" + id + " Status = " + status);
+    
+      resultList = await this.invoiceRepository.createQueryBuilder('invoice')
+      .leftJoinAndSelect('invoice.mainInvoice', 'mainInvoice')
+      .leftJoinAndSelect('invoice.createdBy', 'createdBy')
+      .leftJoinAndSelect('invoice.lastModifiedBy', 'lastModifiedBy')
+      .innerJoinAndSelect('invoice.cardTransaction', 'cardTransaction')
+      .innerJoinAndSelect('cardTransaction.card', 'card')
+      .innerJoinAndSelect('card.employee', 'employee')
+      .innerJoinAndSelect('employee.company', 'company')
+      .innerJoinAndSelect('invoice.hospital', 'hospital')
+      .where('invoice.invoiceDate >= :invoiceDate1', { invoiceDate1: dateFrom })
+      .andWhere('invoice.invoiceDate <= :invoiceDate', { invoiceDate: dateTo })
+      .andWhere('invoice.invoiceStatus like :invoiceStatus', { invoiceStatus: '%' + status + '%' })
+      .andWhere('hospital.id = :id', { id: id })
+
+      .getManyAndCount();
+  
+    const invoiceDTO: InvoiceDTO[] = [];
+    if (resultList && resultList[0]) {
+      resultList[0].forEach(invoice => invoiceDTO.push(InvoiceMapper.fromEntityToDTO(invoice)));
+      resultList[0] = invoiceDTO;
+    }
+    console.log(resultList);
+    return resultList;
+  }
+
+  
 
   async count(): Promise<number> {
     const resultList = await this.invoiceRepository.count();
