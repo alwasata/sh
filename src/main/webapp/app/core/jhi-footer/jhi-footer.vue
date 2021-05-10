@@ -1,6 +1,6 @@
 <template>
     <div id="footer" class="footer">
-        <p>جميع الحقوق محفوظة &copy; لشركة صحتي</p>
+        <p>جميع الحقوق محفوظة &copy;  <a href="https://alwasata.ly">لشركة الوساطة العالمية للخدمات المساعدة وإدارة النفقات الصحية </a></p>
     </div>
 </template>
 
