@@ -20,10 +20,14 @@
     {
       "fieldName": "invoiceStatus",
       "fieldType": "InvoiceStatus",
-      "fieldValues": "APPROVED,CANCELLED,RETURNED"
+      "fieldValues": "APPROVED,CANCELLED,RETURNED,PENDING"
     },
     {
       "fieldName": "notes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "moamalatId",
       "fieldType": "String"
     }
   ],

@@ -34,6 +34,9 @@ export class InvoiceDTO extends BaseDTO {
     @ApiModelProperty({ description: 'notes field', required: false })
     notes: string;
 
+    @ApiModelProperty({ description: 'moamalat wasel id', required: false })
+    moamalatId: string;
+
     @ApiModelProperty({ type: CardTransactionDTO, description: 'cardTransaction relationship' })
     cardTransaction: CardTransactionDTO;
 

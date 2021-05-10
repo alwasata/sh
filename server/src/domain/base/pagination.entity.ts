@@ -5,9 +5,12 @@ import { Type, Expose as JsonProperty } from 'class-transformer';
 export class Sort {
     public property: string;
     public direction: 'ASC' | 'DESC' | string;
+    
+    
     constructor(sort: string) {
+        console.log("--------------- iiiiii" + sort);
         if (sort) {
-            [this.property, this.direction] = sort.split(',');
+            [this.property, this.direction ] = sort.split(',');
         }
     }
 

@@ -21,7 +21,7 @@ export class HospitalController{
   constructor(private readonly hospitalService: HospitalService, private readonly userService : UserService) {}
 
   @Get('/:search')
-  @Roles(RoleType.ADMIN)
+  @Roles(RoleType.ADMIN, RoleType.HOSPITAL_ADMIN)
   @ApiResponse({
     status: 200,
     description: 'List all records',

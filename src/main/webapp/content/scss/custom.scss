@@ -1,6 +1,43 @@
 /*------------------------------------------------------------------
 File Name: custom.css
 -------------------------------------------------------------------*/
+.status-p {
+  padding-top: 20px;
+  width: 100% !important;
+  border-top: 1px solid black;
+  font-weight: bold;
+  font-size: 25px !important;
+  text-decoration: underline;
+}
+.status-p,
+.date,
+.status-select,
+.getinvoice,
+.status-select {
+  text-align: center !important;
+  font-weight: bold;
+  font-size: 20px;
+  width: 50%;
+}
+input {
+  font-weight: bold;
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 20px;
+}
+
+.getinvoice {
+  border-radius: 20px;
+  background: #25a2b8;
+  color: white;
+  margin-top: 10px;
+}
+select {
+  border-radius: 20px;
+}
 
 /** ADD YOUR AWESOME CODES HERE **/
 

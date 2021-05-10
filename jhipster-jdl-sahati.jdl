@@ -20,7 +20,7 @@ enum TransactionAction {
 	PLUS, MINUS
 }
 enum InvoiceStatus {
-	APPROVED, CANCELLED, RETURNED
+	APPROVED, CANCELLED, RETURNED, PENDING
 }
 entity Attatchment {
 	name String

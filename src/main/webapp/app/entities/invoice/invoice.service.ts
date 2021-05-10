@@ -25,7 +25,7 @@ export default class InvoiceService {
   public getInvoicesByStatus(status: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}/getinvoices/staus`)
+        .get(`${baseApiUrl}/getinvoices/status`)
         .then(res => {
           var countInvoice = 0;
           for (var i = 0; i < res.data.length; i++) {
@@ -43,6 +43,7 @@ export default class InvoiceService {
 
   public retrieve(search: string, paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
+      console.log('in rerrieve ' + search);
       axios
         .get(baseApiUrl + `/${search}?${buildPaginationQueryOpts(paginationQuery)}`)
         .then(res => {
@@ -129,6 +130,35 @@ export default class InvoiceService {
         .catch(err => {
           console.log(err);
           reject(err);
+        });
+    });
+  }
+
+  public getInvoicesAdmin(status: string, hospitalid: string, dateFrom: Date, dateTo: Date): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/getInvoicesWithStatusAdmin/${status}/${hospitalid}/${dateFrom}/${dateTo}`)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
+  }
+
+  public getInvoices(status: string, dateFrom: Date, dateTo: Date): Promise<any> {
+    console.log('In service web frontend ' + status + dateFrom + dateTo);
+
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/getInvoicesWithStatus/${status}/${dateFrom}/${dateTo}`)
+        .then(res => {
+          console.log(res.data);
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.log(err);
         });
     });
   }
