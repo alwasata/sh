@@ -12,6 +12,9 @@ import InvoiceService from './invoice.service';
 import SettingService from '../setting/setting.service';
 import pdfMake from 'pdfmake-arabic/build/pdfmake';
 import pdfFonts from 'pdfmake-arabic/build/vfs_fonts';
+import HospitalService from '../hospital/hospital.service';
+import AccountService from '@/account/account.service';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export const isPhoneNo = helpers.regex('alpha', /^[0-9]{4,6}$/im);
 
@@ -41,7 +44,7 @@ export default class InvoiceUpdate extends Vue {
   @Inject('invoiceService') private invoiceService: () => InvoiceService;
   public invoice: IInvoice = new Invoice();
   public benefits = [];
-
+  public cardAmount;
   public cardNo = '';
   public employeeName = '';
   public employeePrices = 0.0;
@@ -63,7 +66,8 @@ export default class InvoiceUpdate extends Vue {
   public moamalatId = '';
 
   @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
-
+  @Inject('hospitalService') private hospitalService: () => HospitalService;
+  @Inject('accountService') private accountService: () => AccountService;
   public cardTransactions: ICardTransaction[] = [];
   public isSaving = false;
   public currentLanguage = '';
@@ -100,6 +104,7 @@ export default class InvoiceUpdate extends Vue {
         });
     } else {
       if (this.moamalatId != '') {
+        // this.invoice.invoiceStatus = InvoiceStatus.PENDING;
         this.invoiceService()
           .create(this.invoice)
           .then(param => {
@@ -140,12 +145,14 @@ export default class InvoiceUpdate extends Vue {
         this.cardNumber = res.cardInfo[0][0].card.cardNo;
         this.cardId = res.cardInfo[0][0].card.id;
         this.exbireDate = res.cardInfo[0][0].card.expiryDate;
+
         var prices = 0;
         var pricesPlus = 0;
         var pricesMinus = 0;
         document.getElementById('benifit-info').style.cssText = 'display:block;';
 
         res.cardInfo[0].forEach(element => {
+          console.log('ekemint =' + element.amount);
           if (element.action == 'PLUS') {
             pricesPlus = pricesPlus + element.amount;
           } else {
@@ -159,9 +166,15 @@ export default class InvoiceUpdate extends Vue {
         if (prices < 0) {
           prices = prices * -1;
         }
-        this.hosbitalName = res.benefit[0].hospital.nameAr;
+        this.hospitalService()
+          .find(this.$store.getters.account.id)
+          .then(res => {
+            this.hosbitalName = res.nameAr;
+          });
+
         this.employeePrices = prices;
         this.benefits = res.benefit;
+        console.log('Prices =' + res.benefit[0]);
         this.cardPrice = prices;
       });
   }
@@ -239,7 +252,7 @@ export default class InvoiceUpdate extends Vue {
     (document.getElementById('save-invoice') as HTMLButtonElement).disabled = true;
     this.invoice.total = this.totalIvoicePrice;
     // this.invoice.totalInvoicePoints = this.total;
-    this.invoice.invoiceStatus = InvoiceStatus.PENDING;
+    // this.invoice.invoiceStatus = InvoiceStatus.PENDING;
     this.invoice.invoiceDate = this.invoiceDate;
     this.invoice.payDate = this.invoiceDate;
     this.invoice.invoiceNo = 'IN-' + new Date().getFullYear() + '-' + new Date().getMonth() + '-' + Math.floor(1000 + Math.random() * 9000);

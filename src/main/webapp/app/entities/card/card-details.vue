@@ -28,7 +28,7 @@
                         </span>
                     </dd>
                     <dt>
-                        <span>السعر</span>
+                        <span>الرصيد</span>
                     </dt>
                     <dd>
                         <span>{{ points }} د.ل</span>

@@ -120,7 +120,7 @@
             </tr>
           </thead>
           <tbody id="fill-table">
-            <tr v-for="(row, index) in rows">
+            <tr v-for="(row, index) in rows" v-bind:key="index">
               <td>{{ row.nameAr }}</td>
               <td>{{ row.nameEn }}</td>
               <td>{{ row.quantity }}</td>

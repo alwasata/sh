@@ -305,7 +305,7 @@ export class InvoiceController {
 
       var hospital_id = await this.hospitalService.getHosbitalIdForUser(req.user["id"]);
       var hospital = await this.hospitalService.findById(hospital_id["hospital_id"]);
-
+      data.invoice.invoiceStatus = InvoiceStatus.PENDING;
       data.invoice.hospital = hospital;
       data.invoice.createdBy = req.user["id"];
       data.invoice.cardTransaction = created.id;

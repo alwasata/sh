@@ -18,7 +18,7 @@
                     </div>
                     <div class="form-group" v-if="!isUpdate">
                         <label class='form-control-label' for='card-expiryDateType'> اختر تاريخ الانتهاء :</label>
-                         </br>
+                         <br/>
                          <label for="id30">30 شهرا (سنتان و نصف)</label>
                         <input class="form-radio"  id="id30" type="radio" name="expiryDateType" value="30" v-model="expiryDateType" >
                        <label for="id36">3 سنوات</label>

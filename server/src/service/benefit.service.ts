@@ -49,7 +49,7 @@ export class BenefitService {
       .innerJoinAndSelect('benefit.hospital', 'hospital')
       .innerJoinAndSelect('benefit.category', 'category')
       .where('hospital.id = :id', { id: hosbital_id })
-      .where('benefit.active = :active', { active: 1 })
+      .andWhere('benefit.active = :active', { active: 1 })
       .orWhere('benefit.nameAr like :nameAr', { nameAr: '%' + search + '%' })
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .andWhere('benefit.active = :active', { active: 1 })

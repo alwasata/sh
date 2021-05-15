@@ -140,6 +140,7 @@ export default class InvoiceService {
         .get(`${baseApiUrl}/getInvoicesWithStatusAdmin/${status}/${hospitalid}/${dateFrom}/${dateTo}`)
         .then(res => {
           console.log(res);
+          resolve(res.data);
         })
         .catch(err => {
           console.log(err);

@@ -58,7 +58,7 @@ export class HospitalController{
   }
 
   @Get('/find/:id')
-  @Roles(RoleType.ADMIN)
+  @Roles(RoleType.ADMIN , RoleType.HOSPITAL_ADMIN)
   @ApiResponse({
     status: 200,
     description: 'The found record',

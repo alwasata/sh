@@ -31,6 +31,7 @@ export default class Invoice extends mixins(AlertMixin) {
   public hospitals: IHospital[] = [];
   public hospitalid = '';
   public invoiceStatus = '';
+  public hospitalName = '';
 
   public invoices: IInvoice[] = [];
 
@@ -137,7 +138,8 @@ export default class Invoice extends mixins(AlertMixin) {
       .getInvoicesAdmin(this.invoiceStatus, this.hospitalid, this.dateFrom, this.dateTo)
       .then(res => {
         this.invoices = res;
-        this.printInvoiceReport();
+        this.hospitalName = this.hospitals.find(o => o.id.toString() == this.hospitalid).nameAr;
+        this.printInvoiceReportAdmin();
       });
   }
 
@@ -214,7 +216,7 @@ export default class Invoice extends mixins(AlertMixin) {
   }
   public printInvoiceReport(): void {
     var mywindow = window.open('', 'PRINT', 'height=600,width=900');
-
+    //this.$store.getters.account.nameAr
     mywindow.document.write('<html><head><title> ' + this.$store.getters.account.login + ' : اسم المستشفى  </title>');
     mywindow.document.write('</head><body dir="rtl">');
     mywindow.document.write('<style> th, .tdborder {border-bottom: 1px solid #ddd; }</style>');
@@ -232,6 +234,75 @@ export default class Invoice extends mixins(AlertMixin) {
     mywindow.document.write(
       "<span style='foint-size:16px;margin-right:40px;'>اسم المستشفى : " + this.$store.getters.account.login + '</span>'
     );
+    mywindow.document.write('</div>');
+    mywindow.document.write("<hr><div class='row' style='margin-top:15px'>");
+    mywindow.document.write("<span style='foint-size:16px;'>الفواتير :- </span>");
+    mywindow.document.write('<table>');
+    mywindow.document.write(`
+    <thead>
+    <tr>
+    <th style="padding-top: 10px; padding-left: 40px;">رقم الفاتورة</th>
+    <th style="padding-top: 10px; padding-left: 40px;">رقم فاتورة معاملات</th>
+    <th style="padding-top: 10px; padding-left: 40px;">حالة الفاتورة</th>
+    <th style="padding-top: 10px; padding-left: 40px;">تاريخ الفاتورة</th>
+    <th style="padding-top: 10px; padding-left: 40px;">رقم بطاقة المنتفع</th>
+    <th style="padding-top: 10px; padding-left: 40px;">اجمالي الفاتورة</th>
+    </tr>
+    </thead>
+    `);
+    mywindow.document.write('<tbody>');
+    var sumOfTotals = 0;
+    this.invoices.forEach(element => {
+      mywindow.document.write(`
+      <tr>
+      <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.invoiceNo}</td>
+      <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.moamalatId}</td>
+      <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.invoiceStatus}</td>
+      <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.invoiceDate}</td>
+      <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.cardTransaction.card.cardNo}</td>
+      <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.total}</td>
+      </tr>
+      `);
+      sumOfTotals += element.total;
+    });
+    mywindow.document.write(`
+    <tr>
+    <td style="padding-top: 10px; padding-left: 40px;"></td>
+    <td style="padding-top: 10px; padding-left: 40px;"></td>
+    <td style="padding-top: 10px; padding-left: 40px;"></td>
+    <td style="padding-top: 10px; padding-left: 40px;"></td>
+    <td style="padding-top: 10px; padding-left: 40px;">اجمالي السعر : ${sumOfTotals}</td>
+    </tr>
+    `);
+    mywindow.document.write('</tbody>');
+    mywindow.document.write('</table>');
+    mywindow.document.write('</div>');
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+
+    mywindow.print();
+    location.reload();
+  }
+  public printInvoiceReportAdmin(): void {
+    var mywindow = window.open('', 'PRINT', 'height=600,width=900');
+    //this.$store.getters.account.nameAr
+    mywindow.document.write('<html><head><title> ' + this.hospitalName + ' : اسم المستشفى  </title>');
+    mywindow.document.write('</head><body dir="rtl">');
+    mywindow.document.write('<style> th, .tdborder {border-bottom: 1px solid #ddd; }</style>');
+    mywindow.document.write("<div class='row' style='margin-top:15px'>");
+    mywindow.document.write(
+      "<span style='foint-size:16px; '> رقم المطالبة : " +
+        'MO-' +
+        new Date().getFullYear() +
+        '-' +
+        new Date().getMonth() +
+        '-' +
+        Math.floor(1000 + Math.random() * 9000) +
+        '</span>'
+    );
+    mywindow.document.write("<span style='foint-size:16px;margin-right:40px;'>اسم المستشفى : " + this.hospitalName + '</span>');
     mywindow.document.write('</div>');
     mywindow.document.write("<hr><div class='row' style='margin-top:15px'>");
     mywindow.document.write("<span style='foint-size:16px;'>الفواتير :- </span>");

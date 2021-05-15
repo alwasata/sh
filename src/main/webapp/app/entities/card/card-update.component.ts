@@ -1,7 +1,7 @@
 import { Component, Inject, Vue } from 'vue-property-decorator';
 
 import EmployeeService from '../employee/employee.service';
-import { IEmployee } from '@/shared/model/employee.model';
+import { EmployeeStatus, IEmployee } from '@/shared/model/employee.model';
 import { required, helpers } from 'vuelidate/lib/validators';
 export const isPhoneNo = helpers.regex('alpha', /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im);
 
@@ -82,7 +82,8 @@ export default class CardUpdate extends Vue {
           this.card.expiryDate.setFullYear(this.card.expiryDate.getFullYear() + 3);
           break;
       }
-      // this.card.expiryDate = this.card.expiryDate.toISOString().slice(0, 10);
+      this.card.expiryDate = this.card.expiryDate.toISOString().slice(0, 10);
+      console.log('card date ' + this.card.expiryDate);
       this.cardService()
         .create(this.card)
         .then(param => {
@@ -94,6 +95,8 @@ export default class CardUpdate extends Vue {
             this.isSaving = false;
             this.$router.go(-1);
             const message = 'A Card is created with identifier ' + param.id;
+            this.card.employee.employeeStatus = EmployeeStatus.APPROVED;
+            this.employeeService().update(this.card.employee);
             this.alertService().showAlert(message, 'success');
           }
         });
@@ -128,7 +131,7 @@ export default class CardUpdate extends Vue {
   }
   public initRelationships(): void {
     this.employeeService()
-      .retrieve('false')
+      .retrieve('PENDING')
       .then(res => {
         this.employees = res.data;
       });

@@ -216,7 +216,7 @@
 
     <select class="getinvoice-select" v-if="hasRole(['ROLE_ADMIN'])" v-model="hospitalid">
       <option v-bind:value="hospital.id" v-for="hospital in hospitals" :key="hospital.id">
-        {{ hospital.id }}
+        {{ hospital.nameAr }}
       </option>
     </select>
     <br />
