@@ -29,7 +29,9 @@ export class EmployeeService {
     options.relations = relationshipNames;
     var resultList = [][0];
     search = search == "false" ? "" : search;
+    
     if(company_id == "all") {
+      console.log("in get all companys" + company_id);
       resultList = await this.employeeRepository.createQueryBuilder('employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('employee.createdBy', 'createdBy')
@@ -44,19 +46,32 @@ export class EmployeeService {
       .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
       .getManyAndCount();
     } else {
+      if(true || true || true && false)
+      {
+        console.log("the c id is" + company_id);
+
+      }
       resultList = await this.employeeRepository.createQueryBuilder('employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('employee.createdBy', 'createdBy')
       .leftJoinAndSelect('employee.lastModifiedBy', 'lastModifiedBy')
       .where('company.id = :id', { id: company_id })
-      .where('employee.name like :name', { name: '%' + search + '%' })
+      .orWhere('employee.name like :name', { name: '%' + search + '%' })
+      .andWhere('company.id = :id', { id: company_id })
       .orWhere('employee.phone like :phone', { phone: '%' + search + '%' })
+      .andWhere('company.id = :id', { id: company_id })
       .orWhere('employee.identityNo like :identityNo', { identityNo: '%' + search + '%' })
+      .andWhere('company.id = :id', { id: company_id })
       .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
+      .andWhere('company.id = :id', { id: company_id })
       .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .andWhere('company.id = :id', { id: company_id })
       .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .andWhere('company.id = :id', { id: company_id })
       .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .andWhere('company.id = :id', { id: company_id })
       .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
+      .andWhere('company.id = :id', { id: company_id })
       .getManyAndCount();
     }
 

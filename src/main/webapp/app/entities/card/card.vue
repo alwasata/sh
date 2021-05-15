@@ -2,7 +2,7 @@
     <div>
         <h2 id="page-heading">
             <span id='card-heading'>البطاقات</span>
-            <router-link :to="{name: 'CardCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-left jh-create-entity create-card">
+            <router-link :to="{name: 'CardCreate'}" tag="button" id="jh-create-entity" v-if="hasAnyAuthority('ROLE_ADMIN')" class="btn btn-primary float-left jh-create-entity create-card">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span>
                     اضافة بطاقة جديدة

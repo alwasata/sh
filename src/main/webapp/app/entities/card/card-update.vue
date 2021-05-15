@@ -17,13 +17,12 @@
                             :class="{'valid': !$v.card.cardNo.$invalid, 'invalid': $v.card.cardNo.$invalid }" v-model="$v.card.cardNo.$model" />
                     </div>
                     <div class="form-group" v-if="!isUpdate">
-                        <label class='form-control-label' for='card-expiryDateType'> اختر تاريخ الانتهاء :</label>
-                        <input class="form-radio" type="radio" name="expiryDateType" value="month" v-model="expiryDateType" id="">
-                        <label for="">شهر</label>
-                        <input class="form-radio"  type="radio" name="expiryDateType" value="sixMonths" v-model="expiryDateType" id="">
-                        <label for="">ستة اشهر</label>
-                        <input class="form-radio"  type="radio" name="expiryDateType" value="year" v-model="expiryDateType" id="">
-                        <label for="">سنة</label>
+                        <label class='form-control-label' for='card-expiryDateType'> اختر تاريخ الانتهاء :</label> </br>
+                         <label for="id30">30 شهرا (سنتان و نصف)</label>
+                        <input class="form-radio"  id="id30" type="radio" name="expiryDateType" value="30" v-model="expiryDateType" >
+                       <label for="id36">3 سنوات</label>
+                        <input class="form-radio" id="id36"  type="radio" name="expiryDateType" value="36" v-model="expiryDateType" >
+                        
                         <!-- <b-input-group class="mb-3">
                             <b-input-group-prepend>
                                 <b-form-datepicker

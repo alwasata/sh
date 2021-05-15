@@ -16,6 +16,7 @@ export default class Card extends mixins(AlertMixin) {
   @Inject('cardService') private cardService: () => CardService;
   @Inject('cardTransactionService') private cardTransactionService: () => CardTransactionService;
   @Inject('accountService') private accountService: () => AccountService;
+  private hasAnyAuthorityValue = false;
 
   private removeId: number = null;
   public itemsPerPage = 20;
@@ -138,5 +139,13 @@ export default class Card extends mixins(AlertMixin) {
 
   public closeDialog(): void {
     (<any>this.$refs.removeEntity).hide();
+  }
+  public hasAnyAuthority(authorities: any): boolean {
+    this.accountService()
+      .hasAnyAuthorityAndCheckAuth(authorities)
+      .then(value => {
+        this.hasAnyAuthorityValue = value;
+      });
+    return this.hasAnyAuthorityValue;
   }
 }

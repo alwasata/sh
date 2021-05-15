@@ -75,17 +75,14 @@ export default class CardUpdate extends Vue {
     } else {
       this.card.expiryDate = new Date();
       switch (this.expiryDateType) {
-        case 'month':
-          this.card.expiryDate.setMonth(this.card.expiryDate.getUTCMonth() + 1);
+        case '30':
+          this.card.expiryDate.setMonth(this.card.expiryDate.getMonth() + 30);
           break;
-        case 'sixMonths':
-          this.card.expiryDate.setMonth(this.card.expiryDate.getMonth() + 6);
-          break;
-        case 'year':
-          this.card.expiryDate.setFullYear(this.card.expiryDate.getFullYear() + 1);
+        case '36':
+          this.card.expiryDate.setFullYear(this.card.expiryDate.getFullYear() + 3);
           break;
       }
-      this.card.expiryDate = this.card.expiryDate.toISOString().slice(0, 10);
+      // this.card.expiryDate = this.card.expiryDate.toISOString().slice(0, 10);
       this.cardService()
         .create(this.card)
         .then(param => {
