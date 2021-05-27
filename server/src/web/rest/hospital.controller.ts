@@ -87,7 +87,7 @@ export class HospitalController{
       userDTO.login       = hospitalDTO['nameEn'];
       userDTO.password    = hospitalDTO['nameEn'];
       userDTO.activated   = true;
-      userDTO.authorities = [RoleType.HOSPITAL_ADMIN, RoleType.ADMIN];
+      userDTO.authorities = [RoleType.HOSPITAL_ADMIN, RoleType.USER];
 
       const createdUser = await this.userService.save(userDTO);
       hospitalDTO.users  = [ createdUser ];
