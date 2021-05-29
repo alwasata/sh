@@ -4,6 +4,7 @@ import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { BenefitRequestDTO } from '../service/dto/benefit-request.dto';
 import { BenefitRequestMapper } from '../service/mapper/benefit-request.mapper';
 import { BenefitRequestRepository } from '../repository/benefit-request.repository';
+import { BenefitStatus } from '../domain/enumeration/benefit-status';
 
 const relationshipNames = [];
 relationshipNames.push('category');
@@ -32,7 +33,7 @@ export class BenefitRequestService {
     search = search == "false" ? "" : search;
     var resultList = [][0];
     console.log(options.where)
-    if(options.where == undefined){
+    if(options.where != undefined && hosbital_id == "all"){
       resultList = await this.benefitRequestRepository.findAndCount(options);
     }
     else if(hosbital_id == "all") {
@@ -62,27 +63,50 @@ export class BenefitRequestService {
       .innerJoinAndSelect('benefit_request.createdBy', 'createdBy')
       .leftJoinAndSelect('benefit_request.lastModifiedBy', 'lastModifiedBy')
       .where('hospital.id = :id', { id: hosbital_id })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
       .orWhere('benefit_request.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('benefit_request.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('benefit_request.createdDate like :createdDate', { createdDate: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('benefit_request.lastModifiedDate like :lastModifiedDate', { lastModifiedDate: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('benefit_request.benefitStatus like :benefitStatus', { benefitStatus: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('createdBy.login like :login', { login: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('lastModifiedBy.login like :login', { login: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('hospital.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('hospital.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('category.nameAr like :nameAr', { nameAr: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .orWhere('category.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .andWhere('benefit_request.benefitStatus = :status', { status: BenefitStatus.APPROVED })
+    
       .andWhere('hospital.id = :id', { id: hosbital_id })
       .getManyAndCount();
     }

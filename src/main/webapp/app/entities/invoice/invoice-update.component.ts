@@ -338,7 +338,7 @@ export default class InvoiceUpdate extends Vue {
         location.reload();
       })
       .catch(err => {
-        alert('This id is duplicate' + err);
+        alert('خطأ ! رقم واصل معاملات موجود مسبقاً , الرجاء التواصل مع ادارة الشركة .' + err);
       });
   }
 
