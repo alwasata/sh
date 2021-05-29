@@ -50,7 +50,8 @@
                     </div>
                     <div class='form-group'>
                         <label class="typo__label">الفئة</label>
-                        <multiselect id='benefit-category' v-model='benefit.category' name='category' :options="categories"  placeholder="Select one" label="nameAr" track-by="id"></multiselect>
+                        
+                        <!-- <multiselect id='benefit-category' v-model='benefit.category' name='category' :options="categories"  placeholder="Select one" label="nameAr" track-by="id"></multiselect> -->
                         <pre class="language-json"><code></code></pre>
                     </div>
                     <div class='form-group' v-if="isUpdate == true">
@@ -71,7 +72,7 @@
                     <button type='button' id='cancel-save' class='btn btn-secondary' v-on:click='previousState()'>
                         <font-awesome-icon icon='ban'></font-awesome-icon>&nbsp;<span>الغاء</span>
                     </button>
-                    <button type='submit' id='save-entity' :disabled='$v.benefit.$invalid || isSaving'
+                    <button type='submit' id='save-entity' 
                             class='btn btn-primary'>
                         <font-awesome-icon icon='save'></font-awesome-icon>&nbsp;<span>تعديل</span>
                     </button>

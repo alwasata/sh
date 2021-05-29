@@ -25,8 +25,8 @@ const validations: any = {
       isArabic,
     },
     nameEn: {
-      required,
-      isEnglish,
+      // required,
+      // isEnglish,
     },
     // pointsCost: {},
     cost: {
@@ -35,7 +35,7 @@ const validations: any = {
       positave,
     },
     category: {
-      required,
+      //required,
     },
     hospital: {
       required,
