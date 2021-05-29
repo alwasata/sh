@@ -241,6 +241,7 @@ export class InvoiceController {
       } else {
         hospital = await this.hospitalService.getHosbitalIdForUser(req.user["id"]);
         hospital = hospital["hospital_id"];
+        console.log("the hospi =========== " + hospital);
       }
       const [benefit, count] = await this.benefitRequestService.findAndCount("false",hospital,{
         where : { benefitStatus : "APPROVED" },
