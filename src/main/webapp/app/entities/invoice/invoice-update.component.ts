@@ -46,6 +46,7 @@ export default class InvoiceUpdate extends Vue {
   public benefits = [];
   public cardAmount;
   public cardNo = '';
+  public hospitalEmail = '';
   public employeeName = '';
   public employeePrices = 0.0;
   public companyName = '';
@@ -273,69 +274,221 @@ export default class InvoiceUpdate extends Vue {
     this.invoiceService()
       .saveInvoice(data)
       .then(res => {
+        this.hosbitalName = this.$store.getters.account.firstName;
+        this.hospitalEmail = this.$store.getters.account.email;
         var mywindow = window.open('', 'PRINT', 'height=600,width=900');
-
-        mywindow.document.write('<html><head><title> ' + this.hosbitalName + ' : اسم المستشفى  </title>');
-        mywindow.document.write('</head><body dir="rtl">');
-        mywindow.document.write('<style> th, .tdborder {border-bottom: 1px solid #ddd; }</style>');
-        mywindow.document.write("<div class='row' style='margin-top:15px'>");
-        mywindow.document.write("<span style='foint-size:16px; '> رقم الفاتورة : " + res.invoiceNo + '</span>');
-        mywindow.document.write("<span style='foint-size:16px;margin-right:40px;'>اسم المستشفى : " + this.hosbitalName + '</span>');
-        mywindow.document.write('</div>');
-        mywindow.document.write("<div class='row' style='margin-top:15px'>");
-        mywindow.document.write("<span style='foint-size:16px;'>اسم الموظف : " + this.employeeName + '</span>');
-        mywindow.document.write('</div>');
-        mywindow.document.write("<div class='row' style='margin-top:15px'>");
-        mywindow.document.write("<span style='foint-size:16px;'>رقم البطاقة  : " + this.cardNumber + '</span>');
-        mywindow.document.write('</div>');
-        mywindow.document.write("<div class='row' style='margin-top:15px'>");
-        mywindow.document.write("<span style='foint-size:16px;'>اسم الشركة  : " + this.companyName + '</span>');
-        mywindow.document.write('</div>');
-        mywindow.document.write("<hr><div class='row' style='margin-top:15px'>");
-        mywindow.document.write("<span style='foint-size:16px;'>المنافع :- </span>");
-        mywindow.document.write('<table>');
+         
+        mywindow.document.write('<html><head><meta charset="utf-8" /><title> ' + this.hosbitalName + ' : اسم المستشفى  </title>');
+        mywindow.document.write(`<style>
+        
+        .invoice-box {
+          max-width: 800px;
+          margin: auto;
+          padding: 30px;
+          border: 1px solid #eee;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+          font-size: 16px;
+          line-height: 24px;
+          font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+          color: #555;
+        }
+  
+        .invoice-box table {
+          width: 100%;
+          line-height: inherit;
+          text-align: left;
+        }
+  
+        .invoice-box table td {
+          padding: 5px;
+          vertical-align: top;
+        }
+  
+        .invoice-box table tr td:nth-child(2) {
+          text-align: right;
+        }
+  
+        .invoice-box table tr.top table td {
+          padding-bottom: 20px;
+        }
+  
+        .invoice-box table tr.top table td.title {
+          font-size: 45px;
+          line-height: 45px;
+          color: #333;
+        }
+  
+        .invoice-box table tr.information table td {
+          padding-bottom: 40px;
+        }
+  
+        .invoice-box table tr.heading td {
+          background: #eee;
+          border-bottom: 1px solid #ddd;
+          font-weight: bold;
+        }
+  
+        .invoice-box table tr.details td {
+          padding-bottom: 20px;
+        }
+  
+        .invoice-box table tr.item td {
+          border-bottom: 1px solid #eee;
+        }
+  
+        .invoice-box table tr.item.last td {
+          border-bottom: none;
+        }
+  
+        .invoice-box table tr.total td:nth-child(2) {
+          border-top: 2px solid #eee;
+          font-weight: bold;
+        }
+  
+        @media only screen and (max-width: 600px) {
+          .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+          }
+  
+          .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+          }
+        }
+  
+        /** RTL **/
+        .invoice-box.rtl {
+          direction: rtl;
+          font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+  
+        .invoice-box.rtl table {
+          text-align: right;
+        }
+  
+        .invoice-box.rtl table tr td:nth-child(2) {
+          text-align: center;
+        }
+        .top-div{
+          display:flex;
+          justify-content:space-between;
+        }
+        .invoiceNumber{
+          font-weight:bolder;
+        }
+        </style>`);
+        mywindow.document.write(' <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script></head><body>');
         mywindow.document.write(`
-        <thead>
-        <tr>
-        <th style="padding-top: 10px; padding-left: 40px;">اسم المنفعة بالعربي</th>
-        <th style="padding-top: 10px; padding-left: 40px;">اسم المنفعة بالانجليزي</th>
-        <th style="padding-top: 10px; padding-left: 40px;">الكمية</th>
-        <th style="padding-top: 10px; padding-left: 40px;">السعر</th>
-        <th style="padding-top: 10px; padding-left: 40px;">اجمالي السعر</th>
+        <div class="invoice-box rtl">
+        <table cellpadding="0" cellspacing="0">
+          <div class="top-div">
+                  <img src="https://alwasata.ly/images/sahati/sahati-logo.png" style="width: 100%; max-width: 33%"  />
+                  <img align="center" src="https://alwasata.ly/images/sahati/${this.$store.getters.account.login}.jpg" style="width: 100%; max-width: 33%"  alt="Image Error" />
+                  <div id="canvas"></div>
+            </div> `);
+        mywindow.document.write(`
+            <tr class="heading" >
+              <td>  شركة الوساطة العالمية  </td>`);
+        mywindow.document.write(`
+
+        <td> ${this.hosbitalName} 
+        </td>
         </tr>
-        </thead>
+        <br /> `
+                      );
+          mywindow.document.write(`<tr class="title"><td class="invoiceNumber"> ` + res.invoiceNo + `</td><td></td></tr>`);
+
+        mywindow.document.write(`<tr class="heading">
+        <td>رقم بطاقة بطاقة صحتي </td>
+
+        <td> تاريخ الصلاحية</td>
+      </tr>
+      <tr class="details">
+					<td>${this.cardNumber}</td>
+
+					<td>${this.exbireDate}</td>
+				</tr>
+      <tr class="heading"> <td>  اسم حامل البطاقة  </td> 
+      <td>
+      اسم الشركة 
+      </td>
+      </tr>
+      <tr class="details">
+					<td>${this.employeeName}</td>
+
+					<td>${this.companyName}</td>
+				</tr>
+        
+        </table>
+      `);
+        mywindow.document.write(`
+        <table>
+        
+        <tr class="heading">
+					<td>اسم المنفعة </td>
+
+					<td class="qa" >الكمية</td>
+          <td>السعر</td>
+          <td>اجمالي السعر</td>
+				</tr>
+       
         `);
-        mywindow.document.write('<tbody>');
         this.rows.forEach(element => {
+          
           mywindow.document.write(`
-          <tr>
-          <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.nameAr}</td>
-          <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.nameEn}</td>
-          <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.quantity}</td>
-          <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.price}</td>
-          <td class="tdborder" style="padding-top: 10px; padding-left: 40px;">${element.totalPrice}</td>
-          </tr>
+          <tr class="item">
+					<td>${element.nameAr}</td>
+
+					<td class="qa" >${element.quantity}</td>
+          <td>${element.price}</td>
+          <td>${element.totalPrice}</td>
+				</tr>
           `);
         });
         mywindow.document.write(`
-        <tr>
-        <td style="padding-top: 10px; padding-left: 40px;"></td>
-        <td style="padding-top: 10px; padding-left: 40px;"></td>
-        <td style="padding-top: 10px; padding-left: 40px;"></td>
-        <td style="padding-top: 10px; padding-left: 40px;"></td>
-        <td style="padding-top: 10px; padding-left: 40px;">اجمالي السعر : ${this.total}</td>
-        </tr>
+        
+        <tr class="total">
+					<td></td>
+
+					<td>اجمالي السعر :  ${this.total}</td>
+				</tr>
+			</table>
+		</div>
+    <script type="text/javascript">
+    const qrCode = new QRCodeStyling({
+      width: 200,
+      height: 200,
+      type: "svg",
+      data: "INVOICE NO : ${this.invoice.invoiceNo}, INVOICE TOTAL : ${this.total}, HOSPITAL Email : ${this.hospitalEmail}, SAHATY Support: Support@SCARD.LY",
+      image: "https://i.imgur.com/2GTE6Ar.png",
+      dotsOptions: {
+          color: "#4267b2",
+          type: "rounded"
+      },
+      backgroundOptions: {
+          color: "#e9ebee",
+      },
+      imageOptions: {
+          crossOrigin: "anonymous", 
+      }
+  });
+    qrCode.append(document.getElementById("canvas"));
+   
+  
+    </script>
+	</body>
+ 
+</html>  
         `);
-        mywindow.document.write('</tbody>');
-        mywindow.document.write('</table>');
-        mywindow.document.write('</div>');
-        mywindow.document.write('</body></html>');
 
-        mywindow.document.close(); // necessary for IE >= 10
-        mywindow.focus(); // necessary for IE >= 10*/
 
-        mywindow.print();
+         mywindow.document.close(); // necessary for IE >= 10
+        // mywindow.focus(); // necessary for IE >= 10*/
         location.reload();
+        
       })
       .catch(err => {
         alert('خطأ ! رقم واصل معاملات موجود مسبقاً , الرجاء التواصل مع ادارة الشركة .' + err);
