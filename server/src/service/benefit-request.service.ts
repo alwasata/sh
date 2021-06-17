@@ -54,6 +54,7 @@ export class BenefitRequestService {
       .orWhere('hospital.nameEn like :nameEn', { nameEn: '%' + search + '%' })
       .orWhere('category.nameAr like :nameAr', { nameAr: '%' + search + '%' })
       .orWhere('category.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orderBy("benefit_request.benefitStatus","ASC")
       .getManyAndCount();
     } else {
       resultList = await this.benefitRequestRepository.createQueryBuilder('benefit_request')

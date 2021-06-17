@@ -125,8 +125,9 @@ export default class InvoiceUpdate extends Vue {
     this.invoiceService()
       .search(this.cardNo)
       .then(res => {
-        if (res == '') {
-          document.getElementById('card-error').textContent = 'يجب عليك ادخال رقم بطاقة صحيح';
+        console.log(JSON.stringify(res.cardInfo) + "cardRewuest Respone");
+        if (res.cardInfo[1] == 0) {
+          document.getElementById('card-error').textContent = 'خطاء في رقم البطاقة ! يجب عليك ادخال رقم بطاقة صحيح';
           return;
         }
         if (res.cardInfo[0].length == 0) {
@@ -256,7 +257,7 @@ export default class InvoiceUpdate extends Vue {
     // this.invoice.invoiceStatus = InvoiceStatus.PENDING;
     this.invoice.invoiceDate = this.invoiceDate;
     this.invoice.payDate = this.invoiceDate;
-    this.invoice.invoiceNo = 'IN-' + new Date().getFullYear() + '-' + new Date().getMonth() + '-' + Math.floor(1000 + Math.random() * 9000);
+    this.invoice.invoiceNo = 'IN' + new Date().getFullYear() + '' + new Date().getMonth() + '' + Math.floor(1000 + Math.random() * 9000);
     this.invoice.notes = `فاتورة صادرة رقم الفاتورة : ${this.invoice.invoiceNo}`;
 
     this.invoice.moamalatId = this.moamalatId;

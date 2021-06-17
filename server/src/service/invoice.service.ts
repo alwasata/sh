@@ -66,6 +66,7 @@ export class InvoiceService {
       // .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
       .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
       .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orderBy("invoice.createdDate" , "DESC")
       .skip(options.skip)
       .take(options.take)
       .getManyAndCount();
@@ -79,7 +80,7 @@ export class InvoiceService {
       .innerJoinAndSelect('card.employee', 'employee')
       .innerJoinAndSelect('employee.company', 'company')
       .innerJoinAndSelect('invoice.hospital', 'hospital')
-      .where('invoice.invoiceNo like :invoiceNo', { invoiceNo: '%' + search + '%' })
+      .where('(invoice.invoiceNo like :invoiceNo', { invoiceNo: '%' + search + '%' })
       .orWhere('invoice.invoiceDate like :invoiceDate', { invoiceDate: '%' + search + '%' })
       .orWhere('invoice.payDate like :payDate', { payDate: '%' + search + '%' })
       .orWhere('invoice.invoiceStatus like :invoiceStatus', { invoiceStatus: '%' + search + '%' })
@@ -90,8 +91,9 @@ export class InvoiceService {
       .orWhere('employee.identityNo like :identityNo', { identityNo: '%' + search + '%' })
       // .orWhere('employee.employeeStatus like :employeeStatus', { employeeStatus: '%' + search + '%' })
       .orWhere('company.nameAr like :nameAr', { nameAr: '%' + search + '%' })
-      .orWhere('company.nameEn like :nameEn', { nameEn: '%' + search + '%' })
+      .orWhere('company.nameEn like :nameEn)', { nameEn: '%' + search + '%' })
       .andWhere('hospital.id = :id', { id: id })
+      .orderBy("invoice.createdDate" , "DESC")
       .skip(options.skip)
       .take(options.take)
       .getManyAndCount();
@@ -126,7 +128,7 @@ export class InvoiceService {
       .andWhere('invoice.invoiceDate <= :invoiceDate', { invoiceDate: dateTo })
       .andWhere('invoice.invoiceStatus like :invoiceStatus', { invoiceStatus: '%' + status + '%' })
       .andWhere('hospital.id = :id', { id: id })
-
+      .orderBy("invoice.createdDate" , "DESC")
       .getManyAndCount();
   
     const invoiceDTO: InvoiceDTO[] = [];

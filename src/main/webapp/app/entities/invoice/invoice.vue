@@ -37,7 +37,7 @@
     </div>
     <br />
     <div class="alert alert-warning" v-if="!isFetching && invoices && invoices.length === 0">
-      <span>No invoices found</span>
+      <span>لايوجد فواتير</span>
     </div>
     <div class="table-responsive" v-if="invoices && invoices.length > 0">
       <table class="table table-striped">
