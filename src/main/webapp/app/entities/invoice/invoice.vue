@@ -123,7 +123,7 @@
                   <font-awesome-icon icon="eye"></font-awesome-icon>
                   <span class="d-none d-md-inline">عرض</span>
                 </router-link>
-                <div class="btn-group" v-if="hasRole(['ROLE_HOSPITAL_ADMIN'])">
+                <!-- <div class="btn-group" v-if="hasRole(['ROLE_HOSPITAL_ADMIN'])">
                   <router-link
                     v-if="invoice.invoiceStatus == 'APPROVED'"
                     :to="{ name: 'InvoiceReturn', params: { invoiceId: invoice.id } }"
@@ -133,7 +133,7 @@
                     <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                     <span class="d-none d-md-inline">ارجاع</span>
                   </router-link>
-                </div>
+                </div> -->
                 <div
                   v-if="invoice.invoiceStatus == 'APPROVED' && hasRole(['ROLE_HOSPITAL_ADMIN'])"
                   class="btn-group"
